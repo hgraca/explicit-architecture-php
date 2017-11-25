@@ -33,6 +33,7 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^4.0",
         "friendsofphp/php-cs-fixer": "^2.7",
+        "roave/security-advisories": "dev-master",
         "symfony/browser-kit": "^4.0",
         "symfony/css-selector": "^4.0",
         "symfony/debug-bundle": "^4.0",
