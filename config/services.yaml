@@ -58,3 +58,8 @@ services:
     # 'arguments' key and define the arguments just below the service class
     Acme\App\Core\Component\Blog\Application\EventSubscriber\CommentNotificationSubscriber:
         $sender: '%app.notifications.email_sender%'
+
+    Acme\App\Presentation\Web\Core\Exception\ExceptionController:
+        public: true
+        arguments:
+            $debug: '%kernel.debug%'

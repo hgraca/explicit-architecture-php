@@ -1,6 +1,14 @@
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    exception_controller: Acme\App\Presentation\Web\Core\Exception\ExceptionController::showAction
     form_themes:
-        - 'form/layout.html.twig'
-        - 'form/fields.html.twig'
+        - '@Web/Core/Port/Form/layout.html.twig'
+        - '@Web/Core/Port/Form/fields.html.twig'
+    paths:
+        '%kernel.project_dir%/src/Presentation/Web': Web
+        '%kernel.project_dir%/src/Presentation/Web/Core/Component': Component
+        '%kernel.project_dir%/src/Presentation/Web/Core/Component/About': About
+        '%kernel.project_dir%/src/Presentation/Web/Core/Component/Blog': Blog
+        '%kernel.project_dir%/src/Presentation/Web/Core/Component/Homepage': Homepage
+        '%kernel.project_dir%/src/Presentation/Web/Core/Component/Login': Login

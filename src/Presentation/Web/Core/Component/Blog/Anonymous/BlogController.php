@@ -58,7 +58,7 @@ class BlogController extends AbstractController
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templating.html#template-suffix
-        return $this->render('blog/index.' . $_format . '.twig', ['posts' => $latestPosts]);
+        return $this->render('@Blog/Anonymous/index.' . $_format . '.twig', ['posts' => $latestPosts]);
     }
 
     /**
@@ -87,7 +87,7 @@ class BlogController extends AbstractController
             }
         );
 
-        return $this->render('blog/post_show.html.twig', ['post' => $post, 'commentList' => $commentList]);
+        return $this->render('@Blog/Anonymous/post_show.html.twig', ['post' => $post, 'commentList' => $commentList]);
     }
 
     /**
@@ -131,7 +131,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('blog_post', ['slug' => $post->getSlug()]);
         }
 
-        return $this->render('blog/comment_form_error.html.twig', [
+        return $this->render('@Blog/Anonymous/comment_form_error.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
         ]);
@@ -149,7 +149,7 @@ class BlogController extends AbstractController
     {
         $form = $this->createForm(CommentType::class);
 
-        return $this->render('blog/_comment_form.html.twig', [
+        return $this->render('@Blog/Anonymous/_comment_form.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
         ]);
@@ -162,7 +162,7 @@ class BlogController extends AbstractController
     public function search(Request $request, PostRepository $posts): Response
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->render('blog/search.html.twig');
+            return $this->render('@Blog/Anonymous/search.html.twig');
         }
 
         $query = $request->query->get('q', '');

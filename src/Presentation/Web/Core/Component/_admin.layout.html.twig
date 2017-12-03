@@ -5,7 +5,7 @@
    showing how powerful, yet easy to use, is Twig's inheritance mechanism.
    See https://symfony.com/doc/current/book/templating.html#template-inheritance-and-layouts
 #}
-{% extends 'base.html.twig' %}
+{% extends '@Web/Core/_base.layout.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}

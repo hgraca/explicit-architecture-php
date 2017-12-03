@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '@Web/Core/_base.layout.html.twig' %}
 
 {% block body_id 'blog_index' %}
 
@@ -18,7 +18,7 @@
 
             {{ post.summary|md2html }}
 
-            {{ include('blog/_post_tags.html.twig') }}
+            {{ include('@Blog/_post_tags.html.twig') }}
         </article>
     {% else %}
         <div class="well">{{ 'post.no_posts_found'|trans }}</div>
@@ -35,5 +35,5 @@
     {{ parent() }}
 
     {{ show_source_code(_self) }}
-    {{ include('blog/_rss.html.twig') }}
+    {{ include('@Blog/Anonymous/_rss.html.twig') }}
 {% endblock %}

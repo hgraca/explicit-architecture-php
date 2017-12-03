@@ -1,5 +1,5 @@
 {#
-    This template is used to render errors of type HTTP 500 (Internal Server Error)
+    This template is used to render errors of type HTTP 404 (Not Found)
 
     This is the simplest way to customize error pages in Symfony applications.
     In case you need it, you can also hook into the internal exception handling
@@ -8,18 +8,18 @@
     See https://symfony.com/doc/current/cookbook/controller/error_pages.html
 #}
 
-{% extends 'base.html.twig' %}
+{% extends '@Web/Core/_base.layout.html.twig' %}
 
 {% block body_id 'error' %}
 
 {% block main %}
-    <h1 class="text-danger">{{ 'http_error.name'|trans({ '%status_code%': 500 }) }}</h1>
+    <h1 class="text-danger">{{ 'http_error.name'|trans({ '%status_code%': 404 }) }}</h1>
 
     <p class="lead">
-        {{ 'http_error_500.description'|trans }}
+        {{ 'http_error_404.description'|trans }}
     </p>
     <p>
-        {{ 'http_error_500.suggestion'|trans({ '%url%': path('blog_index') })|raw }}
+        {{ 'http_error_404.suggestion'|trans({ '%url%': path('blog_index') })|raw }}
     </p>
 {% endblock %}
 

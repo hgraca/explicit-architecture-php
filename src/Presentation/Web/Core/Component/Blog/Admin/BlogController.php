@@ -62,7 +62,7 @@ class BlogController extends AbstractController
     {
         $authorPosts = $posts->findBy(['author' => $this->getUser()], ['publishedAt' => 'DESC']);
 
-        return $this->render('admin/blog/index.html.twig', ['posts' => $authorPosts]);
+        return $this->render('@Blog/Admin/index.html.twig', ['posts' => $authorPosts]);
     }
 
     /**
@@ -110,7 +110,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('admin_post_index');
         }
 
-        return $this->render('admin/blog/new.html.twig', [
+        return $this->render('@Blog/Admin/new.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
         ]);
@@ -128,7 +128,7 @@ class BlogController extends AbstractController
         // using an annotation: @Security("is_granted('show', post)")
         $this->denyAccessUnlessGranted('show', $post, 'Posts can only be shown to their authors.');
 
-        return $this->render('admin/blog/show.html.twig', [
+        return $this->render('@Blog/Admin/show.html.twig', [
             'post' => $post,
         ]);
     }
@@ -155,7 +155,7 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
         }
 
-        return $this->render('admin/blog/edit.html.twig', [
+        return $this->render('@Blog/Admin/edit.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
         ]);
