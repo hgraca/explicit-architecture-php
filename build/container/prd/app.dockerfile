@@ -13,7 +13,6 @@ COPY ./config       /opt/app/config
 COPY ./lib          /opt/app/lib
 COPY ./public       /opt/app/public
 COPY ./src          /opt/app/src
-COPY ./templates    /opt/app/templates
 COPY ./translations /opt/app/translations
 
 COPY ./composer.json        /opt/app

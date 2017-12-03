@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '@Web/Core/_base.layout.html.twig' %}
 
 {% block body_id 'blog_post_show' %}
 
@@ -12,7 +12,7 @@
 
     {{ post.content|md2html }}
 
-    {{ include('blog/_post_tags.html.twig') }}
+    {{ include('@Blog/_post_tags.html.twig') }}
 
     <div id="post-add-comment" class="well">
         {# The 'IS_AUTHENTICATED_FULLY' role ensures that the user has entered
@@ -68,10 +68,10 @@
     {% endif %}
 
     {# the parent() function includes the contents defined by the parent template
-      ('base.html.twig') for this block ('sidebar'). This is a very convenient way
+      ('@Web/Core/_base.layout.html.twig') for this block ('sidebar'). This is a very convenient way
       to share common contents in different templates #}
     {{ parent() }}
 
     {{ show_source_code(_self) }}
-    {{ include('blog/_rss.html.twig') }}
+    {{ include('@Blog/Anonymous/_rss.html.twig') }}
 {% endblock %}

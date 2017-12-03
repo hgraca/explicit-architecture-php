@@ -8,5 +8,5 @@ homepage:
     requirements:
         _locale: '%app_locales%'
     defaults:
-        template: default/homepage.html.twig
+        template: '@Homepage/Anonymous/homepage.html.twig'
         _locale: '%locale%'
