@@ -7,7 +7,6 @@ ENV ENV='prd'
 
 COPY ./build/container/prd/php.ini /usr/local/etc/php/php.ini
 
-COPY ./assets       /opt/app/assets
 COPY ./bin          /opt/app/bin
 COPY ./config       /opt/app/config
 COPY ./lib          /opt/app/lib
