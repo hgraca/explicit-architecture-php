@@ -53,7 +53,7 @@ class ListUsersCommand extends Command
     private $mailer;
 
     /**
-     * @var
+     * @var string
      */
     private $emailSender;
 
@@ -145,11 +145,8 @@ HELP
 
     /**
      * Sends the given $contents to the $recipient email address.
-     *
-     * @param string $contents
-     * @param string $recipient
      */
-    private function sendReport($contents, $recipient): void
+    private function sendReport(string $contents, string $recipient): void
     {
         // See https://symfony.com/doc/current/cookbook/email/email.html
         $message = $this->mailer->createMessage()
