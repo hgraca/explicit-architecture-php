@@ -71,6 +71,20 @@ final class UserService
         return $user;
     }
 
+    public function deleteUser(string $username): void
+    {
+        $this->validator->validateUsername($username);
+
+        /** @var User $user */
+        $user = $this->userRepository->findOneByUsername($username);
+
+        if ($user === null) {
+            throw new RuntimeException(sprintf('User with username "%s" not found.', $username));
+        }
+
+        $this->userRepository->delete($user);
+    }
+
     private function validateUserData($username, $plainPassword, $email, $fullName): void
     {
         // first check if a user with the same username already exists.

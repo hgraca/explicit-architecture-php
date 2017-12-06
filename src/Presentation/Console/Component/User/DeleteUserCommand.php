@@ -14,12 +14,10 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Console\Component\User;
 
-use Acme\App\Core\Component\User\Application\Repository\Doctrine\UserRepository;
+use Acme\App\Core\Component\User\Application\Service\UserService;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
-use Acme\App\Core\Component\User\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,22 +56,22 @@ class DeleteUserCommand extends Command
     private $entityManager;
 
     /**
-     * @var Validator
+     * @var UserValidationService
      */
     private $validator;
 
     /**
-     * @var UserRepository
+     * @var UserService
      */
-    private $users;
+    private $userService;
 
-    public function __construct(EntityManagerInterface $em, UserValidationService $validator, UserRepository $users)
+    public function __construct(EntityManagerInterface $em, UserValidationService $validator, UserService $userService)
     {
         parent::__construct();
 
         $this->entityManager = $em;
         $this->validator = $validator;
-        $this->users = $users;
+        $this->userService = $userService;
     }
 
     /**
@@ -128,23 +126,12 @@ HELP
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $username = $this->validator->validateUsername($input->getArgument('username'));
+        $username = $input->getArgument('username');
 
-        /** @var User $user */
-        $user = $this->users->findOneByUsername($username);
+        $this->userService->deleteUser($username);
 
-        if ($user === null) {
-            throw new RuntimeException(sprintf('User with username "%s" not found.', $username));
-        }
-
-        // After an entity has been removed its in-memory state is the same
-        // as before the removal, except for generated identifiers.
-        // See http://docs.doctrine-project.org/en/latest/reference/working-with-objects.html#removing-entities
-        $userId = $user->getId();
-
-        $this->entityManager->remove($user);
         $this->entityManager->flush();
 
-        $this->io->success(sprintf('User "%s" (ID: %d, email: %s) was successfully deleted.', $user->getUsername(), $userId, $user->getEmail()));
+        $this->io->success(sprintf('User "%s" was successfully deleted.', $username));
     }
 }
