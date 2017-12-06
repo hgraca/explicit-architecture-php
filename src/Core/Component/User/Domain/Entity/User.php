@@ -32,6 +32,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, \Serializable
 {
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
+
     /**
      * @var int
      *
@@ -75,6 +78,21 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    public static function constructWithoutPassword(
+        string $username,
+        string $email,
+        string $fullName,
+        string $role
+    ): self {
+        $user = new self();
+        $user->setFullName($fullName);
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setRoles([$role]);
+
+        return $user;
+    }
 
     public function getId(): int
     {
@@ -130,7 +148,7 @@ class User implements UserInterface, \Serializable
 
         // guarantees that a user always has at least one role for security
         if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
+            $roles[] = self::ROLE_USER;
         }
 
         return array_unique($roles);
@@ -182,5 +200,16 @@ class User implements UserInterface, \Serializable
     {
         // add $this->salt too if you don't use Bcrypt or Argon2i
         [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function isAdmin(): bool
+    {
+        foreach ($this->getRoles() as $role) {
+            if ($role === self::ROLE_ADMIN) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
