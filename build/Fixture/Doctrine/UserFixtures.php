@@ -46,11 +46,12 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        $tomAdmin = new User();
-        $tomAdmin->setFullName('Tom Doe');
-        $tomAdmin->setUsername('tom_admin');
-        $tomAdmin->setEmail('tom_admin@symfony.com');
-        $tomAdmin->setRoles(['ROLE_ADMIN']);
+        $tomAdmin = User::constructWithoutPassword(
+            'tom_admin',
+            'tom_admin@symfony.com',
+            'Tom Doe',
+            User::ROLE_ADMIN
+        );
         $encodedPassword = $this->passwordEncoder->encodePassword($tomAdmin, 'kitten');
         $tomAdmin->setPassword($encodedPassword);
         $manager->persist($tomAdmin);

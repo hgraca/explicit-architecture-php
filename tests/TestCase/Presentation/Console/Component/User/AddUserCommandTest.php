@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Console\Component\User;
 
+use Acme\App\Core\Component\User\Application\Service\UserService;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\App\Presentation\Console\Component\User\AddUserCommand;
@@ -126,7 +127,15 @@ class AddUserCommandTest extends KernelTestCase
         $container = self::$kernel->getContainer();
         /** @var Registry $doctrine */
         $doctrine = $container->get('doctrine');
-        $command = new AddUserCommand($doctrine->getManager(), $container->get('security.password_encoder'), new UserValidationService(), $doctrine->getRepository(User::class));
+        $command = new AddUserCommand(
+            $doctrine->getManager(),
+            $userValidationService = new UserValidationService(),
+            new UserService(
+                $container->get('security.password_encoder'),
+                $userValidationService,
+                $doctrine->getRepository(User::class)
+            )
+        );
         $command->setApplication(new Application(self::$kernel));
 
         $commandTester = new CommandTester($command);

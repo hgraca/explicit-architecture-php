@@ -14,18 +14,15 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Console\Component\User;
 
-use Acme\App\Core\Component\User\Application\Repository\Doctrine\UserRepository;
+use Acme\App\Core\Component\User\Application\Service\UserService;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
-use Acme\App\Core\Component\User\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
@@ -68,28 +65,25 @@ class AddUserCommand extends Command
     private $entityManager;
 
     /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
-
-    /**
-     * @var Validator
+     * @var UserValidationService
      */
     private $validator;
 
     /**
-     * @var UserRepository
+     * @var UserService
      */
-    private $users;
+    private $userService;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, UserValidationService $validator, UserRepository $users)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        UserValidationService $validator,
+        UserService $userService
+    ) {
         parent::__construct();
 
         $this->entityManager = $em;
-        $this->passwordEncoder = $encoder;
         $this->validator = $validator;
-        $this->users = $users;
+        $this->userService = $userService;
     }
 
     /**
@@ -193,56 +187,26 @@ class AddUserCommand extends Command
         $stopwatch = new Stopwatch();
         $stopwatch->start('add-user-command');
 
-        $username = $input->getArgument('username');
-        $plainPassword = $input->getArgument('password');
-        $email = $input->getArgument('email');
-        $fullName = $input->getArgument('full-name');
-        $isAdmin = $input->getOption('admin');
+        $user = $this->userService->createUser(
+            (string) $input->getArgument('username'),
+            (string) $input->getArgument('password'),
+            (string) $input->getArgument('email'),
+            (string) $input->getArgument('full-name'),
+            (bool) $input->getOption('admin')
+        );
 
-        // make sure to validate the user data is correct
-        $this->validateUserData($username, $plainPassword, $email, $fullName);
-
-        // create the user and encode its password
-        $user = new User();
-        $user->setFullName($fullName);
-        $user->setUsername($username);
-        $user->setEmail($email);
-        $user->setRoles([$isAdmin ? 'ROLE_ADMIN' : 'ROLE_USER']);
-
-        // See https://symfony.com/doc/current/book/security.html#security-encoding-password
-        $encodedPassword = $this->passwordEncoder->encodePassword($user, $plainPassword);
-        $user->setPassword($encodedPassword);
-
-        $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $this->io->success(sprintf('%s was successfully created: %s (%s)', $isAdmin ? 'Administrator user' : 'User', $user->getUsername(), $user->getEmail()));
+        $this->io->success(sprintf(
+            '%s was successfully created: %s (%s)',
+            $user->isAdmin() ? 'Administrator user' : 'User',
+            $user->getUsername(),
+            $user->getEmail()
+        ));
 
         $event = $stopwatch->stop('add-user-command');
         if ($output->isVerbose()) {
             $this->io->comment(sprintf('New user database id: %d / Elapsed time: %.2f ms / Consumed memory: %.2f MB', $user->getId(), $event->getDuration(), $event->getMemory() / (1024 ** 2)));
-        }
-    }
-
-    private function validateUserData(string $username, string $plainPassword, string $email, string $fullName): void
-    {
-        // first check if a user with the same username already exists.
-        $existingUser = $this->users->findOneBy(['username' => $username]);
-
-        if ($existingUser !== null) {
-            throw new RuntimeException(sprintf('There is already a user registered with the "%s" username.', $username));
-        }
-
-        // validate password and email if is not this input means interactive.
-        $this->validator->validatePassword($plainPassword);
-        $this->validator->validateEmail($email);
-        $this->validator->validateFullName($fullName);
-
-        // check if a user with the same email already exists.
-        $existingEmail = $this->users->findOneBy(['email' => $email]);
-
-        if ($existingEmail !== null) {
-            throw new RuntimeException(sprintf('There is already a user registered with the "%s" email.', $email));
         }
     }
 
