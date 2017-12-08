@@ -91,7 +91,7 @@ class DefaultControllerTest extends WebTestCase
     public function getPublicUrls()
     {
         yield ['/'];
-        yield ['/en/blog/'];
+        yield ['/en/blog/posts'];
         yield ['/en/login'];
     }
 

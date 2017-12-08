@@ -12,13 +12,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\Anonymous;
+namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comment;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Functional test for the controllers defined inside BlogController.
+ * Functional test for the controllers defined inside CommentController.
  *
  * See https://symfony.com/doc/current/book/testing.html#functional-tests
  *
@@ -27,37 +26,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class BlogControllerTest extends WebTestCase
+class CommentControllerTest extends WebTestCase
 {
-    public function testIndex(): void
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/en/blog/');
-
-        $this->assertCount(
-            Post::NUM_ITEMS,
-            $crawler->filter('article.post'),
-            'The homepage displays the right number of posts.'
-        );
-    }
-
-    public function testRss(): void
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/en/blog/rss.xml');
-
-        $this->assertSame(
-            'text/xml; charset=UTF-8',
-            $client->getResponse()->headers->get('Content-Type')
-        );
-
-        $this->assertCount(
-            Post::NUM_ITEMS,
-            $crawler->filter('item'),
-            'The xml file displays the right number of posts.'
-        );
-    }
-
     /**
      * This test changes the database contents by creating a new comment. However,
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
@@ -73,7 +43,7 @@ class BlogControllerTest extends WebTestCase
         $client->followRedirects();
 
         // Find first blog post
-        $crawler = $client->request('GET', '/en/blog/');
+        $crawler = $client->request('GET', '/en/blog/posts');
         $postLink = $crawler->filter('article.post > h2 a')->link();
 
         $crawler = $client->click($postLink);

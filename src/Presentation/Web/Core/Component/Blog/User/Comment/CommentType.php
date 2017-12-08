@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Form;
+namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
@@ -28,6 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class CommentType extends AbstractType
 {
@@ -42,8 +43,7 @@ class CommentType extends AbstractType
         // this validation, set the 'required' attribute to 'false':
         // $builder->add('content', null, ['required' => false]);
 
-        $builder
-            ->add('content');
+        $builder->add('content');
     }
 
     /**
@@ -51,8 +51,6 @@ class CommentType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Comment::class,
-        ]);
+        $resolver->setDefaults(['data_class' => Comment::class]);
     }
 }
