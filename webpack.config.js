@@ -15,7 +15,7 @@ Encore
     .addEntry('js/app', './src/Presentation/Web/app.js')
     .addEntry('js/login', './src/Presentation/Web/Component/Login/Anonymous/login.js')
     .addEntry('js/admin', './src/Presentation/Web/Component/admin.js')
-    .addEntry('js/search', './src/Presentation/Web/Component/Blog/Anonymous/search.js')
+    .addEntry('js/search', './src/Presentation/Web/Component/Blog/Anonymous/PostList/search.js')
     .addStyleEntry('css/app', ['./src/Presentation/Web/app.scss'])
     .addStyleEntry('css/admin', ['./src/Presentation/Web/Component/admin.scss'])
 ;

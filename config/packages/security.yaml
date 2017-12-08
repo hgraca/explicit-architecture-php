@@ -39,7 +39,7 @@ security:
                 csrf_token_generator: security.csrf.token_manager
                 # The page users are redirect to when there is no previous page stored in the
                 # session (for example when the users access directly to the login page).
-                default_target_path: blog_index
+                default_target_path: post_list
 
             logout:
                 # The route name the user can go to in order to logout
