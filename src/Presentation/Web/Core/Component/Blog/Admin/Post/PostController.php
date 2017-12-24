@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
+use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
-use Acme\StdLib\String\Slugger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -41,6 +41,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PostController extends AbstractController
 {
+    /**
+     * @var PostService
+     */
+    private $postService;
+
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+    }
+
     /**
      * Finds and displays a Post entity.
      *
@@ -101,8 +111,7 @@ class PostController extends AbstractController
             return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
         }
 
-        $post->setSlug(Slugger::slugify($post->getTitle()));
-        $this->getDoctrine()->getManager()->flush();
+        $this->postService->update($post);
 
         $this->addFlash('success', 'post.updated_successfully');
 
@@ -125,14 +134,7 @@ class PostController extends AbstractController
             return $this->redirectToRoute('admin_post_list');
         }
 
-        // Delete the tags associated with this blog post. This is done automatically
-        // by Doctrine, except for SQLite (the database used in this application)
-        // because foreign key support is not enabled by default in SQLite
-        $post->getTags()->clear();
-
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($post);
-        $em->flush();
+        $this->postService->delete($post);
 
         $this->addFlash('success', 'post.deleted_successfully');
 

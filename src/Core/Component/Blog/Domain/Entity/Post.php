@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Domain\Entity;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\PhpExtension\String\Slugger;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -87,7 +89,7 @@ class Post
     private $content;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime
@@ -127,7 +129,7 @@ class Post
 
     public function __construct()
     {
-        $this->publishedAt = new \DateTime();
+        $this->publishedAt = new DateTime();
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
@@ -152,9 +154,9 @@ class Post
         return $this->slug;
     }
 
-    public function setSlug(string $slug): void
+    public function regenerateSlug(): void
     {
-        $this->slug = $slug;
+        $this->slug = Slugger::slugify($this->getTitle());
     }
 
     public function getContent(): ?string
@@ -167,12 +169,12 @@ class Post
         $this->content = $content;
     }
 
-    public function getPublishedAt(): \DateTime
+    public function getPublishedAt(): DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTime $publishedAt): void
+    public function setPublishedAt(DateTime $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
