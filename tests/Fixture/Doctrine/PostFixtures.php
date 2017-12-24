@@ -18,7 +18,6 @@ use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\App\Test\Fixture\FixturesTrait;
-use Acme\StdLib\String\Slugger;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -51,7 +50,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
 
             $post->setTitle($title);
             $post->setSummary($this->getRandomPostSummary());
-            $post->setSlug(Slugger::slugify($post->getTitle()));
+            $post->regenerateSlug();
             $post->setContent($this->getPostContent());
             $post->setPublishedAt(new \DateTime('now - ' . $i . 'days'));
 

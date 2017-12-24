@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 
 use Acme\App\Core\Component\Blog\Application\Repository\Doctrine\PostRepository;
+use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
-use Acme\StdLib\String\Slugger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,6 +42,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PostListController extends AbstractController
 {
+    /**
+     * @var PostService
+     */
+    private $postService;
+
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+    }
+
     /**
      * Lists all Post entities.
      *
@@ -77,7 +87,6 @@ class PostListController extends AbstractController
     public function newAction(): Response
     {
         $post = new Post();
-        $post->setAuthor($this->getUser());
 
         // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
         $form = $this->createForm(PostType::class, $post, ['action' => $this->generateUrl('admin_post_new_post')])
@@ -102,7 +111,6 @@ class PostListController extends AbstractController
     public function postAction(Request $request): Response
     {
         $post = new Post();
-        $post->setAuthor($this->getUser());
 
         // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
         $form = $this->createForm(PostType::class, $post)
@@ -117,11 +125,8 @@ class PostListController extends AbstractController
         if (!($form->isSubmitted() && $form->isValid())) {
             return $this->redirectToRoute('admin_post_list');
         }
-        $post->setSlug(Slugger::slugify($post->getTitle()));
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($post);
-        $em->flush();
+        $this->postService->create($post, $this->getUser());
 
         // Flash messages are used to notify the user about the result of the
         // actions. They are deleted automatically from the session as soon
