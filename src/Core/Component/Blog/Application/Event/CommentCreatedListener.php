@@ -12,22 +12,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Core\Component\Blog\Application\EventSubscriber;
+namespace Acme\App\Core\Component\Blog\Application\Event;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
-use Acme\App\Infrastructure\EventDispatcher\Events;
+use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
 use Swift_Mailer;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Notifies post's author about new comments.
+ * Listens to the CommentCreatedEvent and triggers all the logic associated with it, in this component.
  *
  * @author Oleg Voronkovich <oleg-voronkovich@yandex.ru>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class CommentNotificationSubscriber implements EventSubscriberInterface
+class CommentCreatedListener
 {
     /**
      * @var Swift_Mailer
@@ -47,43 +46,43 @@ class CommentNotificationSubscriber implements EventSubscriberInterface
     /**
      * @var string
      */
-    private $sender;
+    private $senderEmail;
 
     public function __construct(
         Swift_Mailer $mailer,
         UrlGeneratorInterface $urlGenerator,
         TranslatorInterface $translator,
-        string $sender
+        string $senderEmail
     ) {
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->translator = $translator;
-        $this->sender = $sender;
+        $this->senderEmail = $senderEmail;
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            Events::COMMENT_CREATED => 'onCommentCreated',
-        ];
-    }
-
-    public function onCommentCreated(GenericEvent $event): void
+    public function notifyPostAuthorAboutNewComment(CommentCreatedEvent $event): void
     {
         /** @var Comment $comment */
-        $comment = $event->getSubject();
+        $comment = $event->getComment();
         $post = $comment->getPost();
 
-        $linkToPost = $this->urlGenerator->generate('post', [
-            'slug' => $post->getSlug(),
-            '_fragment' => 'comment_' . $comment->getId(),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        $linkToPost = $this->urlGenerator->generate(
+            'post',
+            [
+                'slug' => $post->getSlug(),
+                '_fragment' => 'comment_' . $comment->getId(),
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         $subject = $this->translator->trans('notification.comment_created');
-        $body = $this->translator->trans('notification.comment_created.description', [
-            '%title%' => $post->getTitle(),
-            '%link%' => $linkToPost,
-        ]);
+        $body = $this->translator->trans(
+            'notification.comment_created.description',
+            [
+                '%title%' => $post->getTitle(),
+                '%link%' => $linkToPost,
+            ]
+        );
 
         // Symfony uses a library called SwiftMailer to send emails. That's why
         // email messages are created instantiating a Swift_Message class.
@@ -91,7 +90,7 @@ class CommentNotificationSubscriber implements EventSubscriberInterface
         $message = (new \Swift_Message())
             ->setSubject($subject)
             ->setTo($post->getAuthor()->getEmail())
-            ->setFrom($this->sender)
+            ->setFrom($this->senderEmail)
             ->setBody($body, 'text/html');
 
         // In config/packages/dev/swiftmailer.yaml the 'disable_delivery' option is set to 'true'.

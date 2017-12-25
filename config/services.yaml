@@ -56,8 +56,13 @@ services:
 
     # When the service definition only contains arguments, you can omit the
     # 'arguments' key and define the arguments just below the service class
-    Acme\App\Core\Component\Blog\Application\EventSubscriber\CommentNotificationSubscriber:
-        $sender: '%app.notifications.email_sender%'
+    Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener:
+        arguments:
+            $senderEmail: '%app.notifications.email_sender%'
+        tags:
+            - name: kernel.event_listener
+              event: 'Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent'
+              method: notifyPostAuthorAboutNewComment
 
     Acme\App\Presentation\Web\Core\Exception\ExceptionController:
         public: true
