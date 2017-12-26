@@ -12,16 +12,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\PhpExtension;
+namespace Acme\PhpExtension\Test\ObjectDispatcher;
 
-/**
- * This class is just an utility class that helps us to remove duplication from the tests
- * and that's why it can't be instantiated.
- */
-abstract class AbstractStaticClass
+final class DummyListener
 {
-    protected function __construct()
+    public function doSomething(): void
     {
-        // All methods should be static, so no need to instantiate any of the subclasses
+    }
+
+    public function doSomethingElse(): void
+    {
+    }
+
+    public function doSomethingDifferent(): void
+    {
     }
 }
