@@ -56,11 +56,14 @@ services:
 
     # When the service definition only contains arguments, you can omit the
     # 'arguments' key and define the arguments just below the service class
+    # We make it lazy loaded so that we can get it from the container and inject it into the event dispatcher
+    # without it being instantiated
     Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener:
+        lazy:  true
         arguments:
             $senderEmail: '%app.notifications.email_sender%'
         tags:
-            - name: kernel.event_listener
+            - name: 'sync_event_dispatcher'
               event: 'Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent'
               method: notifyPostAuthorAboutNewComment
 

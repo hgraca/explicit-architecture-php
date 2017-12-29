@@ -17,9 +17,9 @@ namespace Acme\App\Core\Component\Blog\Application\Service;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Port\EventDispatcher\EventDispatcherInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class CommentService
 {
@@ -62,6 +62,6 @@ final class CommentService
         // passed in the event and they can even modify the execution flow, so
         // there's no guarantee that the rest of this method will be executed.
         // See https://symfony.com/doc/current/components/event_dispatcher.html
-        $this->eventDispatcher->dispatch(CommentCreatedEvent::class, $event);
+        $this->eventDispatcher->dispatch($event);
     }
 }
