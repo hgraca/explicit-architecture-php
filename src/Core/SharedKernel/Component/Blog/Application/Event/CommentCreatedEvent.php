@@ -15,14 +15,14 @@ declare(strict_types=1);
 namespace Acme\App\Core\SharedKernel\Component\Blog\Application\Event;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
-use Symfony\Component\EventDispatcher\Event;
+use Acme\App\Core\Port\EventDispatcher\EventInterface;
 
 /**
  * This is just a DTO, it only has getters, theres no logic to test, so we ignore it for code coverage purposes.
  *
  * @codeCoverageIgnore
  */
-final class CommentCreatedEvent extends Event
+final class CommentCreatedEvent implements EventInterface
 {
     /**
      * @var Comment
