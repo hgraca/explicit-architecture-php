@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\Presentation\Web\Component\Component\Blog\Admin\PostList;
+namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\PostList;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Test\Fixture\FixturesTrait;
@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class PostListControllerTest extends AbstractFunctionalTest
+class PostListControllerFunctionalTest extends AbstractFunctionalTest
 {
     use FixturesTrait;
 

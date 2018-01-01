@@ -12,6 +12,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorInterface;
+
 /**
  * @group acceptance
  */
@@ -31,7 +33,7 @@ class AnonymousVisitCest
         $I->seeLink('Symfony Demo');
         $I->seeLink('Homepage');
         $I->seeLink('Search');
-        $I->seeNumberOfElements('//*[@id="main"]/article/h2/a', 10);
+        $I->seeNumberOfElements('//*[@id="main"]/article/h2/a', PaginatorInterface::DEFAULT_MAX_ITEMS_PER_PAGE);
 
         $I->comment('I can see the blog post and comments...');
         $I->click('//*[@id="main"]/article[1]/h2/a');
