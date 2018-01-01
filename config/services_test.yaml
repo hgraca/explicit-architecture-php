@@ -3,6 +3,7 @@ parameters:
     # This is specially useful for the services provided by 3rd party bundles
     test.container.service_list:
         - 'Acme\App\Core\Component\Blog\Application\Repository\Doctrine\PostRepository'
+        - 'Acme\App\Core\Port\Persistence\QueryServiceRouterInterface'
         - 'Acme\App\Presentation\Console\Component\User\AddUserCommand'
 
 services:
