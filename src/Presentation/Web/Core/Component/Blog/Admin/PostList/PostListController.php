@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 
-use Acme\App\Core\Component\Blog\Application\Repository\Doctrine\PostRepository;
+use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
@@ -67,9 +67,9 @@ class PostListController extends AbstractController
      * @Route("/", name="admin_post_list")
      * @Method("GET")
      */
-    public function getAction(PostRepository $posts): Response
+    public function getAction(PostRepositoryInterface $postRepository): Response
     {
-        $authorPosts = $posts->findBy(['author' => $this->getUser()], ['publishedAt' => 'DESC']);
+        $authorPosts = $postRepository->findByAuthorOrderedByPublishDate($this->getUser());
 
         return $this->render('@Blog/Admin/PostList/get.html.twig', ['posts' => $authorPosts]);
     }

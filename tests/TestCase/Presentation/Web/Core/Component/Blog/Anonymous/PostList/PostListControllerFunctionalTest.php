@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorInterface;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 
 /**
@@ -38,7 +38,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $crawler = $client->request('GET', '/en/blog/posts');
 
         $this->assertCount(
-            Post::NUM_ITEMS,
+            PaginatorInterface::DEFAULT_MAX_ITEMS_PER_PAGE,
             $crawler->filter('article.post'),
             'The homepage does not display the right number of posts.'
         );
@@ -58,7 +58,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         );
 
         $this->assertCount(
-            Post::NUM_ITEMS,
+            PaginatorInterface::DEFAULT_MAX_ITEMS_PER_PAGE,
             $crawler->filter('item'),
             'The xml file does not display the right number of posts.'
         );
@@ -82,8 +82,10 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         );
 
         $this->assertSame(
-            'application/json',
-            $client->getResponse()->headers->get('Content-Type')
+            $expectedContentType = 'application/json',
+            $actualContentType = $client->getResponse()->headers->get('Content-Type'),
+            "The response content type does not match. Expected '$expectedContentType' got '$actualContentType'."
+            . ' Response content: \'' . $client->getResponse()->getContent() . '\''
         );
 
         $postList = \json_decode($client->getResponse()->getContent(), true);

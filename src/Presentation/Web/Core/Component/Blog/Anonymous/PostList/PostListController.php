@@ -14,7 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 
-use Acme\App\Core\Component\Blog\Application\Repository\Doctrine\PostRepository;
+use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
+use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorFactoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,6 +33,16 @@ use Symfony\Component\HttpFoundation\Response;
 class PostListController extends AbstractController
 {
     /**
+     * @var PaginatorFactoryInterface
+     */
+    private $paginatorFactory;
+
+    public function __construct(PaginatorFactoryInterface $paginatorFactory)
+    {
+        $this->paginatorFactory = $paginatorFactory;
+    }
+
+    /**
      * @Route("", defaults={"page": "1", "_format"="html"}, name="post_list")
      * @Route("/rss.xml", defaults={"page": "1", "_format"="xml"}, name="post_list_rss")
      * @Route("/page/{page}", defaults={"_format"="html"}, requirements={"page": "[1-9]\d*"}, name="post_list_paginated")
@@ -43,21 +54,23 @@ class PostListController extends AbstractController
      *
      * @see https://symfony.com/doc/current/quick_tour/the_controller.html#using-formats
      */
-    public function getAction(int $page, string $_format, PostRepository $postRepository): Response
+    public function getAction(int $page, string $_format, PostRepositoryInterface $postRepository): Response
     {
-        $latestPosts = $postRepository->findLatest($page);
+        $latestPosts = $postRepository->findLatest();
+        $paginator = $this->paginatorFactory->createPaginator($latestPosts->toArray());
+        $paginator->setCurrentPage($page);
 
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templating.html#template-suffix
-        return $this->render('@Blog/Anonymous/PostList/get.' . $_format . '.twig', ['posts' => $latestPosts]);
+        return $this->render('@Blog/Anonymous/PostList/get.' . $_format . '.twig', ['posts' => $paginator]);
     }
 
     /**
      * @Route("/search", name="post_list_search")
      * @Method("GET")
      */
-    public function searchAction(Request $request, PostRepository $postRepository): Response
+    public function searchAction(Request $request, PostRepositoryInterface $postRepository): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return $this->render('@Blog/Anonymous/PostList/search.html.twig');

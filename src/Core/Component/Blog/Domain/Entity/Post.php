@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="Acme\App\Core\Component\Blog\Application\Repository\Doctrine\PostRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="symfony_demo_post")
  *
  * Defines the properties of the Post entity to represent the blog posts.
