@@ -12,10 +12,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\Framework\CompilerPass\CreateTestContainer;
+namespace Acme\StdLib\Exception;
 
-use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
-
-final class DuplicateServiceInTestContainerException extends AppRuntimeException
+interface AcmeExceptionInterface
 {
 }
