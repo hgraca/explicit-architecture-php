@@ -12,10 +12,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\Framework\CompilerPass\CreateTestContainer;
+namespace Acme\App\Core\SharedKernel\Exception;
 
-use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
+use Acme\PhpExtension\Exception\AcmeLogicException;
 
-final class DuplicateServiceInTestContainerException extends AppRuntimeException
+/**
+ * This is the application LogicException, its the logic exception that should used in our project code.
+ * This is useful so we can catch and customise this projects exceptions.
+ */
+class AppLogicException extends AcmeLogicException
 {
 }

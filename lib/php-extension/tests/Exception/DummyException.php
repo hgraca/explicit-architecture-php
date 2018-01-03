@@ -12,10 +12,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\Framework\CompilerPass\CreateTestContainer;
+namespace Acme\PhpExtension\Test\Exception;
 
-use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
+use Acme\PhpExtension\Exception\AcmeExceptionInterface;
+use Acme\PhpExtension\Exception\AcmeExceptionTrait;
+use LogicException;
 
-final class DuplicateServiceInTestContainerException extends AppRuntimeException
+class DummyException extends LogicException implements AcmeExceptionInterface
 {
+    use AcmeExceptionTrait;
 }

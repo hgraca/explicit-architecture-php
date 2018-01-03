@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\Framework\CompilerPass\CreateTestContainer;
 
-use Exception;
+use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
 
-final class ServiceInTestContainerNotFoundInProductionContainerException extends Exception
+final class ServiceInTestContainerNotFoundInProductionContainerException extends AppRuntimeException
 {
     public function __construct(string $serviceId)
     {
