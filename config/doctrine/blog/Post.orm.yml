@@ -1,0 +1,41 @@
+Acme\App\Core\Component\Blog\Domain\Entity\Post:
+    type: entity
+    table: symfony_demo_post
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        title:
+            type: string
+        slug:
+            type: string
+        summary:
+            type: string
+        content:
+            type: text
+        publishedAt:
+            type: datetime
+    manyToOne:
+        author:
+            targetEntity: Acme\App\Core\Component\User\Domain\Entity\User
+            joinColumn:
+                nullable: false
+    oneToMany:
+        comments:
+            targetEntity: Comment
+            mappedBy: post
+            orphanRemoval: true
+            cascade:
+                - 'persist'
+            orderBy:
+                publishedAt: DESC
+    manyToMany:
+        tags:
+            targetEntity: Acme\App\Core\Component\Blog\Domain\Entity\Tag
+            orderBy:
+                name: ASC
+            cascade:
+                - 'persist'
+            joinTable:
+                name: symfony_demo_post_tag

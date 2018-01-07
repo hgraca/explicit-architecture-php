@@ -1,0 +1,20 @@
+Acme\App\Core\Component\User\Domain\Entity\User:
+    type: entity
+    table: symfony_demo_user
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        fullName:
+            type: string
+        username:
+            type: string
+            unique: true
+        email:
+            type: string
+            unique: true
+        password:
+            type: string
+        roles:
+            type: json

@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
+use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,12 +41,11 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function testPublicUrls(string $url): void
     {
-        $client = static::createClient();
-        $client->request('GET', $url);
+        $this->getClient()->request('GET', $url);
 
         $this->assertSame(
             Response::HTTP_OK,
-            $client->getResponse()->getStatusCode(),
+            $this->getClient()->getResponse()->getStatusCode(),
             sprintf('The %s public URL loads correctly.', $url)
         );
     }
@@ -58,13 +59,10 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function testPublicBlogPost(): void
     {
-        $client = static::createClient();
-        // the service container is always available via the test client
-        /** @var Post $blogPost */
-        $blogPost = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
-        $client->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
+        $blogPost = $this->findPostById(1);
+        $this->getClient()->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
 
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->getClient()->getResponse()->getStatusCode());
     }
 
     /**
@@ -76,10 +74,9 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function testSecureUrls(string $url): void
     {
-        $client = static::createClient();
-        $client->request('GET', $url);
+        $this->getClient()->request('GET', $url);
 
-        $response = $client->getResponse();
+        $response = $this->getClient()->getResponse();
         $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
         $this->assertSame(
             'http://localhost/en/login',
@@ -101,5 +98,25 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
         yield ['/en/admin/posts/new'];
         yield ['/en/admin/posts/1'];
         yield ['/en/admin/posts/1/edit'];
+    }
+
+    private function findPostById(int $id): Post
+    {
+        $dqlQuery = $this->getDqlQueryFactory()->create(Post::class)
+            ->where('Post.id = :id')
+            ->setParameter('id', $id)
+            ->build();
+
+        return $this->getQueryService()->query($dqlQuery)->getSingleResult();
+    }
+
+    private function getDqlQueryFactory(): DqlQueryBuilderInterface
+    {
+        return $this->getService(DqlQueryBuilderInterface::class);
+    }
+
+    private function getQueryService(): QueryServiceRouterInterface
+    {
+        return $this->getService(QueryServiceRouterInterface::class);
     }
 }

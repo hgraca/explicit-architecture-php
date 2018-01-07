@@ -1,0 +1,22 @@
+Acme\App\Core\Component\Blog\Domain\Entity\Comment:
+    type: entity
+    table: symfony_demo_comment
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        content:
+            type: text
+        publishedAt:
+            type: datetime
+    manyToOne:
+        post:
+            targetEntity: Acme\App\Core\Component\Blog\Domain\Entity\Post
+            inversedBy: comments
+            joinColumn:
+                nullable: false
+        author:
+            targetEntity: Acme\App\Core\Component\User\Domain\Entity\User
+            joinColumn:
+                nullable: false

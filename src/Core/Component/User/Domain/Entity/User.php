@@ -14,15 +14,11 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\User\Domain\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="symfony_demo_user")
- *
  * Defines the properties of the User entity to represent the application users.
- * See https://symfony.com/doc/current/book/doctrine.html#creating-an-entity-class
+ * See https://symfony.com/doc/current/book/doctrine.html#creating-an-entity-class.
  *
  * Tip: if you have an existing database, you can generate these entity class automatically.
  * See https://symfony.com/doc/current/cookbook/doctrine/reverse_engineering.html
@@ -38,45 +34,31 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string")
      */
     private $fullName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
      */
     private $username;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
      */
     private $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string")
      */
     private $password;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="json")
      */
     private $roles = [];
 
