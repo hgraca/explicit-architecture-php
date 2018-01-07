@@ -14,17 +14,19 @@ doctrine:
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        auto_mapping: false
         mappings:
+            # Each mapping must have its own 'dir' directive.
+            # If we put them all in the same dir, they will not be found.
             Acme\App\Core\Component\Blog:
                 is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/Core/Component/Blog/Domain/Entity'
+                type: yml
+                dir: '%kernel.project_dir%/config/doctrine/blog'
                 prefix: 'Acme\App\Core\Component\Blog\Domain\Entity'
                 alias: Blog
             Acme\App\Core\Component\User:
                 is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/Core/Component/User/Domain/Entity'
+                type: yml
+                dir: '%kernel.project_dir%/config/doctrine/user'
                 prefix: 'Acme\App\Core\Component\User\Domain\Entity'
                 alias: User

@@ -16,45 +16,34 @@ namespace Acme\App\Core\Component\Blog\Domain\Entity;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="symfony_demo_comment")
- *
  * Defines the properties of the Comment entity to represent the blog comments.
- * See https://symfony.com/doc/current/book/doctrine.html#creating-an-entity-class
+ * See https://symfony.com/doc/current/book/doctrine.html#creating-an-entity-class.
  *
  * Tip: if you have an existing database, you can generate these entity class automatically.
  * See https://symfony.com/doc/current/cookbook/doctrine/reverse_engineering.html
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class Comment
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @var Post
-     *
-     * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $post;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
      * @Assert\NotBlank(message="comment.blank")
      * @Assert\Length(
      *     min=5,
@@ -68,16 +57,12 @@ class Comment
     /**
      * @var DateTime
      *
-     * @ORM\Column(type="datetime")
      * @Assert\DateTime
      */
     private $publishedAt;
 
     /**
      * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="Acme\App\Core\Component\User\Domain\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 

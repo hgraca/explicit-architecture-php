@@ -1,0 +1,11 @@
+Acme\App\Core\Component\Blog\Domain\Entity\Tag:
+    type: entity
+    table: symfony_demo_tag
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            unique: true
