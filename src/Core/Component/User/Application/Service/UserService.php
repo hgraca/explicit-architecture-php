@@ -14,9 +14,10 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\User\Application\Service;
 
-use Acme\App\Core\Component\User\Application\Repository\Doctrine\UserRepository;
+use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -33,14 +34,14 @@ final class UserService
     private $validator;
 
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
     public function __construct(
         UserPasswordEncoderInterface $encoder,
         UserValidationService $validator,
-        UserRepository $userRepository
+        UserRepositoryInterface $userRepository
     ) {
         $this->encoder = $encoder;
         $this->validator = $validator;
@@ -66,7 +67,7 @@ final class UserService
             $isAdmin ? User::ROLE_ADMIN : User::ROLE_USER
         );
         $user->setPassword($this->encoder->encodePassword($user, $plainPassword));
-        $this->userRepository->persist($user);
+        $this->userRepository->upsert($user);
 
         return $user;
     }
@@ -88,12 +89,8 @@ final class UserService
     private function validateUserData($username, $plainPassword, $email, $fullName): void
     {
         // first check if a user with the same username already exists.
-        $existingUser = $this->userRepository->findOneBy(['username' => $username]);
-
-        if ($existingUser !== null) {
-            throw new RuntimeException(
-                sprintf('There is already a user registered with the "%s" username.', $username)
-            );
+        if ($this->usernameExists($username)) {
+            throw new RuntimeException("There is already a user registered with the \"$username\" username.");
         }
 
         // validate password and email if is not this input means interactive.
@@ -102,10 +99,30 @@ final class UserService
         $this->validator->validateFullName($fullName);
 
         // check if a user with the same email already exists.
-        $existingEmail = $this->userRepository->findOneBy(['email' => $email]);
+        if ($this->emailExists($email)) {
+            throw new RuntimeException("There is already a user registered with the \"$email\" email.");
+        }
+    }
 
-        if ($existingEmail !== null) {
-            throw new RuntimeException(sprintf('There is already a user registered with the "%s" email.', $email));
+    private function usernameExists(string $username): bool
+    {
+        try {
+            $this->userRepository->findOneByUsername($username);
+
+            return true;
+        } catch (EmptyQueryResultException $e) {
+            return false;
+        }
+    }
+
+    private function emailExists(string $email): bool
+    {
+        try {
+            $this->userRepository->findOneByEmail($email);
+
+            return true;
+        } catch (EmptyQueryResultException $e) {
+            return false;
         }
     }
 }

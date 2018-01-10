@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Console\Component\User;
 
-use Acme\App\Core\Component\User\Application\Repository\Doctrine\UserRepository;
+use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Swift_Mailer;
 use Symfony\Component\Console\Command\Command;
@@ -37,6 +37,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * https://symfony.com/doc/current/console/commands_as_services.html
  *
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class ListUsersCommand extends Command
 {
@@ -58,17 +59,17 @@ class ListUsersCommand extends Command
     private $emailSender;
 
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
-    private $users;
+    private $userRepository;
 
-    public function __construct(Swift_Mailer $mailer, string $emailSender, UserRepository $users)
+    public function __construct(Swift_Mailer $mailer, string $emailSender, UserRepositoryInterface $userRepository)
     {
         parent::__construct();
 
         $this->mailer = $mailer;
         $this->emailSender = $emailSender;
-        $this->users = $users;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -108,8 +109,7 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $maxResults = $input->getOption('max-results');
-        // Use ->findBy() instead of ->findAll() to allow result sorting and limiting
-        $allUsers = $this->users->findBy([], ['id' => 'DESC'], $maxResults);
+        $allUsers = $this->userRepository->findAll(['id' => 'DESC'], $maxResults);
 
         // Doctrine query returns an array of objects and we need an array of plain arrays
         $usersAsPlainArrays = array_map(function (User $user) {

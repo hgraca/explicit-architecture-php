@@ -4,6 +4,7 @@ parameters:
     test.container.service_list:
         - 'Acme\App\Core\Component\Blog\Application\Repository\DQL\CommentRepository'
         - 'Acme\App\Core\Component\Blog\Application\Repository\DQL\PostRepository'
+        - 'Acme\App\Core\Component\User\Application\Repository\DQL\UserRepository'
         - 'Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface'
         - 'Acme\App\Core\Port\Persistence\QueryServiceRouterInterface'
         - 'Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService'

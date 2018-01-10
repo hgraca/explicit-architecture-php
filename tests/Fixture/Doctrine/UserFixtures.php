@@ -20,7 +20,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * Defines the sample users to load in the database before running the unit and
+ * Defines the sample userRepository to load in the database before running the unit and
  * functional tests. Execute this command to load the data.
  *
  *   $ php bin/console doctrine:fixtures:load
