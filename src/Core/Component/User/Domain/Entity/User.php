@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="Acme\App\Core\Component\User\Application\Repository\Doctrine\UserRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="symfony_demo_user")
  *
  * Defines the properties of the User entity to represent the application users.
@@ -29,6 +29,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class User implements UserInterface, \Serializable
 {
