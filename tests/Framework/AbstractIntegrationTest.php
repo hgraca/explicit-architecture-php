@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Test\Framework;
 
 use Acme\App\Test\Framework\Container\ContainerAwareTestTrait;
+use Acme\App\Test\Framework\Database\DatabaseAwareTestTrait;
 use Acme\App\Test\Framework\Mock\MockTrait;
 use Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DatabaseAwareTestInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -30,6 +31,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class AbstractIntegrationTest extends KernelTestCase implements DatabaseAwareTestInterface
 {
     use ContainerAwareTestTrait;
+    use DatabaseAwareTestTrait;
     use MockeryPHPUnitIntegration;
     use MockTrait;
 
