@@ -16,6 +16,7 @@ namespace Acme\App\Test\Framework;
 
 use Acme\App\Test\Framework\Container\ContainerAwareTestTrait;
 use Acme\App\Test\Framework\Mock\MockTrait;
+use Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DatabaseAwareTestInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -27,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Furthermore, as the integration tests, the functional tests need to boot the application and have the overhead of
  * simulating http requests so they are even slower than the Integration tests.
  */
-abstract class AbstractFunctionalTest extends WebTestCase
+abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwareTestInterface
 {
     use ContainerAwareTestTrait;
     use MockeryPHPUnitIntegration;

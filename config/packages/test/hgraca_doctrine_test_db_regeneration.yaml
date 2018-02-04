@@ -1,0 +1,2 @@
+hgraca_doctrine_test_db_regeneration:
+    test_db_bkp_path: 'var/cache/blog.bkp.sqlite'

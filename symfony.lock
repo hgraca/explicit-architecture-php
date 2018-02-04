@@ -107,6 +107,9 @@
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
     },
+    "hgraca/doctrine-test-db-regeneration-bundle": {
+        "version": "1.0.x-dev"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
