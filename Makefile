@@ -111,7 +111,6 @@ shell:
 test:
 	- ENV='tst' ./bin/stop # Just in case some container is left over stopped, as is the case after PHPStorm runs tests
 	ENV='tst' ./bin/run
-	ENV='tst' ./bin/run make db-setup-guest
 	- $(MAKE) cs-fix
 	ENV='tst' ./bin/run php vendor/bin/phpunit
 	ENV='tst' ./bin/stop
@@ -134,7 +133,6 @@ test-ci:
 	$(MAKE) box-build-prd
 	$(MAKE) box-build-ci  # This is always run by default in the Ci, but having it here makes it possible to run in dev
 	ENV='ci' ./bin/run
-	ENV='ci' ./bin/run make db-setup-guest
 	ENV='ci' ./bin/run php vendor/bin/php-cs-fixer fix --verbose --dry-run
 	ENV='ci' ./bin/run make test_cov-guest
 	docker exec -it app.sfn.ci cat ${COVERAGE_REPORT_PATH} > ${COVERAGE_REPORT_PATH}

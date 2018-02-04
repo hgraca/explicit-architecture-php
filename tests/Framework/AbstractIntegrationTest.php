@@ -16,6 +16,7 @@ namespace Acme\App\Test\Framework;
 
 use Acme\App\Test\Framework\Container\ContainerAwareTestTrait;
 use Acme\App\Test\Framework\Mock\MockTrait;
+use Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DatabaseAwareTestInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Usually, for this, we need to get services out of the container, etc. This top class makes it easier.
  * Furthermore, integration tests need to boot the application and therefore they are slower than the Unit tests.
  */
-abstract class AbstractIntegrationTest extends KernelTestCase
+abstract class AbstractIntegrationTest extends KernelTestCase implements DatabaseAwareTestInterface
 {
     use ContainerAwareTestTrait;
     use MockeryPHPUnitIntegration;

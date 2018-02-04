@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08a22376006ca8ea168e58dbb7fd2cd6",
+    "content-hash": "ed46ea5351620a203694534befa7cee1",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -5312,6 +5312,60 @@
                 "test"
             ],
             "time": "2016-01-20T08:20:44+00:00"
+        },
+        {
+            "name": "hgraca/doctrine-test-db-regeneration-bundle",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hgraca/doctrine-test-db-regeneration-bundle.git",
+                "reference": "d7812f8318974ce6589480182ed3cdbc02784f0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hgraca/doctrine-test-db-regeneration-bundle/zipball/d7812f8318974ce6589480182ed3cdbc02784f0e",
+                "reference": "d7812f8318974ce6589480182ed3cdbc02784f0e",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/data-fixtures": "^1.1",
+                "doctrine/dbal": "^2",
+                "doctrine/doctrine-bundle": "^1",
+                "doctrine/doctrine-fixtures-bundle": "^3",
+                "doctrine/orm": "^2",
+                "php": "^7.1",
+                "roave/security-advisories": "dev-master",
+                "symfony/framework-bundle": "^2.7|^3.0|^4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "mockery/mockery": "v1.0.0-alpha1",
+                "phpunit/php-code-coverage": "^5",
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hgraca\\DoctrineTestDbRegenerationBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Herberto Graça",
+                    "email": "herberto.graca@gmail.com"
+                }
+            ],
+            "description": "Symfony 2/3/4 bundle to generate the test DB (if needed) for every test suite run or test method run.",
+            "time": "2018-04-02T13:44:28+00:00"
         },
         {
             "name": "mockery/mockery",

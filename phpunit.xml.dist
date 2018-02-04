@@ -52,6 +52,17 @@
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+
+        <!-- At the beginning of every test run, if there are changes to the DB or the test DB is not there,
+             it will generate the test DB and create a backup of it and a backup of the fixtures references.
+             At the beginning of every test it can recover the test DB backup, however since we are using
+             DAMA\DoctrineTestBundle that is not necessary, so we turn it off. -->
+        <listener class="\Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DbRegenerationPHPUnitEventSubscriber">
+            <arguments>
+                <integer>0</integer> <!-- disable $shouldRegenerateOnEveryTest -->
+            </arguments>
+        </listener>
+
         <!-- it begins a database transaction before every testcase and rolls it back after
              the test finished, so tests can manipulate the database without affecting other tests -->
         <listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
