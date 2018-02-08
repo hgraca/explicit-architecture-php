@@ -16,16 +16,16 @@ namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType\TagArrayToStringTransformer;
+use Acme\App\Test\Framework\AbstractUnitTest;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Tests that tags are transformed correctly using the data transformer.
  *
  * See https://symfony.com/doc/current/testing/database.html
  */
-class TagArrayToStringTransformerTest extends TestCase
+class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 {
     /**
      * Ensures that tags are created correctly.

@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Component;
+namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,9 +26,9 @@ use Symfony\Component\HttpFoundation\Response;
  * Execute the application tests using this command (requires PHPUnit to be installed):
  *
  *     $ cd your-symfony-project/
- *     $ ./vendor/bin/phpunit
+ *     $ make test
  */
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
      * PHPUnit's data providers allow to execute the same tests repeated times

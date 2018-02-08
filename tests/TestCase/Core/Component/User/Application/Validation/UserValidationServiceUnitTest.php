@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Core\Component\User\Application\Validation;
 
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
-use PHPUnit\Framework\TestCase;
+use Acme\App\Test\Framework\AbstractUnitTest;
 
-class UserValidationServiceTest extends TestCase
+class UserValidationServiceUnitTest extends AbstractUnitTest
 {
     /**
      * @var UserValidationService

@@ -56,9 +56,9 @@ class Kernel extends BaseKernel
     /**
      * @throws Exception
      */
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
+    protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
     {
-        $container->setParameter('container.dumper.inline_class_loader', true);
+        $containerBuilder->setParameter('container.dumper.inline_class_loader', true);
         $confDir = $this->getProjectDir() . '/config';
         $loader->load($confDir . '/packages/*' . self::CONFIG_EXTS, 'glob');
         if (is_dir($confDir . '/packages/' . $this->environment)) {
@@ -81,5 +81,16 @@ class Kernel extends BaseKernel
             $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    protected function build(ContainerBuilder $containerBuilder): void
+    {
+        /** @var bool[][] $contents */
+        $contents = require $this->getProjectDir() . '/config/compiler_pass.php';
+        foreach ($contents as $compilerPass => $envs) {
+            if (isset($envs['all']) || isset($envs[$this->environment])) {
+                $containerBuilder->addCompilerPass(new $compilerPass());
+            }
+        }
     }
 }

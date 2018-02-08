@@ -64,7 +64,7 @@ class PostListController extends AbstractController
         }
 
         $query = $request->query->get('q', '');
-        $limit = $request->query->get('l', 10);
+        $limit = $request->query->getInt('l', 10);
         $foundPosts = $postRepository->findBySearchQuery($query, $limit);
 
         $results = [];
