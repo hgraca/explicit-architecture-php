@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class PostControllerTest extends WebTestCase
+class PostControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
      * @dataProvider getUrlsForRegularUsers

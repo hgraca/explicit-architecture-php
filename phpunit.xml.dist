@@ -3,7 +3,6 @@
 <!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.1/phpunit.xsd"
-         backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
 >
@@ -25,9 +24,21 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="all">
             <directory>tests/</directory>
             <directory>lib/*/tests/</directory>
+        </testsuite>
+        <testsuite name="unit" >
+            <directory suffix="UnitTest.php">tests</directory>
+            <directory suffix="UnitTest.php">lib/*/tests/</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory suffix="IntegrationTest.php">tests/</directory>
+            <directory suffix="IntegrationTest.php">lib/*/tests/</directory>
+        </testsuite>
+        <testsuite name="functional">
+            <directory suffix="FunctionalTest.php">tests/</directory>
+            <directory suffix="FunctionalTest.php">lib/*/tests/</directory>
         </testsuite>
     </testsuites>
 

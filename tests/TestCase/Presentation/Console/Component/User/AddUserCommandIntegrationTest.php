@@ -14,16 +14,13 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Console\Component\User;
 
-use Acme\App\Core\Component\User\Application\Service\UserService;
-use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\App\Presentation\Console\Component\User\AddUserCommand;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class AddUserCommandTest extends KernelTestCase
+class AddUserCommandIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @var array
@@ -86,8 +83,8 @@ class AddUserCommandTest extends KernelTestCase
     }
 
     /**
-     * This is used to execute the same test twice: first for normal users
-     * (isAdmin = false) and then for admin users (isAdmin = true).
+     * This is used to execute the same test twice: first for normal userRepository
+     * (isAdmin = false) and then for admin userRepository (isAdmin = true).
      */
     public function isAdminDataProvider()
     {
@@ -122,20 +119,7 @@ class AddUserCommandTest extends KernelTestCase
      */
     private function executeCommand(array $arguments, array $inputs = []): void
     {
-        self::bootKernel();
-
-        $container = self::$kernel->getContainer();
-        /** @var Registry $doctrine */
-        $doctrine = $container->get('doctrine');
-        $command = new AddUserCommand(
-            $doctrine->getManager(),
-            $userValidationService = new UserValidationService(),
-            new UserService(
-                $container->get('security.password_encoder'),
-                $userValidationService,
-                $doctrine->getRepository(User::class)
-            )
-        );
+        $command = self::getService(AddUserCommand::class);
         $command->setApplication(new Application(self::$kernel));
 
         $commandTester = new CommandTester($command);

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comment;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Acme\App\Test\Framework\AbstractFunctionalTest;
 
 /**
  * Functional test for the controllers defined inside CommentController.
@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class CommentControllerTest extends WebTestCase
+class CommentControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
      * This test changes the database contents by creating a new comment. However,
@@ -36,7 +36,7 @@ class CommentControllerTest extends WebTestCase
      */
     public function testNewComment(): void
     {
-        $client = static::createClient([], [
+        $client = $this->getClient([], [
             'PHP_AUTH_USER' => 'john_user',
             'PHP_AUTH_PW' => 'kitten',
         ]);
