@@ -17,6 +17,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
+use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -46,9 +47,15 @@ class PostController extends AbstractController
      */
     private $postService;
 
-    public function __construct(PostService $postService)
+    /**
+     * @var FlashMessageServiceInterface
+     */
+    private $flashMessageService;
+
+    public function __construct(PostService $postService, FlashMessageServiceInterface $flashMessageService)
     {
         $this->postService = $postService;
+        $this->flashMessageService = $flashMessageService;
     }
 
     /**
@@ -113,7 +120,7 @@ class PostController extends AbstractController
 
         $this->postService->update($post);
 
-        $this->addFlash('success', 'post.updated_successfully');
+        $this->flashMessageService->success('post.updated_successfully');
 
         return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }
@@ -136,7 +143,7 @@ class PostController extends AbstractController
 
         $this->postService->delete($post);
 
-        $this->addFlash('success', 'post.deleted_successfully');
+        $this->flashMessageService->success('post.deleted_successfully');
 
         return $this->redirectToRoute('admin_post_list');
     }

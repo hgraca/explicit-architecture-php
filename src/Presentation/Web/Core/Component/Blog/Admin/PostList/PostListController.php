@@ -18,6 +18,7 @@ use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
+use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,9 +48,15 @@ class PostListController extends AbstractController
      */
     private $postService;
 
-    public function __construct(PostService $postService)
+    /**
+     * @var FlashMessageServiceInterface
+     */
+    private $flashMessageService;
+
+    public function __construct(PostService $postService, FlashMessageServiceInterface $flashMessageService)
     {
         $this->postService = $postService;
+        $this->flashMessageService = $flashMessageService;
     }
 
     /**
@@ -132,7 +139,7 @@ class PostListController extends AbstractController
         // actions. They are deleted automatically from the session as soon
         // as they are accessed.
         // See https://symfony.com/doc/current/book/controller.html#flash-messages
-        $this->addFlash('success', 'post.created_successfully');
+        $this->flashMessageService->success('post.created_successfully');
 
         if ($form->get('saveAndCreateNew')->isClicked()) {
             return $this->redirectToRoute('admin_post_new');

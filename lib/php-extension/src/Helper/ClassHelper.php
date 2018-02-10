@@ -27,4 +27,20 @@ final class ClassHelper extends AbstractStaticClass
     {
         return mb_substr($methodFqcn, mb_strrpos($methodFqcn, '::') + 2);
     }
+
+    /**
+     * Converts 'TABLE_NAME', 'Table_NaMe', 'table_name' to 'TableName'.
+     */
+    public static function toStudlyCase(string $sentence): string
+    {
+        return str_replace([' ', '_', '-'], '', ucwords(mb_strtolower($sentence), ' _-'));
+    }
+
+    /**
+     * Converts 'TABLE_NAME', 'Table_NaMe', 'table_name' to 'tableName'.
+     */
+    public static function toCamelCase(string $sentence): string
+    {
+        return lcfirst(self::toStudlyCase($sentence));
+    }
 }
