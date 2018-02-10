@@ -74,3 +74,8 @@ services:
         public: true
         arguments:
             $debug: '%kernel.debug%'
+
+    Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface:
+        class: Acme\App\Presentation\Web\Infrastructure\FlashMessage\Symfony\FlashMessageService
+        arguments:
+            $flashBag: "@=service('session').getFlashBag()"

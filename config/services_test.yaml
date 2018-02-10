@@ -9,7 +9,9 @@ parameters:
         - 'Acme\App\Core\Port\Persistence\QueryServiceRouterInterface'
         - 'Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService'
         - 'Acme\App\Presentation\Console\Component\User\AddUserCommand'
+        - 'Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface'
         - 'Doctrine\ORM\EntityManagerInterface'
+        - 'session'
 
 services:
     # default configuration for services in *this* file

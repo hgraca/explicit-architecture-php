@@ -37,4 +37,40 @@ final class ClassHelperUnitTest extends AbstractUnitTest
             ClassHelper::extractCanonicalMethodName(__METHOD__)
         );
     }
+
+    /**
+     * @test
+     * @dataProvider provideStudlyTests
+     */
+    public function toStudlyCase(string $input, string $expectedOutput): void
+    {
+        self::assertSame($expectedOutput, ClassHelper::toStudlyCase($input));
+    }
+
+    public function provideStudlyTests(): array
+    {
+        return [
+            ['TABLE_NAME', 'TableName'],
+            ['Table_NaMe', 'TableName'],
+            ['table_name', 'TableName'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideCamelCaseTests
+     */
+    public function toCamelCase(string $input, string $expectedOutput): void
+    {
+        self::assertSame($expectedOutput, ClassHelper::toCamelCase($input));
+    }
+
+    public function provideCamelCaseTests(): array
+    {
+        return [
+            ['TABLE_NAME', 'tableName'],
+            ['Table_NaMe', 'tableName'],
+            ['table_name', 'tableName'],
+        ];
+    }
 }
