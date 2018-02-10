@@ -18,6 +18,7 @@ use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
+use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -52,10 +53,19 @@ class PostController extends AbstractController
      */
     private $flashMessageService;
 
-    public function __construct(PostService $postService, FlashMessageServiceInterface $flashMessageService)
-    {
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
+    public function __construct(
+        PostService $postService,
+        FlashMessageServiceInterface $flashMessageService,
+        UrlGeneratorInterface $urlGenerator
+    ) {
         $this->postService = $postService;
         $this->flashMessageService = $flashMessageService;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -89,7 +99,7 @@ class PostController extends AbstractController
         $form = $this->createForm(
             PostType::class,
             $post,
-            ['action' => $this->generateUrl('admin_post_post', ['id' => $post->getId()])]
+            ['action' => $this->urlGenerator->generateUrl('admin_post_post', ['id' => $post->getId()])]
         );
 
         return $this->render(

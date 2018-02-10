@@ -16,6 +16,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorFactoryInterface;
+use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,9 +38,17 @@ class PostListController extends AbstractController
      */
     private $paginatorFactory;
 
-    public function __construct(PaginatorFactoryInterface $paginatorFactory)
-    {
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
+    public function __construct(
+        PaginatorFactoryInterface $paginatorFactory,
+        UrlGeneratorInterface $urlGenerator
+    ) {
         $this->paginatorFactory = $paginatorFactory;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -87,7 +96,7 @@ class PostListController extends AbstractController
                 'date' => $post->getPublishedAt()->format('M d, Y'),
                 'author' => htmlspecialchars($post->getAuthor()->getFullName()),
                 'summary' => htmlspecialchars($post->getSummary()),
-                'url' => $this->generateUrl('post', ['slug' => $post->getSlug()]),
+                'url' => $this->urlGenerator->generateUrl('post', ['slug' => $post->getSlug()]),
             ];
         }
 

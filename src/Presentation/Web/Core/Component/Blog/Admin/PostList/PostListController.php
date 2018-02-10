@@ -19,6 +19,7 @@ use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
+use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,10 +54,19 @@ class PostListController extends AbstractController
      */
     private $flashMessageService;
 
-    public function __construct(PostService $postService, FlashMessageServiceInterface $flashMessageService)
-    {
+    /**
+     * @var \Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
+    public function __construct(
+        PostService $postService,
+        FlashMessageServiceInterface $flashMessageService,
+        UrlGeneratorInterface $urlGenerator
+    ) {
         $this->postService = $postService;
         $this->flashMessageService = $flashMessageService;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -96,13 +106,20 @@ class PostListController extends AbstractController
         $post = new Post();
 
         // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
-        $form = $this->createForm(PostType::class, $post, ['action' => $this->generateUrl('admin_post_new_post')])
+        $form = $this->createForm(
+            PostType::class,
+            $post,
+            ['action' => $this->urlGenerator->generateUrl('admin_post_new_post')]
+        )
             ->add('saveAndCreateNew', SubmitType::class);
 
-        return $this->render('@Blog/Admin/PostList/new.html.twig', [
-            'post' => $post,
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            '@Blog/Admin/PostList/new.html.twig',
+            [
+                'post' => $post,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
