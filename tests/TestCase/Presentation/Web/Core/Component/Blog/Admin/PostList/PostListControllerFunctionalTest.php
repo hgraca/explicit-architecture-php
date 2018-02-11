@@ -92,9 +92,9 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         ]);
         $crawler = $client->request('GET', '/en/admin/posts/new');
         $form = $crawler->selectButton('Create post')->form([
-            'post[title]' => $postTitle,
-            'post[summary]' => $postSummary,
-            'post[content]' => $postContent,
+            'create_post_form[title]' => $postTitle,
+            'create_post_form[summary]' => $postSummary,
+            'create_post_form[content]' => $postContent,
         ]);
         $client->submit($form);
 

@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
+namespace Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Form;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
@@ -30,7 +30,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class CommentType extends AbstractType
+class CommentForm extends AbstractType
 {
     /**
      * {@inheritdoc}

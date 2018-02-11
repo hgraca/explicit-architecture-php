@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType;
+namespace Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
 use Doctrine\Common\Persistence\ObjectManager;

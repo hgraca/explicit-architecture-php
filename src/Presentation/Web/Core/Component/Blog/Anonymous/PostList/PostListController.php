@@ -16,13 +16,15 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorFactoryInterface;
+use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/blog/posts")
@@ -43,12 +45,26 @@ class PostListController extends AbstractController
      */
     private $urlGenerator;
 
+    /**
+     * @var TemplateEngineInterface
+     */
+    private $templateEngine;
+
+    /**
+     * @var ResponseFactoryInterface
+     */
+    private $responseFactory;
+
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        TemplateEngineInterface $templateEngine,
+        ResponseFactoryInterface $responseFactory
     ) {
         $this->paginatorFactory = $paginatorFactory;
         $this->urlGenerator = $urlGenerator;
+        $this->templateEngine = $templateEngine;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -63,7 +79,7 @@ class PostListController extends AbstractController
      *
      * @see https://symfony.com/doc/current/quick_tour/the_controller.html#using-formats
      */
-    public function getAction(int $page, string $_format, PostRepositoryInterface $postRepository): Response
+    public function getAction(int $page, string $_format, PostRepositoryInterface $postRepository): ResponseInterface
     {
         $latestPosts = $postRepository->findLatest();
         $paginator = $this->paginatorFactory->createPaginator($latestPosts->toArray());
@@ -72,22 +88,25 @@ class PostListController extends AbstractController
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templating.html#template-suffix
-        return $this->render('@Blog/Anonymous/PostList/get.' . $_format . '.twig', ['posts' => $paginator]);
+        return $this->templateEngine->renderResponse(
+            '@Blog/Anonymous/PostList/get.' . $_format . '.twig',
+            ['posts' => $paginator]
+        );
     }
 
     /**
      * @Route("/search", name="post_list_search")
      * @Method("GET")
      */
-    public function searchAction(Request $request, PostRepositoryInterface $postRepository): Response
+    public function searchAction(ServerRequestInterface $request, PostRepositoryInterface $postRepository): ResponseInterface
     {
-        if (!$request->isXmlHttpRequest()) {
-            return $this->render('@Blog/Anonymous/PostList/search.html.twig');
+        if (!$this->isXmlHttpRequest($request)) {
+            return $this->templateEngine->renderResponse('@Blog/Anonymous/PostList/search.html.twig');
         }
 
-        $query = $request->query->get('q', '');
-        $limit = $request->query->getInt('l', 10);
-        $foundPosts = $postRepository->findBySearchQuery($query, $limit);
+        $query = $request->getQueryParams()['q'] ?? '';
+        $limit = $request->getQueryParams()['l'] ?? 10;
+        $foundPosts = $postRepository->findBySearchQuery($query, (int) $limit);
 
         $results = [];
         foreach ($foundPosts as $post) {
@@ -100,6 +119,11 @@ class PostListController extends AbstractController
             ];
         }
 
-        return $this->json($results);
+        return $this->responseFactory->respondJson($results);
+    }
+
+    private function isXmlHttpRequest(ServerRequestInterface $request)
+    {
+        return ($request->getHeader('X-Requested-With')[0] ?? '') === 'XMLHttpRequest';
     }
 }

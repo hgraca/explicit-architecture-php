@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property;
+namespace Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type;
 
 use Acme\PhpExtension\DateTime\MomentFormatConverter;
 use Locale;

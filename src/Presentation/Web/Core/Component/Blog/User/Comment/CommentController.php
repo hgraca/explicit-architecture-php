@@ -17,13 +17,16 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 use Acme\App\Core\Component\Blog\Application\Service\CommentService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
+use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
+use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -41,9 +44,31 @@ class CommentController extends AbstractController
      */
     private $commentService;
 
-    public function __construct(CommentService $commentService)
-    {
+    /**
+     * @var TemplateEngineInterface
+     */
+    private $templateEngine;
+
+    /**
+     * @var ResponseFactoryInterface
+     */
+    private $responseFactory;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    public function __construct(
+        CommentService $commentService,
+        TemplateEngineInterface $templateEngine,
+        ResponseFactoryInterface $responseFactory,
+        FormFactoryInterface $formFactory
+    ) {
         $this->commentService = $commentService;
+        $this->templateEngine = $templateEngine;
+        $this->responseFactory = $responseFactory;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -56,15 +81,15 @@ class CommentController extends AbstractController
      * (postSlug) doesn't match any of the Doctrine entity properties (slug).
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html#doctrine-converter
      */
-    public function postAction(Request $request, Post $post): Response
+    public function postAction(ServerRequestInterface $request, Post $post): ResponseInterface
     {
         $comment = new Comment();
 
-        $form = $this->createForm(CommentType::class, $comment);
+        $form = $this->formFactory->createCommentForm($comment);
         $form->handleRequest($request);
 
-        if (!($form->isSubmitted() && $form->isValid())) {
-            return $this->render(
+        if (!$form->shouldBeProcessed()) {
+            return $this->templateEngine->renderResponse(
                 '@Blog/User/Comment/edit_error.html.twig',
                 [
                     'post' => $post,
@@ -75,7 +100,7 @@ class CommentController extends AbstractController
 
         $this->commentService->create($post, $comment, $this->getUser());
 
-        return $this->redirectToRoute('post', ['slug' => $post->getSlug()]);
+        return $this->responseFactory->redirectToRoute('post', ['slug' => $post->getSlug()]);
     }
 
     /**
@@ -86,11 +111,11 @@ class CommentController extends AbstractController
      * The "id" of the Post is passed in and then turned into a Post object
      * automatically by the ParamConverter.
      */
-    public function editAction(Post $post): Response
+    public function editAction(Post $post): ResponseInterface
     {
-        $form = $this->createForm(CommentType::class);
+        $form = $this->formFactory->createCommentForm();
 
-        return $this->render(
+        return $this->templateEngine->renderResponse(
             '@Blog/User/Comment/edit.html.twig',
             [
                 'post' => $post,
