@@ -46,7 +46,7 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
         $this->assertSame(
             Response::HTTP_OK,
             $this->getClient()->getResponse()->getStatusCode(),
-            sprintf('The %s public URL loads correctly.', $url)
+            sprintf('The %s public URL does not load correctly.', $url)
         );
     }
 
@@ -94,7 +94,7 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
 
     public function getSecureUrls()
     {
-        yield ['/en/admin/posts/'];
+        yield ['/en/admin/posts'];
         yield ['/en/admin/posts/new'];
         yield ['/en/admin/posts/1'];
         yield ['/en/admin/posts/1/edit'];

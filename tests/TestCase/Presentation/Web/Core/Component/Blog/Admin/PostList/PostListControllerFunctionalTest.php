@@ -64,7 +64,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
             'PHP_AUTH_PW' => 'kitten',
         ]);
 
-        $crawler = $client->request('GET', '/en/admin/posts/');
+        $crawler = $client->request('GET', '/en/admin/posts');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $this->assertGreaterThanOrEqual(

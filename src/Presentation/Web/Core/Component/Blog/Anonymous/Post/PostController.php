@@ -18,14 +18,10 @@ use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
- *
- * @Route("/blog/posts/{slug}")
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
@@ -45,13 +41,10 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("", name="post")
-     * @Method("GET")
-     *
      * NOTE: The $post controller argument is automatically injected by Symfony
      * after performing a database query looking for a Post with the 'slug'
      * value given in the route.
-     * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html
+     * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html.
      */
     public function getAction(Post $post): ResponseInterface
     {

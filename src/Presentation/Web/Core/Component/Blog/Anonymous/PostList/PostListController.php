@@ -22,13 +22,9 @@ use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/blog/posts")
- *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Herberto Graca <herberto.graca@gmail.com>
@@ -68,10 +64,6 @@ class PostListController extends AbstractController
     }
 
     /**
-     * @Route("", defaults={"page": "1", "_format"="html"}, name="post_list")
-     * @Route("/rss.xml", defaults={"page": "1", "_format"="xml"}, name="post_list_rss")
-     * @Route("/page/{page}", defaults={"_format"="html"}, requirements={"page": "[1-9]\d*"}, name="post_list_paginated")
-     * @Method("GET")
      * @Cache(smaxage="10")
      *
      * NOTE: For standard formats, Symfony will also automatically choose the best
@@ -94,10 +86,6 @@ class PostListController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/search", name="post_list_search")
-     * @Method("GET")
-     */
     public function searchAction(ServerRequestInterface $request, PostRepositoryInterface $postRepository): ResponseInterface
     {
         if (!$this->isXmlHttpRequest($request)) {

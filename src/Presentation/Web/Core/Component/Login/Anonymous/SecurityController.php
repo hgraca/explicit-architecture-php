@@ -17,7 +17,6 @@ namespace Acme\App\Presentation\Web\Core\Component\Login\Anonymous;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -40,9 +39,6 @@ class SecurityController extends AbstractController
         $this->templateEngine = $templateEngine;
     }
 
-    /**
-     * @Route("/login", name="security_login")
-     */
     public function login(AuthenticationUtils $helper): ResponseInterface
     {
         return $this->templateEngine->renderResponse('@Login/Anonymous/login.html.twig', [
@@ -58,8 +54,6 @@ class SecurityController extends AbstractController
      *
      * But, this will never be executed. Symfony will intercept this first
      * and handle the logout automatically. See logout in config/packages/security.yaml
-     *
-     * @Route("/logout", name="security_logout")
      *
      * @throws \Exception
      */

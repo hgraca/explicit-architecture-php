@@ -1,0 +1,7 @@
+security_login:
+    path: /login
+    controller: Acme\App\Presentation\Web\Core\Component\Login\Anonymous\SecurityController::login
+
+security_logout:
+    path: /logout
+    controller: Acme\App\Presentation\Web\Core\Component\Login\Anonymous\SecurityController::logout

@@ -1,0 +1,8 @@
+homepage:
+    path: /{_locale}
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+        template: '@Homepage/Anonymous/homepage.html.twig'

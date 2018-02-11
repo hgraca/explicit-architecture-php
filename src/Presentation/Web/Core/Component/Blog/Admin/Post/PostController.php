@@ -23,8 +23,6 @@ use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -36,8 +34,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * existing bundles that let you generate ready-to-use backends without effort.
  *
  * See http://knpbundles.com/keyword/admin
- *
- * @Route("/admin/posts")
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
@@ -93,9 +89,6 @@ class PostController extends AbstractController
 
     /**
      * Finds and displays a Post entity.
-     *
-     * @Route("/{id}", requirements={"id": "\d+"}, name="admin_post_show")
-     * @Method("GET")
      */
     public function getAction(Post $post): ResponseInterface
     {
@@ -111,9 +104,6 @@ class PostController extends AbstractController
 
     /**
      * Displays a form to edit an existing Post entity.
-     *
-     * @Route("/{id}/edit", requirements={"id": "\d+"}, name="admin_post_edit")
-     * @Method({"GET"})
      */
     public function editAction(Post $post): ResponseInterface
     {
@@ -135,9 +125,6 @@ class PostController extends AbstractController
 
     /**
      * Receives data from the form to edit an existing Post entity.
-     *
-     * @Route("/{id}", requirements={"id": "\d+"}, name="admin_post_post")
-     * @Method({"POST"})
      */
     public function postAction(ServerRequestInterface $request, Post $post): ResponseInterface
     {
@@ -160,8 +147,6 @@ class PostController extends AbstractController
     /**
      * Deletes a Post entity.
      *
-     * @Route("/{id}/delete", name="admin_post_delete")
-     * @Method("POST")
      * @Security("is_granted('delete', post)")
      *
      * The Security annotation value is an expression (if it evaluates to false,

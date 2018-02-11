@@ -1,0 +1,29 @@
+post_list:
+    path: /posts
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList\PostListController::getAction
+    methods: [GET]
+    defaults:
+        page: '1'
+        _format: 'html'
+
+post_list_rss:
+    path: /posts/rss.xml
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList\PostListController::getAction
+    methods: [GET]
+    defaults:
+        page: '1'
+        _format: 'xml'
+
+post_list_paginated:
+    path: /posts/page/{page}
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList\PostListController::getAction
+    methods: [GET]
+    requirements:
+        page: '[1-9]\d*'
+    defaults:
+        _format: 'html'
+
+post_list_search:
+    path: /posts/search
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList\PostListController::searchAction
+    methods: [GET]
