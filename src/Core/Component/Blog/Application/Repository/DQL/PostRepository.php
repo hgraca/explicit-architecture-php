@@ -93,7 +93,7 @@ class PostRepository implements PostRepositoryInterface
         // Delete the tags associated with this blog post. This is done automatically
         // by Doctrine, except for SQLite (the database used in this application)
         // because foreign key support is not enabled by default in SQLite
-        $entity->getTags()->clear();
+        $entity->clearTags();
 
         $this->persistenceService->delete($entity);
     }

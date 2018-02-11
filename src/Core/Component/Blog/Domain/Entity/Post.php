@@ -17,8 +17,6 @@ namespace Acme\App\Core\Component\Blog\Domain\Entity;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\PhpExtension\String\Slugger;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * Defines the properties of the Post entity to represent the blog posts.
@@ -79,20 +77,18 @@ class Post
     private $author;
 
     /**
-     * @var Comment[]|ArrayCollection
+     * @var Comment[]
      */
-    private $comments;
+    private $comments = [];
 
     /**
-     * @var Tag[]|ArrayCollection
+     * @var Tag[]
      */
-    private $tags;
+    private $tags = [];
 
     public function __construct()
     {
         $this->publishedAt = new DateTime();
-        $this->comments = new ArrayCollection();
-        $this->tags = new ArrayCollection();
     }
 
     public function getId(): int
@@ -150,7 +146,14 @@ class Post
         $this->author = $author;
     }
 
-    public function getComments(): Collection
+    /**
+     * We don't want to have here any reference to doctrine, so we remove the Collection type hint from everywhere.
+     * The safest is to treat it as an array but we can't type hint it with 'array' because we might actually
+     * return an Collection.
+     *
+     * @return Comment[]
+     */
+    public function getComments()
     {
         return $this->comments;
     }
@@ -158,15 +161,18 @@ class Post
     public function addComment(Comment $comment): void
     {
         $comment->setPost($this);
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
+        if (!$this->contains($comment, $this->comments)) {
+            $this->comments[] = $comment;
         }
     }
 
     public function removeComment(Comment $comment): void
     {
         $comment->setPost(null);
-        $this->comments->removeElement($comment);
+
+        if ($key = $this->getKey($comment, $this->comments)) {
+            unset($this->comments[$key]);
+        }
     }
 
     public function getSummary(): ?string
@@ -182,19 +188,57 @@ class Post
     public function addTag(Tag ...$tags): void
     {
         foreach ($tags as $tag) {
-            if (!$this->tags->contains($tag)) {
-                $this->tags->add($tag);
+            if (!$this->contains($tag, $this->tags)) {
+                $this->tags[] = $tag;
             }
         }
     }
 
     public function removeTag(Tag $tag): void
     {
-        $this->tags->removeElement($tag);
+        if ($key = $this->getKey($tag, $this->tags)) {
+            unset($this->tags[$key]);
+        }
     }
 
-    public function getTags(): Collection
+    /**
+     * We don't want to have here any reference to doctrine, so we remove the Collection type hint from everywhere.
+     * The safest is to treat it as an array but we can't type hint it with 'array' because we might actually
+     * return an Collection.
+     *
+     * @return Tag[]
+     */
+    public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Because we removed the doctrine `Collection` return type hint from `getTags()`, the `clear()` method below is
+     *  not recognized by the IDE, as it is not even possible to call a method on an array.
+     *
+     * So we create this method here to encapsulate that operation, and minimize the issue.
+     *
+     * It is also a good practise to encapsulate these chained operations,
+     * from an object calisthenics point of view.
+     */
+    public function clearTags(): void
+    {
+        $this->getTags()->clear();
+    }
+
+    private function contains($item, $list): bool
+    {
+        // we need to cast the list to array because it might just actually be a doctrine collection
+        return \in_array($item, (array) $list, true);
+    }
+
+    /**
+     * @return false|int|string
+     */
+    private function getKey($item, $list)
+    {
+        // we need to cast the list to array because it might just actually be a doctrine collection
+        return \array_search($item, (array) $list, true);
     }
 }
