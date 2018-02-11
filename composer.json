@@ -21,15 +21,18 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/monolog-bundle": "^3.1",
         "symfony/polyfill-apcu": "^1.5",
+        "symfony/psr-http-message-bridge": "^1.0",
         "symfony/security-bundle": "^4.0",
         "symfony/swiftmailer-bundle": "^3.1",
+        "symfony/templating": "^4.0",
         "symfony/translation": "^4.0",
         "symfony/twig-bundle": "^4.0",
         "symfony/validator": "^4.0",
         "symfony/yaml": "^4.0",
         "symfony/web-server-bundle": "^4.0",
         "twig/extensions": "^1.5",
-        "white-october/pagerfanta-bundle": "^1.1"
+        "white-october/pagerfanta-bundle": "^1.1",
+        "zendframework/zend-diactoros": "^1.7"
     },
     "require-dev": {
         "codeception/codeception": "^2.4",

@@ -49,7 +49,7 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
         $crawler = $client->click($postLink);
 
         $form = $crawler->selectButton('Publish comment')->form([
-            'comment[content]' => 'Hi, Symfony!',
+            'comment_form[content]' => 'Hi, Symfony!',
         ]);
         $crawler = $client->submit($form);
 

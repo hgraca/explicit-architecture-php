@@ -83,7 +83,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         ]);
         $crawler = $client->request('GET', '/en/admin/posts/1/edit');
         $form = $crawler->selectButton('Save changes')->form([
-            'post[title]' => $newBlogPostTitle,
+            'edit_post_form[title]' => $newBlogPostTitle,
         ]);
         $client->submit($form);
 

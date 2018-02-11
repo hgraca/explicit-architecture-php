@@ -57,9 +57,9 @@ class AdminVisitCest
         $I->see('Create post');
         $I->see('Save and create new');
         $I->see('Back to the post list');
-        $I->fillField('#post_title', $title = 'A hello world post');
-        $I->fillField('#post_summary', $summary = 'A summary');
-        $I->fillField('#post_content', $content = 'Some interesting content...');
+        $I->fillField('#create_post_form_title', $title = 'A hello world post');
+        $I->fillField('#create_post_form_summary', $summary = 'A summary');
+        $I->fillField('#create_post_form_content', $content = 'Some interesting content...');
         $I->click('Create post');
         $I->seeInCurrentUrl('/en/admin/post');
         $I->seeNumberOfElements('//*[@id="main"]/table/tbody/tr', PostFixtures::JANE_ADMIN_NUM_POSTS + 1);
@@ -76,7 +76,7 @@ class AdminVisitCest
         $I->click('Edit contents');
         $I->see('Edit post #');
         $I->see('Save changes');
-        $I->fillField('#post_title', $title = 'An edited hello world post');
+        $I->fillField('#edit_post_form_title', $title = 'An edited hello world post');
         $I->click('Save changes');
         $I->see('Post updated successfully!');
         $I->see('Show post');

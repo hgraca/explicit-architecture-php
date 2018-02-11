@@ -55,7 +55,7 @@ class UserVisitCest
         $I->seeNumberOfElements('.post-comment', 5);
 
         $I->comment('I can add a comment...');
-        $I->fillField('#comment_content', $comment = 'Hello world comment!');
+        $I->fillField('#comment_form_content', $comment = 'Hello world comment!');
         $I->click('Publish comment');
         $I->seeInCurrentUrl('/en/blog/posts');
         $I->see('Add a comment');

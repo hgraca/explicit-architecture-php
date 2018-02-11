@@ -1,3 +1,7 @@
+twig:
+    paths:
+        '%kernel.project_dir%/tests/TestCase/Presentation/Web': Test
+
 parameters:
     # All services in this list will be added to the container used in tests
     # This is specially useful for the services provided by 3rd party bundles
@@ -10,6 +14,10 @@ parameters:
         - 'Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService'
         - 'Acme\App\Presentation\Console\Component\User\AddUserCommand'
         - 'Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface'
+        - 'Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface'
+        - 'Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface'
+        - 'Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface'
+        - 'Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface'
         - 'Doctrine\ORM\EntityManagerInterface'
         - 'session'
 

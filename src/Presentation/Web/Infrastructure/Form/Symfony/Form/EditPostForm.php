@@ -12,24 +12,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity;
+namespace Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Form;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\DateTimePickerType;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType\TagsInputType;
+use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\DateTimePickerType;
+use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType\TagsInputType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Defines the form used to create and manipulate blog posts.
+ * Defines the form used to edit blog posts.
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class PostType extends AbstractType
+class EditPostForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -42,8 +43,7 @@ class PostType extends AbstractType
         // this validation, set the 'required' attribute to 'false':
         // $builder->add('title', null, ['required' => false, ...]);
 
-        $builder
-            ->add('title', null, [
+        $builder->add('title', null, [
                 'attr' => ['autofocus' => true],
                 'label' => 'label.title',
             ])

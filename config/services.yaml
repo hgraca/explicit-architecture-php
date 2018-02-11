@@ -79,3 +79,9 @@ services:
         class: Acme\App\Presentation\Web\Infrastructure\FlashMessage\Symfony\FlashMessageService
         arguments:
             $flashBag: "@=service('session').getFlashBag()"
+
+    Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface:
+        class: Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
+
+    Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface:
+        class: Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory

@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\FormType\Property\TagsInputType;
+namespace Acme\App\Test\TestCase\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType\TagArrayToStringTransformer;
+use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType\TagArrayToStringTransformer;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
@@ -29,6 +29,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 {
     /**
      * Ensures that tags are created correctly.
+     *
+     * @throws \Doctrine\ORM\ORMException
      */
     public function testCreateTheRightAmountOfTags(): void
     {
@@ -41,6 +43,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     /**
      * Ensures that empty tags and errors in the number of commas are
      * dealt correctly.
+     *
+     * @throws \Doctrine\ORM\ORMException
      */
     public function testCreateTheRightAmountOfTagsWithTooManyCommas(): void
     {
@@ -52,6 +56,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 
     /**
      * Ensures that leading/trailing spaces are ignored for tag names.
+     *
+     * @throws \Doctrine\ORM\ORMException
      */
     public function testTrimNames(): void
     {
@@ -62,6 +68,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 
     /**
      * Ensures that duplicated tag names are ignored.
+     *
+     * @throws \Doctrine\ORM\ORMException
      */
     public function testDuplicateNames(): void
     {
@@ -72,6 +80,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 
     /**
      * Ensures that the transformer uses tags already persisted in the database.
+     *
+     * @throws \Doctrine\ORM\ORMException
      */
     public function testUsesAlreadyDefinedTags(): void
     {
@@ -89,6 +99,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     /**
      * Ensures that the transformation from Tag instances to a simple string
      * works as expected.
+     *
+     * @throws \Doctrine\ORM\ORMException
      */
     public function testTransform(): void
     {
@@ -107,9 +119,11 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
      *
      * @param array $findByReturnValues The values returned when calling to the findBy() method
      *
-     * @return \Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType\TagArrayToStringTransformer
+     * @throws \Doctrine\ORM\ORMException
+     *
+     * @return TagArrayToStringTransformer
      */
-    private function getMockedTransformer(array $findByReturnValues = []): TagArrayToStringTransformer
+    private function getMockedTransformer(array $findByReturnValues = []): \Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType\TagArrayToStringTransformer
     {
         $tagRepository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()

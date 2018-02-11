@@ -16,10 +16,11 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Psr\Http\Message\ResponseInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -33,6 +34,17 @@ use Symfony\Component\HttpFoundation\Response;
 class PostController extends AbstractController
 {
     /**
+     * @var TemplateEngineInterface
+     */
+    private $templateEngine;
+
+    public function __construct(
+        TemplateEngineInterface $templateEngine
+    ) {
+        $this->templateEngine = $templateEngine;
+    }
+
+    /**
      * @Route("", name="post")
      * @Method("GET")
      *
@@ -41,7 +53,7 @@ class PostController extends AbstractController
      * value given in the route.
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html
      */
-    public function getAction(Post $post): Response
+    public function getAction(Post $post): ResponseInterface
     {
         /*
          * For some reason when running the tests we get the comment dates, and order, all weird.
@@ -63,6 +75,6 @@ class PostController extends AbstractController
         //
         // dump($post, $this->getUser(), new \DateTime());
 
-        return $this->render('@Blog/Anonymous/Post/get.html.twig', ['post' => $post, 'commentList' => $commentList]);
+        return $this->templateEngine->renderResponse('@Blog/Anonymous/Post/get.html.twig', ['post' => $post, 'commentList' => $commentList]);
     }
 }

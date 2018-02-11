@@ -14,8 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Login\Anonymous;
 
+use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -25,15 +26,26 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class SecurityController extends AbstractController
 {
     /**
+     * @var TemplateEngineInterface
+     */
+    private $templateEngine;
+
+    public function __construct(TemplateEngineInterface $templateEngine)
+    {
+        $this->templateEngine = $templateEngine;
+    }
+
+    /**
      * @Route("/login", name="security_login")
      */
-    public function login(AuthenticationUtils $helper): Response
+    public function login(AuthenticationUtils $helper): ResponseInterface
     {
-        return $this->render('@Login/Anonymous/login.html.twig', [
+        return $this->templateEngine->renderResponse('@Login/Anonymous/login.html.twig', [
             // last username entered by the user (if any)
             'last_username' => $helper->getLastUsername(),
             // last authentication error (if any)
@@ -48,6 +60,8 @@ class SecurityController extends AbstractController
      * and handle the logout automatically. See logout in config/packages/security.yaml
      *
      * @Route("/logout", name="security_logout")
+     *
+     * @throws \Exception
      */
     public function logout(): void
     {

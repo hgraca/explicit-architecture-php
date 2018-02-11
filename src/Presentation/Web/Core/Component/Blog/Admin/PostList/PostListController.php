@@ -17,15 +17,17 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity\PostType;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
+use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
+use Acme\App\Presentation\Web\Core\Port\Form\FormInterface;
+use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller used to manage blog contents in the backend.
@@ -59,14 +61,35 @@ class PostListController extends AbstractController
      */
     private $urlGenerator;
 
+    /**
+     * @var TemplateEngineInterface
+     */
+    private $templateEngine;
+
+    /**
+     * @var ResponseFactoryInterface
+     */
+    private $responseFactory;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
     public function __construct(
         PostService $postService,
         FlashMessageServiceInterface $flashMessageService,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        TemplateEngineInterface $templateEngine,
+        ResponseFactoryInterface $responseFactory,
+        FormFactoryInterface $formFactory
     ) {
         $this->postService = $postService;
         $this->flashMessageService = $flashMessageService;
         $this->urlGenerator = $urlGenerator;
+        $this->templateEngine = $templateEngine;
+        $this->responseFactory = $responseFactory;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -84,11 +107,11 @@ class PostListController extends AbstractController
      * @Route("/", name="admin_post_list")
      * @Method("GET")
      */
-    public function getAction(PostRepositoryInterface $postRepository): Response
+    public function getAction(PostRepositoryInterface $postRepository): ResponseInterface
     {
         $authorPosts = $postRepository->findByAuthorOrderedByPublishDate($this->getUser());
 
-        return $this->render('@Blog/Admin/PostList/get.html.twig', ['posts' => $authorPosts]);
+        return $this->templateEngine->renderResponse('@Blog/Admin/PostList/get.html.twig', ['posts' => $authorPosts]);
     }
 
     /**
@@ -101,25 +124,12 @@ class PostListController extends AbstractController
      * to constraint the HTTP methods each controller responds to (by default
      * it responds to all methods).
      */
-    public function newAction(): Response
+    public function newAction(): ResponseInterface
     {
         $post = new Post();
+        $form = $this->createCreatePostForm($post);
 
-        // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
-        $form = $this->createForm(
-            PostType::class,
-            $post,
-            ['action' => $this->urlGenerator->generateUrl('admin_post_new_post')]
-        )
-            ->add('saveAndCreateNew', SubmitType::class);
-
-        return $this->render(
-            '@Blog/Admin/PostList/new.html.twig',
-            [
-                'post' => $post,
-                'form' => $form->createView(),
-            ]
-        );
+        return $this->renderCreatePost($form, $post);
     }
 
     /**
@@ -132,13 +142,11 @@ class PostListController extends AbstractController
      * to constraint the HTTP methods each controller responds to (by default
      * it responds to all methods).
      */
-    public function postAction(Request $request): Response
+    public function postAction(ServerRequestInterface $request): ResponseInterface
     {
         $post = new Post();
 
-        // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
-        $form = $this->createForm(PostType::class, $post)
-            ->add('saveAndCreateNew', SubmitType::class);
+        $form = $this->createCreatePostForm($post);
 
         $form->handleRequest($request);
 
@@ -146,8 +154,8 @@ class PostListController extends AbstractController
         // isValid() method already checks whether the form is submitted.
         // However, we explicitly add it to improve code readability.
         // See https://symfony.com/doc/current/best_practices/forms.html#handling-form-submits
-        if (!($form->isSubmitted() && $form->isValid())) {
-            return $this->redirectToRoute('admin_post_list');
+        if (!$form->shouldBeProcessed()) {
+            return $this->renderCreatePost($form, $post);
         }
 
         $this->postService->create($post, $this->getUser());
@@ -158,10 +166,30 @@ class PostListController extends AbstractController
         // See https://symfony.com/doc/current/book/controller.html#flash-messages
         $this->flashMessageService->success('post.created_successfully');
 
-        if ($form->get('saveAndCreateNew')->isClicked()) {
-            return $this->redirectToRoute('admin_post_new');
+        // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
+        if ($form->clickedButton(FormInterface::BUTTON_NAME_SAVE_AND_CREATE_NEW)) {
+            return $this->responseFactory->redirectToRoute('admin_post_new');
         }
 
-        return $this->redirectToRoute('admin_post_list');
+        return $this->responseFactory->redirectToRoute('admin_post_list');
+    }
+
+    protected function createCreatePostForm(Post $post): FormInterface
+    {
+        return $this->formFactory->createCreatePostForm(
+            $post,
+            ['action' => $this->urlGenerator->generateUrl('admin_post_new_post')]
+        );
+    }
+
+    protected function renderCreatePost(FormInterface $form, Post $post): ResponseInterface
+    {
+        return $this->templateEngine->renderResponse(
+            '@Blog/Admin/PostList/new.html.twig',
+            [
+                'post' => $post,
+                'form' => $form->createView(),
+            ]
+        );
     }
 }

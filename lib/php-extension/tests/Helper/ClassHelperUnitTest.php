@@ -51,8 +51,13 @@ final class ClassHelperUnitTest extends AbstractUnitTest
     {
         return [
             ['TABLE_NAME', 'TableName'],
-            ['Table_NaMe', 'TableName'],
+            ['Table_NaMe', 'TableNaMe'],
             ['table_name', 'TableName'],
+            ['TableName', 'TableName'],
+            ['tableName', 'TableName'],
+            ['table-Name', 'TableName'],
+            ['table.Name', 'TableName'],
+            ['table Name', 'TableName'],
         ];
     }
 
@@ -69,8 +74,30 @@ final class ClassHelperUnitTest extends AbstractUnitTest
     {
         return [
             ['TABLE_NAME', 'tableName'],
-            ['Table_NaMe', 'tableName'],
+            ['Table_NaMe', 'tableNaMe'],
             ['table_name', 'tableName'],
+            ['TableName', 'tableName'],
+            ['tableName', 'tableName'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideSnakeCaseTests
+     */
+    public function toSnakeCase(string $input, string $expectedOutput): void
+    {
+        self::assertSame($expectedOutput, ClassHelper::toSnakeCase($input));
+    }
+
+    public function provideSnakeCaseTests(): array
+    {
+        return [
+            ['TABLE_NAME', 'table_name'],
+            ['Table_NaMe', 'table_na_me'],
+            ['TableName', 'table_name'],
+            ['table_Name', 'table_name'],
+            ['tableName', 'table_name'],
         ];
     }
 }
