@@ -16,7 +16,6 @@ namespace Acme\App\Core\Component\Blog\Domain\Entity;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use DateTime;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Defines the properties of the Comment entity to represent the blog comments.
@@ -43,21 +42,11 @@ class Comment
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="comment.blank")
-     * @Assert\Length(
-     *     min=5,
-     *     minMessage="comment.too_short",
-     *     max=10000,
-     *     maxMessage="comment.too_long"
-     * )
      */
     private $content;
 
     /**
      * @var DateTime
-     *
-     * @Assert\DateTime
      */
     private $publishedAt;
 
@@ -71,9 +60,6 @@ class Comment
         $this->publishedAt = new DateTime();
     }
 
-    /**
-     * @Assert\IsTrue(message="comment.is_spam")
-     */
     public function isLegitComment(): bool
     {
         $containsInvalidCharacters = mb_strpos($this->content, '@') !== false;

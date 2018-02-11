@@ -19,7 +19,6 @@ use Acme\PhpExtension\String\Slugger;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Defines the properties of the Post entity to represent the blog posts.
@@ -51,8 +50,6 @@ class Post
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     private $title;
 
@@ -63,23 +60,16 @@ class Post
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="post.blank_summary")
      */
     private $summary;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="post.blank_content")
-     * @Assert\Length(min=10, minMessage="post.too_short_content")
      */
     private $content;
 
     /**
      * @var DateTime
-     *
-     * @Assert\DateTime
      */
     private $publishedAt;
 
@@ -95,8 +85,6 @@ class Post
 
     /**
      * @var Tag[]|ArrayCollection
-     *
-     * @Assert\Count(max="4", maxMessage="post.too_many_tags")
      */
     private $tags;
 

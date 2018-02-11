@@ -1,0 +1,36 @@
+Acme\App\Core\Component\Blog\Domain\Entity\Comment:
+    properties:
+        content:
+            - NotBlank:
+                message: 'comment.blank'
+            - Length:
+                min: 5
+                max: 10000
+                minMessage: 'comment.too_short'
+                maxMessage: 'comment.too_long'
+        publishedAt:
+            - DateTime: ~
+    getters:
+        legitComment:
+            - IsTrue:
+                message: 'comment.is_spam'
+
+Acme\App\Core\Component\Blog\Domain\Entity\Post:
+    properties:
+        title:
+            - NotBlank: ~
+        summary:
+            - NotBlank:
+                message: 'post.blank_summary'
+        content:
+            - NotBlank:
+                message: 'post.blank_content'
+            - Length:
+                min: 10
+                minMessage: 'post.too_short_content'
+        publishedAt:
+            - DateTime: ~
+        tags:
+            - Count:
+                max: 4
+                maxMessage: 'post.too_many_tags'

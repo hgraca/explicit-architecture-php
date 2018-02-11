@@ -123,7 +123,7 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
      *
      * @return TagArrayToStringTransformer
      */
-    private function getMockedTransformer(array $findByReturnValues = []): \Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType\TagArrayToStringTransformer
+    private function getMockedTransformer(array $findByReturnValues = []): TagArrayToStringTransformer
     {
         $tagRepository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
