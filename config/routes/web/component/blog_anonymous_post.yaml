@@ -1,0 +1,8 @@
+post:
+    path: /{slug}
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post\PostController::getAction
+    methods: [GET]
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'

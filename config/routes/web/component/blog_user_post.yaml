@@ -1,0 +1,4 @@
+comment_new:
+    path: /{postSlug}/comments
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\User\Comment\CommentController::postAction
+    methods: [POST]

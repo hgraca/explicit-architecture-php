@@ -1,0 +1,75 @@
+admin_post_show:
+    path: /posts/{id}
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::getAction
+    methods: [GET]
+    requirements:
+        _locale: '%app_locales%'
+        id: '\d+'
+    defaults:
+        _locale: '%locale%'
+
+admin_post_edit:
+    path: /posts/{id}/edit
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::editAction
+    methods: [GET]
+    requirements:
+        _locale: '%app_locales%'
+        id: '\d+'
+    defaults:
+        _locale: '%locale%'
+
+admin_post_post:
+    path: /posts/{id}
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::postAction
+    methods: [POST]
+    requirements:
+        _locale: '%app_locales%'
+        id: '\d+'
+    defaults:
+        _locale: '%locale%'
+
+admin_post_delete:
+    path: /posts/{id}/delete
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::deleteAction
+    methods: [POST]
+    requirements:
+        _locale: '%app_locales%'
+        id: '\d+'
+    defaults:
+        _locale: '%locale%'
+
+admin_index:
+    path: /posts
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::getAction
+    methods: [GET]
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+admin_post_list:
+    path: /posts
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::getAction
+    methods: [GET]
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+admin_post_new:
+    path: /posts/new
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::newAction
+    methods: [GET]
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+admin_post_new_post:
+    path: /posts
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::postAction
+    methods: [POST]
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'

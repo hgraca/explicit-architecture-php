@@ -1,0 +1,45 @@
+# We need to order the routes because of the matching order
+# PostList must come before Post so the rss.xml is not confused with a post ID
+
+homepage:
+    resource: 'component/homepage.yaml'
+
+blog_anonymous_posts:
+    resource: 'component/blog_anonymous_posts.yaml'
+    prefix: /{_locale}/blog
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+blog_anonymous_post:
+    resource: 'component/blog_anonymous_post.yaml'
+    prefix: /{_locale}/blog/posts
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+blog_user_post:
+    resource: 'component/blog_user_post.yaml'
+    prefix: /{_locale}/blog/posts
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+blog_admin_posts:
+    resource: 'component/blog_admin_posts.yaml'
+    prefix: /{_locale}/admin
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
+
+login:
+    resource: 'component/login.yaml'
+    prefix: /{_locale}
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'

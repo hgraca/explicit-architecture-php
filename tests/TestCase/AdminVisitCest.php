@@ -42,9 +42,7 @@ class AdminVisitCest
         $I->fillField('#password', 'kitten');
         $I->click('Sign in');
         $I->seeInCurrentUrl('/en/blog/posts');
-        $I->amOnPage('/');
-        $I->seeLink('Browse backend');
-        $I->click('Browse backend');
+        $I->click('Backend');
         $I->see('Post List');
         $I->see('Create a new post');
         $I->seeNumberOfElements('//*[@id="main"]/table/tbody/tr', PostFixtures::JANE_ADMIN_NUM_POSTS);

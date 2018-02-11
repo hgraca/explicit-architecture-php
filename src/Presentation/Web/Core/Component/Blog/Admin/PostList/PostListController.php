@@ -25,8 +25,6 @@ use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -37,8 +35,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * existing bundles that let you generate ready-to-use backends without effort.
  *
  * See http://knpbundles.com/keyword/admin
- *
- * @Route("/admin/posts")
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
@@ -102,10 +98,6 @@ class PostListController extends AbstractController
      *     to create simpler links in the templates. Moreover, in the future we
      *     could move this annotation to any other controller while maintaining
      *     the route name and therefore, without breaking any existing link.
-     *
-     * @Route("/", name="admin_index")
-     * @Route("/", name="admin_post_list")
-     * @Method("GET")
      */
     public function getAction(PostRepositoryInterface $postRepository): ResponseInterface
     {
@@ -116,9 +108,6 @@ class PostListController extends AbstractController
 
     /**
      * Shows the form to create a new Post entity.
-     *
-     * @Route("/new", name="admin_post_new")
-     * @Method({"GET"})
      *
      * NOTE: the Method annotation is optional, but it's a recommended practice
      * to constraint the HTTP methods each controller responds to (by default
@@ -134,9 +123,6 @@ class PostListController extends AbstractController
 
     /**
      * Creates a new Post entity.
-     *
-     * @Route("", name="admin_post_new_post")
-     * @Method({"POST"})
      *
      * NOTE: the Method annotation is optional, but it's a recommended practice
      * to constraint the HTTP methods each controller responds to (by default
