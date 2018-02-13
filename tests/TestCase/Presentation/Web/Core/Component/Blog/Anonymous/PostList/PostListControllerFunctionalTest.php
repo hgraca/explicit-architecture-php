@@ -66,6 +66,22 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
 
     /**
      * @test
+     */
+    public function get_has_the_expected_headers(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/en/blog/posts');
+        $headers = $client->getResponse()->headers;
+
+        $this->assertSame('0', $headers->getCacheControlDirective('max-age'));
+        $this->assertTrue($headers->getCacheControlDirective('must-revalidate'));
+        $this->assertTrue($headers->getCacheControlDirective('no-cache'));
+        $this->assertTrue($headers->getCacheControlDirective('private'));
+        $this->assertSame('10', $headers->getCacheControlDirective('s-maxage'));
+    }
+
+    /**
+     * @test
      * @dataProvider provideLimit
      */
     public function search_json_finds_all_posts(?int $limit, $expectedCount): void

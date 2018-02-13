@@ -21,7 +21,6 @@ use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -64,8 +63,6 @@ class PostListController extends AbstractController
     }
 
     /**
-     * @Cache(smaxage="10")
-     *
      * NOTE: For standard formats, Symfony will also automatically choose the best
      * Content-Type header for the response.
      *
@@ -80,10 +77,12 @@ class PostListController extends AbstractController
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templating.html#template-suffix
-        return $this->templateEngine->renderResponse(
+        $response = $this->templateEngine->renderResponse(
             '@Blog/Anonymous/PostList/get.' . $_format . '.twig',
             ['posts' => $paginator]
         );
+
+        return $response->withAddedHeader('Cache-Control', 's-maxage=10');
     }
 
     public function searchAction(ServerRequestInterface $request, PostRepositoryInterface $postRepository): ResponseInterface
