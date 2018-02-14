@@ -21,6 +21,10 @@ use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
 
 interface PostRepositoryInterface
 {
+    public function find(int $id): Post;
+
+    public function findBySlug(string $slug): Post;
+
     public function upsert(Post $entity): void;
 
     public function delete(Post $entity): void;

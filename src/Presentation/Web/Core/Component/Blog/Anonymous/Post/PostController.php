@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post;
 
+use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -34,10 +35,17 @@ class PostController extends AbstractController
      */
     private $templateEngine;
 
+    /**
+     * @var PostRepositoryInterface
+     */
+    private $postRepository;
+
     public function __construct(
-        TemplateEngineInterface $templateEngine
+        TemplateEngineInterface $templateEngine,
+        PostRepositoryInterface $postRepository
     ) {
         $this->templateEngine = $templateEngine;
+        $this->postRepository = $postRepository;
     }
 
     /**
@@ -46,8 +54,10 @@ class PostController extends AbstractController
      * value given in the route.
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html.
      */
-    public function getAction(Post $post): ResponseInterface
+    public function getAction(ServerRequestInterface $request): ResponseInterface
     {
+        $post = $this->postRepository->findBySlug($request->getAttribute('slug'));
+
         /*
          * For some reason when running the tests we get the comment dates, and order, all weird.
          * For now we will order them by their ID, we will fix this when we have a way to control the DateTime
