@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form\Type;
+namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property;
 
 use Acme\PhpExtension\DateTime\MomentFormatConverter;
 use Locale;
@@ -29,6 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * See https://symfony.com/doc/current/cookbook/form/create_custom_field_type.html
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class DateTimePickerType extends AbstractType
 {
@@ -42,18 +43,12 @@ class DateTimePickerType extends AbstractType
         $this->formatConverter = $converter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['attr']['data-date-format'] = $this->formatConverter->convert($options['format']);
         $view->vars['attr']['data-date-locale'] = mb_strtolower(str_replace('_', '-', Locale::getDefault()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -61,9 +56,6 @@ class DateTimePickerType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return DateTimeType::class;

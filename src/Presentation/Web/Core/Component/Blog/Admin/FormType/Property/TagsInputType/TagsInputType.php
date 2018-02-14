@@ -12,10 +12,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form\Type;
+namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form\DataTransformer\TagArrayToStringTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -31,6 +30,7 @@ use Symfony\Component\Form\FormView;
  * See https://symfony.com/doc/current/cookbook/form/create_custom_field_type.html
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class TagsInputType extends AbstractType
 {

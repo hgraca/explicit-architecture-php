@@ -41,7 +41,10 @@ class AdminVisitCest
         $I->fillField('#username', 'jane_admin');
         $I->fillField('#password', 'kitten');
         $I->click('Sign in');
-        $I->seeInCurrentUrl('/en/admin/post');
+        $I->seeInCurrentUrl('/en/blog/posts');
+        $I->amOnPage('/');
+        $I->seeLink('Browse backend');
+        $I->click('Browse backend');
         $I->see('Post List');
         $I->see('Create a new post');
         $I->seeNumberOfElements('//*[@id="main"]/table/tbody/tr', PostFixtures::JANE_ADMIN_NUM_POSTS);
@@ -49,7 +52,7 @@ class AdminVisitCest
 
         $I->comment('I can create a new post...');
         $I->click('Create a new post');
-        $I->seeInCurrentUrl('/en/admin/post/new');
+        $I->seeInCurrentUrl('/en/admin/posts/new');
         $I->see('Post creation');
         $I->see('Create post');
         $I->see('Save and create new');

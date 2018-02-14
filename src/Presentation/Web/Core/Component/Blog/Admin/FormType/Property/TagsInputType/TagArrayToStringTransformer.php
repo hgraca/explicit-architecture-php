@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form\DataTransformer;
+namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -26,6 +26,7 @@ use Symfony\Component\Form\DataTransformerInterface;
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  * @author Jonathan Boyer <contact@grafikart.fr>
+ * @author Herberto Graca <herberto.graca@gmail.com>
  */
 class TagArrayToStringTransformer implements DataTransformerInterface
 {

@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form;
+namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Entity;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form\Type\DateTimePickerType;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form\Type\TagsInputType;
+use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\DateTimePickerType;
+use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType\TagsInputType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,9 +31,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PostType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // For the full reference of options defined by each form field type
@@ -66,9 +63,6 @@ class PostType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

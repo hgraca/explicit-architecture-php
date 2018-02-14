@@ -8,7 +8,7 @@
 
 {% if show_confirmation|default(false) %}
     {% set attr = {'data-confirmation': 'true'} %}
-    {{ include('blog/_delete_post_confirmation.html.twig') }}
+    {{ include('@Blog/Admin/Post/_delete_post_confirmation.html.twig') }}
 {% endif %}
 
 {{ form_start(form, {attr: attr|default({})}) }}
@@ -19,7 +19,7 @@
     </button>
 
     {% if include_back_to_home_link|default(false) %}
-        <a href="{{ path('admin_post_index') }}" class="btn btn-link">
+        <a href="{{ path('admin_post_list') }}" class="btn btn-link">
             <i class="fa fa-list-alt" aria-hidden="true"></i> {{ 'action.back_to_list'|trans }}
         </a>
     {% endif %}

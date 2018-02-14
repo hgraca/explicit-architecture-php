@@ -12,14 +12,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin;
+namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\PostList;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Test\Fixture\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Functional test for the controllers defined inside the BlogController used
+ * Functional test for the controllers defined inside the PostListController used
  * for managing the blog in the backend.
  *
  * See https://symfony.com/doc/current/book/testing.html#functional-tests
@@ -33,8 +34,10 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class BlogControllerTest extends WebTestCase
+class PostListControllerTest extends WebTestCase
 {
+    use FixturesTrait;
+
     /**
      * @dataProvider getUrlsForRegularUsers
      */
@@ -51,10 +54,7 @@ class BlogControllerTest extends WebTestCase
 
     public function getUrlsForRegularUsers()
     {
-        yield ['GET', '/en/admin/post/'];
-        yield ['GET', '/en/admin/post/1'];
-        yield ['GET', '/en/admin/post/1/edit'];
-        yield ['POST', '/en/admin/post/1/delete'];
+        yield ['GET', '/en/admin/posts'];
     }
 
     public function testAdminBackendHomePage(): void
@@ -64,7 +64,7 @@ class BlogControllerTest extends WebTestCase
             'PHP_AUTH_PW' => 'kitten',
         ]);
 
-        $crawler = $client->request('GET', '/en/admin/post/');
+        $crawler = $client->request('GET', '/en/admin/posts/');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $this->assertGreaterThanOrEqual(
@@ -90,7 +90,7 @@ class BlogControllerTest extends WebTestCase
             'PHP_AUTH_USER' => 'jane_admin',
             'PHP_AUTH_PW' => 'kitten',
         ]);
-        $crawler = $client->request('GET', '/en/admin/post/new');
+        $crawler = $client->request('GET', '/en/admin/posts/new');
         $form = $crawler->selectButton('Create post')->form([
             'post[title]' => $postTitle,
             'post[summary]' => $postSummary,
@@ -107,65 +107,6 @@ class BlogControllerTest extends WebTestCase
         $this->assertNotNull($post);
         $this->assertSame($postSummary, $post->getSummary());
         $this->assertSame($postContent, $post->getContent());
-    }
-
-    public function testAdminShowPost(): void
-    {
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'jane_admin',
-            'PHP_AUTH_PW' => 'kitten',
-        ]);
-        $client->request('GET', '/en/admin/post/1');
-
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * This test changes the database contents by editing a blog post. However,
-     * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
-     * to the database are rolled back when this test completes. This means that
-     * all the application tests begin with the same database contents.
-     */
-    public function testAdminEditPost(): void
-    {
-        $newBlogPostTitle = 'Blog Post Title ' . mt_rand();
-
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'jane_admin',
-            'PHP_AUTH_PW' => 'kitten',
-        ]);
-        $crawler = $client->request('GET', '/en/admin/post/1/edit');
-        $form = $crawler->selectButton('Save changes')->form([
-            'post[title]' => $newBlogPostTitle,
-        ]);
-        $client->submit($form);
-
-        $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
-
-        /** @var Post $post */
-        $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
-        $this->assertSame($newBlogPostTitle, $post->getTitle());
-    }
-
-    /**
-     * This test changes the database contents by deleting a blog post. However,
-     * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
-     * to the database are rolled back when this test completes. This means that
-     * all the application tests begin with the same database contents.
-     */
-    public function testAdminDeletePost(): void
-    {
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'jane_admin',
-            'PHP_AUTH_PW' => 'kitten',
-        ]);
-        $crawler = $client->request('GET', '/en/admin/post/1');
-        $client->submit($crawler->filter('#delete-form')->form());
-
-        $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
-
-        $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
-        $this->assertNull($post);
     }
 
     private function generateRandomString(int $length): string
