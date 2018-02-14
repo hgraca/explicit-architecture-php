@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\Form\DataTransformer;
+namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\FormType\Property\TagsInputType;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
-use Acme\App\Presentation\Web\Core\Component\Blog\Admin\Form\DataTransformer\TagArrayToStringTransformer;
+use Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType\TagArrayToStringTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
@@ -107,7 +107,7 @@ class TagArrayToStringTransformerTest extends TestCase
      *
      * @param array $findByReturnValues The values returned when calling to the findBy() method
      *
-     * @return TagArrayToStringTransformer
+     * @return \Acme\App\Presentation\Web\Core\Component\Blog\Admin\FormType\Property\TagsInputType\TagArrayToStringTransformer
      */
     private function getMockedTransformer(array $findByReturnValues = []): TagArrayToStringTransformer
     {
