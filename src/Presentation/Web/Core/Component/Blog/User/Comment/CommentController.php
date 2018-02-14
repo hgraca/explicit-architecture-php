@@ -14,15 +14,14 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 
+use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\CommentService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -55,28 +54,31 @@ class CommentController extends AbstractController
      */
     private $formFactory;
 
+    /**
+     * @var PostRepositoryInterface
+     */
+    private $postRepository;
+
     public function __construct(
         CommentService $commentService,
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        PostRepositoryInterface $postRepository
     ) {
         $this->commentService = $commentService;
         $this->templateEngine = $templateEngine;
         $this->responseFactory = $responseFactory;
         $this->formFactory = $formFactory;
+        $this->postRepository = $postRepository;
     }
 
     /**
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @ParamConverter("post", options={"mapping": {"postSlug": "slug"}})
-     *
-     * NOTE: The ParamConverter mapping is required because the route parameter
-     * (postSlug) doesn't match any of the Doctrine entity properties (slug).
-     * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html#doctrine-converter
      */
-    public function postAction(ServerRequestInterface $request, Post $post): ResponseInterface
+    public function postAction(ServerRequestInterface $request): ResponseInterface
     {
+        $post = $this->postRepository->findBySlug($request->getAttribute('postSlug'));
         $comment = new Comment();
 
         $form = $this->formFactory->createCommentForm($comment);
@@ -99,20 +101,17 @@ class CommentController extends AbstractController
 
     /**
      * This controller is called directly via the render() function in the
-     * blog/post_show.html.twig template. That's why it's not needed to define
+     * Blog/Anonymous/Post/get.html.twig template. That's why it's not needed to define
      * a route name for it.
-     *
-     * The "id" of the Post is passed in and then turned into a Post object
-     * automatically by the ParamConverter.
      */
-    public function editAction(Post $post): ResponseInterface
+    public function editAction(int $postId): ResponseInterface
     {
         $form = $this->formFactory->createCommentForm();
 
         return $this->templateEngine->renderResponse(
             '@Blog/User/Comment/edit.html.twig',
             [
-                'post' => $post,
+                'post' => $this->postRepository->find($postId),
                 'form' => $form->createView(),
             ]
         );

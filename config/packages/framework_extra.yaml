@@ -1,1 +1,4 @@
-
+sensio_framework_extra:
+    request:
+        converters: false
+        auto_convert: false

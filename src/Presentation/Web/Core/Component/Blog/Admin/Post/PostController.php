@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
+use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
@@ -23,7 +23,6 @@ use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -71,8 +70,14 @@ class PostController extends AbstractController
      */
     private $formFactory;
 
+    /**
+     * @var PostRepositoryInterface
+     */
+    private $postRepository;
+
     public function __construct(
         PostService $postService,
+        PostRepositoryInterface $postRepository,
         FlashMessageServiceInterface $flashMessageService,
         UrlGeneratorInterface $urlGenerator,
         TemplateEngineInterface $templateEngine,
@@ -85,15 +90,15 @@ class PostController extends AbstractController
         $this->templateEngine = $templateEngine;
         $this->responseFactory = $responseFactory;
         $this->formFactory = $formFactory;
+        $this->postRepository = $postRepository;
     }
 
     /**
      * Finds and displays a Post entity.
      */
-    public function getAction(Post $post): ResponseInterface
+    public function getAction(ServerRequestInterface $request): ResponseInterface
     {
-        // This security check can also be performed
-        // using an annotation: @Security("is_granted('show', post)")
+        $post = $this->postRepository->find((int) $request->getAttribute('id'));
         $this->denyAccessUnlessGranted('show', $post, 'Posts can only be shown to their authors.');
 
         return $this->templateEngine->renderResponse(
@@ -105,8 +110,10 @@ class PostController extends AbstractController
     /**
      * Displays a form to edit an existing Post entity.
      */
-    public function editAction(Post $post): ResponseInterface
+    public function editAction(ServerRequestInterface $request): ResponseInterface
     {
+        $post = $this->postRepository->find((int) $request->getAttribute('id'));
+
         $this->denyAccessUnlessGranted('edit', $post, 'Posts can only be edited by their authors.');
 
         $form = $this->formFactory->createEditPostForm(
@@ -126,8 +133,9 @@ class PostController extends AbstractController
     /**
      * Receives data from the form to edit an existing Post entity.
      */
-    public function postAction(ServerRequestInterface $request, Post $post): ResponseInterface
+    public function postAction(ServerRequestInterface $request): ResponseInterface
     {
+        $post = $this->postRepository->find((int) $request->getAttribute('id'));
         $this->denyAccessUnlessGranted('edit', $post, 'Posts can only be edited by their authors.');
 
         $form = $this->formFactory->createEditPostForm($post);
@@ -147,13 +155,14 @@ class PostController extends AbstractController
     /**
      * Deletes a Post entity.
      *
-     * @Security("is_granted('delete', post)")
-     *
      * The Security annotation value is an expression (if it evaluates to false,
      * the authorization mechanism will prevent the user accessing this resource).
      */
-    public function deleteAction(ServerRequestInterface $request, Post $post): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request): ResponseInterface
     {
+        $post = $this->postRepository->find((int) $request->getAttribute('id'));
+        $this->denyAccessUnlessGranted('delete', $post, 'Posts can only be deleted by an admin or the author.');
+
         if (!$this->isCsrfTokenValid('delete', $request->getParsedBody()['token'] ?? '')) {
             return $this->responseFactory->redirectToRoute('admin_post_list');
         }
