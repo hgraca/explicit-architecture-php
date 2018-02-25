@@ -50,16 +50,23 @@ class PostListController extends AbstractController
      */
     private $responseFactory;
 
+    /**
+     * @var PostRepositoryInterface
+     */
+    private $postRepository;
+
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
         UrlGeneratorInterface $urlGenerator,
         TemplateEngineInterface $templateEngine,
-        ResponseFactoryInterface $responseFactory
+        ResponseFactoryInterface $responseFactory,
+        PostRepositoryInterface $postRepository
     ) {
         $this->paginatorFactory = $paginatorFactory;
         $this->urlGenerator = $urlGenerator;
         $this->templateEngine = $templateEngine;
         $this->responseFactory = $responseFactory;
+        $this->postRepository = $postRepository;
     }
 
     /**
@@ -68,9 +75,9 @@ class PostListController extends AbstractController
      *
      * @see https://symfony.com/doc/current/quick_tour/the_controller.html#using-formats
      */
-    public function getAction(int $page, string $_format, PostRepositoryInterface $postRepository): ResponseInterface
+    public function getAction(int $page, string $_format): ResponseInterface
     {
-        $latestPosts = $postRepository->findLatest();
+        $latestPosts = $this->postRepository->findLatest();
         $paginator = $this->paginatorFactory->createPaginator($latestPosts->toArray());
         $paginator->setCurrentPage($page);
 
@@ -85,7 +92,7 @@ class PostListController extends AbstractController
         return $response->withAddedHeader('Cache-Control', 's-maxage=10');
     }
 
-    public function searchAction(ServerRequestInterface $request, PostRepositoryInterface $postRepository): ResponseInterface
+    public function searchAction(ServerRequestInterface $request): ResponseInterface
     {
         if (!$this->isXmlHttpRequest($request)) {
             return $this->templateEngine->renderResponse('@Blog/Anonymous/PostList/search.html.twig');
@@ -93,7 +100,7 @@ class PostListController extends AbstractController
 
         $query = $request->getQueryParams()['q'] ?? '';
         $limit = $request->getQueryParams()['l'] ?? 10;
-        $foundPosts = $postRepository->findBySearchQuery($query, (int) $limit);
+        $foundPosts = $this->postRepository->findBySearchQuery($query, (int) $limit);
 
         $results = [];
         foreach ($foundPosts as $post) {
