@@ -16,6 +16,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
+use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
@@ -75,6 +76,11 @@ class PostController extends AbstractController
      */
     private $postRepository;
 
+    /**
+     * @var AuthorizationServiceInterface
+     */
+    private $authorizationService;
+
     public function __construct(
         PostService $postService,
         PostRepositoryInterface $postRepository,
@@ -82,7 +88,8 @@ class PostController extends AbstractController
         UrlGeneratorInterface $urlGenerator,
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        AuthorizationServiceInterface $authorizationService
     ) {
         $this->postService = $postService;
         $this->flashMessageService = $flashMessageService;
@@ -91,6 +98,7 @@ class PostController extends AbstractController
         $this->responseFactory = $responseFactory;
         $this->formFactory = $formFactory;
         $this->postRepository = $postRepository;
+        $this->authorizationService = $authorizationService;
     }
 
     /**
@@ -99,7 +107,12 @@ class PostController extends AbstractController
     public function getAction(ServerRequestInterface $request): ResponseInterface
     {
         $post = $this->postRepository->find((int) $request->getAttribute('id'));
-        $this->denyAccessUnlessGranted('show', $post, 'Posts can only be shown to their authors.');
+        $this->authorizationService->denyAccessUnlessGranted(
+            [],
+            'show',
+            'Posts can only be shown to their authors.',
+            $post
+        );
 
         return $this->templateEngine->renderResponse(
             '@Blog/Admin/Post/get.html.twig',
@@ -114,7 +127,12 @@ class PostController extends AbstractController
     {
         $post = $this->postRepository->find((int) $request->getAttribute('id'));
 
-        $this->denyAccessUnlessGranted('edit', $post, 'Posts can only be edited by their authors.');
+        $this->authorizationService->denyAccessUnlessGranted(
+            [],
+            'edit',
+            'Posts can only be edited by their authors.',
+            $post
+        );
 
         $form = $this->formFactory->createEditPostForm(
             $post,
@@ -136,7 +154,13 @@ class PostController extends AbstractController
     public function postAction(ServerRequestInterface $request): ResponseInterface
     {
         $post = $this->postRepository->find((int) $request->getAttribute('id'));
-        $this->denyAccessUnlessGranted('edit', $post, 'Posts can only be edited by their authors.');
+
+        $this->authorizationService->denyAccessUnlessGranted(
+            [],
+            'edit',
+            'Posts can only be edited by their authors.',
+            $post
+        );
 
         $form = $this->formFactory->createEditPostForm($post);
         $form->handleRequest($request);
@@ -161,7 +185,13 @@ class PostController extends AbstractController
     public function deleteAction(ServerRequestInterface $request): ResponseInterface
     {
         $post = $this->postRepository->find((int) $request->getAttribute('id'));
-        $this->denyAccessUnlessGranted('delete', $post, 'Posts can only be deleted by an admin or the author.');
+
+        $this->authorizationService->denyAccessUnlessGranted(
+            [],
+            'delete',
+            'Posts can only be deleted by an admin or the author.',
+            $post
+        );
 
         if (!$this->isCsrfTokenValid('delete', $request->getParsedBody()['token'] ?? '')) {
             return $this->responseFactory->redirectToRoute('admin_post_list');

@@ -17,12 +17,12 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\CommentService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -59,25 +59,31 @@ class CommentController extends AbstractController
      */
     private $postRepository;
 
+    /**
+     * @var AuthorizationServiceInterface
+     */
+    private $authorizationService;
+
     public function __construct(
         CommentService $commentService,
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
         FormFactoryInterface $formFactory,
-        PostRepositoryInterface $postRepository
+        PostRepositoryInterface $postRepository,
+        AuthorizationServiceInterface $authorizationService
     ) {
         $this->commentService = $commentService;
         $this->templateEngine = $templateEngine;
         $this->responseFactory = $responseFactory;
         $this->formFactory = $formFactory;
         $this->postRepository = $postRepository;
+        $this->authorizationService = $authorizationService;
     }
 
-    /**
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     */
     public function postAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->authorizationService->denyAccessUnlessGranted([AuthorizationServiceInterface::ROLE_AUTHENTICATED]);
+
         $post = $this->postRepository->findBySlug($request->getAttribute('postSlug'));
         $comment = new Comment();
 

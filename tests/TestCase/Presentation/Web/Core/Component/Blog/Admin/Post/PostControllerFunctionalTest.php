@@ -53,6 +53,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
     {
         yield ['GET', '/en/admin/posts/1'];
         yield ['GET', '/en/admin/posts/1/edit'];
+        yield ['POST', '/en/admin/posts/1'];
         yield ['POST', '/en/admin/posts/1/delete'];
     }
 
