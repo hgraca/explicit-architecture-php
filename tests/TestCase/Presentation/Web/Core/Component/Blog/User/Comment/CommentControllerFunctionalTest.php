@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comment;
 
+use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 
 /**
@@ -56,5 +58,32 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
         $newComment = $crawler->filter('.post-comment')->first()->filter('div > p')->text();
 
         $this->assertSame('Hi, Symfony!', $newComment);
+    }
+
+    /**
+     * This test changes the database contents by creating a new comment. However,
+     * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
+     * to the database are rolled back when this test completes. This means that
+     * all the application tests begin with the same database contents.
+     */
+    public function testNewComment_without_being_logged_in_redirects_to_login_page(): void
+    {
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $this->getService(UrlGeneratorInterface::class);
+
+        $client = static::createClient();
+        $client->followRedirects();
+
+        // Find first blog post
+        $crawler = $client->request(
+            'POST',
+            '/en/blog/posts/some-post-slug-that-will-not-matter/comments',
+            ['comment_form[content]' => 'Hi, Symfony!']
+        );
+
+        $this->assertSame(
+            $urlGenerator->generateUrl('security_login', [], UrlType::absoluteUrl()),
+            $crawler->getUri()
+        );
     }
 }
