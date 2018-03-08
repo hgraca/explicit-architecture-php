@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
+use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
+use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,6 +39,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PostControllerFunctionalTest extends AbstractFunctionalTest
 {
+    /**
+     * @var DqlQueryBuilderInterface
+     */
+    private $dqlQueryBuilder;
+
+    /**
+     * @var QueryServiceRouterInterface
+     */
+    private $queryService;
+
+    public function setUp(): void
+    {
+        $this->dqlQueryBuilder = $this->getService(DqlQueryBuilderInterface::class);
+        $this->queryService = $this->getService(QueryServiceRouterInterface::class);
+    }
+
     /**
      * @dataProvider getUrlsForRegularUsers
      */
@@ -100,19 +120,69 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
+     *
+     * @expectedException \Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException
      */
     public function testAdminDeletePost(): void
     {
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $this->getService(UrlGeneratorInterface::class);
+
+        $postId = 1;
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
             'PHP_AUTH_PW' => 'kitten',
         ]);
+        $client->followRedirects();
         $crawler = $client->request('GET', '/en/admin/posts/1');
-        $client->submit($crawler->filter('#delete-form')->form());
+        $crawler = $client->submit($crawler->filter('#delete-form')->form());
 
-        self::assertResponseStatusCode(Response::HTTP_FOUND, $client);
+        self::assertResponseStatusCode(Response::HTTP_OK, $client);
 
-        $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
-        $this->assertNull($post);
+        $this->assertSame(
+            $urlGenerator->generateUrl('admin_post_list', [], UrlType::absoluteUrl()),
+            $crawler->getUri()
+        );
+
+        self::assertSame(1, $crawler->filter('.alert-success')->count());
+        $this->findById($postId);
+    }
+
+    public function testAdminDeletePost_with_invalid_token_does_not_delete(): void
+    {
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $this->getService(UrlGeneratorInterface::class);
+
+        $client = static::createClient(
+            [],
+            [
+                'PHP_AUTH_USER' => 'jane_admin',
+                'PHP_AUTH_PW' => 'kitten',
+            ]
+        );
+        $client->followRedirects();
+
+        $crawler = $client->request(
+            'POST',
+            '/en/admin/posts/1/delete',
+            ['token' => 'invalid_token']
+        );
+
+        $this->assertSame(
+            $urlGenerator->generateUrl('admin_post_list', [], UrlType::absoluteUrl()),
+            $crawler->getUri()
+        );
+
+        self::assertSame(0, $crawler->filter('.alert-success')->count());
+    }
+
+    private function findById(int $id): Post
+    {
+        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
+            ->where('Post.id = :id')
+            ->setParameter('id', $id)
+            ->build();
+
+        return $this->queryService->query($dqlQuery)->getSingleResult();
     }
 }
