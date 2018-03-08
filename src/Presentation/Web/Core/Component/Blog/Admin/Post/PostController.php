@@ -16,6 +16,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
+use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
@@ -81,6 +82,11 @@ class PostController extends AbstractController
      */
     private $authorizationService;
 
+    /**
+     * @var AuthenticationServiceInterface
+     */
+    private $authenticationService;
+
     public function __construct(
         PostService $postService,
         PostRepositoryInterface $postRepository,
@@ -89,7 +95,8 @@ class PostController extends AbstractController
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
         FormFactoryInterface $formFactory,
-        AuthorizationServiceInterface $authorizationService
+        AuthorizationServiceInterface $authorizationService,
+        AuthenticationServiceInterface $authenticationService
     ) {
         $this->postService = $postService;
         $this->flashMessageService = $flashMessageService;
@@ -99,6 +106,7 @@ class PostController extends AbstractController
         $this->formFactory = $formFactory;
         $this->postRepository = $postRepository;
         $this->authorizationService = $authorizationService;
+        $this->authenticationService = $authenticationService;
     }
 
     /**
@@ -193,7 +201,7 @@ class PostController extends AbstractController
             $post
         );
 
-        if (!$this->isCsrfTokenValid('delete', $request->getParsedBody()['token'] ?? '')) {
+        if (!$this->authenticationService->isCsrfTokenValid('delete', $request->getParsedBody()['token'] ?? '')) {
             return $this->responseFactory->redirectToRoute('admin_post_list');
         }
 

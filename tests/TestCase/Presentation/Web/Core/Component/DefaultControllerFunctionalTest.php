@@ -101,7 +101,7 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
 
     private function findPostById(int $id): Post
     {
-        $dqlQuery = $this->getDqlQueryFactory()->create(Post::class)
+        $dqlQuery = $this->getDqlQueryBuilder()->create(Post::class)
             ->where('Post.id = :id')
             ->setParameter('id', $id)
             ->build();
@@ -109,7 +109,7 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
         return $this->getQueryService()->query($dqlQuery)->getSingleResult();
     }
 
-    private function getDqlQueryFactory(): DqlQueryBuilderInterface
+    private function getDqlQueryBuilder(): DqlQueryBuilderInterface
     {
         return $this->getService(DqlQueryBuilderInterface::class);
     }
