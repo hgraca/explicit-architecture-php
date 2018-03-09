@@ -12,15 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Port\Auth;
+namespace Acme\App\Presentation\Web\Auth;
 
-use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
 
-interface AuthenticationServiceInterface
+final class NoUserAuthenticatedException extends AppRuntimeException
 {
-    public function isCsrfTokenValid(string $id, string $token): bool;
-
-    public function getLoggedInUserId(): int;
-
-    public function getLoggedInUser(): User;
 }

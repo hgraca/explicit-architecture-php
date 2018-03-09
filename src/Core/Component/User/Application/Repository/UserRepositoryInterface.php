@@ -31,4 +31,6 @@ interface UserRepositoryInterface
     public function findOneByUsername(string $username): User;
 
     public function findOneByEmail(string $email): User;
+
+    public function findOneById(int $id): User;
 }

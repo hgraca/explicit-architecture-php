@@ -17,6 +17,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\CommentService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
@@ -64,13 +65,19 @@ class CommentController extends AbstractController
      */
     private $authorizationService;
 
+    /**
+     * @var AuthenticationServiceInterface
+     */
+    private $authenticationService;
+
     public function __construct(
         CommentService $commentService,
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
         FormFactoryInterface $formFactory,
         PostRepositoryInterface $postRepository,
-        AuthorizationServiceInterface $authorizationService
+        AuthorizationServiceInterface $authorizationService,
+        AuthenticationServiceInterface $authenticationService
     ) {
         $this->commentService = $commentService;
         $this->templateEngine = $templateEngine;
@@ -78,6 +85,7 @@ class CommentController extends AbstractController
         $this->formFactory = $formFactory;
         $this->postRepository = $postRepository;
         $this->authorizationService = $authorizationService;
+        $this->authenticationService = $authenticationService;
     }
 
     public function postAction(ServerRequestInterface $request): ResponseInterface
@@ -100,7 +108,7 @@ class CommentController extends AbstractController
             );
         }
 
-        $this->commentService->create($post, $comment, $this->getUser());
+        $this->commentService->create($post, $comment, $this->authenticationService->getLoggedInUser());
 
         return $this->responseFactory->redirectToRoute('post', ['slug' => $post->getSlug()]);
     }
