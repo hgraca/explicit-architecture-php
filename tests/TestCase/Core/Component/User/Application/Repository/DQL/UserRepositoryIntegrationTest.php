@@ -53,6 +53,8 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
 
     /**
      * @test
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
      */
     public function upsert_updates_entity(): void
     {
@@ -71,6 +73,8 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
 
     /**
      * @test
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
      */
     public function upsert_creates_entity(): void
     {
@@ -99,6 +103,8 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      * @expectedException \Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
      */
     public function delete_removes_the_entity(): void
     {
