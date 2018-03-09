@@ -148,7 +148,8 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
     public function findByAuthorOrderedByPublishDate(): void
     {
         $author = $this->findById(1)->getAuthor();
-        $postList = $this->repository->findByAuthorOrderedByPublishDate($author);
+        $userId = $author->getId();
+        $postList = $this->repository->findByAuthorOrderedByPublishDate($userId);
 
         /** @var Post $previousPost */
         $previousPost = null;

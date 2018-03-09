@@ -17,6 +17,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormInterface;
@@ -72,13 +73,19 @@ class PostListController extends AbstractController
      */
     private $formFactory;
 
+    /**
+     * @var AuthenticationServiceInterface
+     */
+    private $authenticationService;
+
     public function __construct(
         PostService $postService,
         FlashMessageServiceInterface $flashMessageService,
         UrlGeneratorInterface $urlGenerator,
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        AuthenticationServiceInterface $authenticationService
     ) {
         $this->postService = $postService;
         $this->flashMessageService = $flashMessageService;
@@ -86,6 +93,7 @@ class PostListController extends AbstractController
         $this->templateEngine = $templateEngine;
         $this->responseFactory = $responseFactory;
         $this->formFactory = $formFactory;
+        $this->authenticationService = $authenticationService;
     }
 
     /**
@@ -101,7 +109,9 @@ class PostListController extends AbstractController
      */
     public function getAction(PostRepositoryInterface $postRepository): ResponseInterface
     {
-        $authorPosts = $postRepository->findByAuthorOrderedByPublishDate($this->getUser());
+        $authorPosts = $postRepository->findByAuthorOrderedByPublishDate(
+            $this->authenticationService->getLoggedInUserId()
+        );
 
         return $this->templateEngine->renderResponse('@Blog/Admin/PostList/get.html.twig', ['posts' => $authorPosts]);
     }
@@ -144,7 +154,7 @@ class PostListController extends AbstractController
             return $this->renderCreatePost($form, $post);
         }
 
-        $this->postService->create($post, $this->getUser());
+        $this->postService->create($post, $this->authenticationService->getLoggedInUser());
 
         // Flash messages are used to notify the user about the result of the
         // actions. They are deleted automatically from the session as soon

@@ -185,6 +185,18 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         self::assertSame($userId, $user->getId());
     }
 
+    /**
+     * @test
+     */
+    public function findOneById(): void
+    {
+        $userId = 1;
+
+        $user = $this->repository->findOneById($userId);
+
+        self::assertSame($userId, $user->getId());
+    }
+
     private function findById(int $id): User
     {
         $dqlQuery = $this->dqlQueryBuilder->create(User::class)

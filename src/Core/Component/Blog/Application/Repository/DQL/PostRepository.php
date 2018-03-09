@@ -16,7 +16,6 @@ namespace Acme\App\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryBuilderInterface;
@@ -101,12 +100,12 @@ class PostRepository implements PostRepositoryInterface
     /**
      * @return Post[]
      */
-    public function findByAuthorOrderedByPublishDate(User $user): ResultCollectionInterface
+    public function findByAuthorOrderedByPublishDate(int $userId): ResultCollectionInterface
     {
         $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
             ->where('Post.author = :user')
             ->orderBy('Post.publishedAt', 'DESC')
-            ->setParameter('user', $user)
+            ->setParameter('user', $userId)
             ->build();
 
         return $this->queryService->query($dqlQuery);
