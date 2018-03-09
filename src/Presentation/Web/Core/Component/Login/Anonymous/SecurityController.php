@@ -16,7 +16,6 @@ namespace Acme\App\Presentation\Web\Core\Component\Login\Anonymous;
 
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -27,7 +26,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class SecurityController extends AbstractController
+class SecurityController
 {
     /**
      * @var TemplateEngineInterface

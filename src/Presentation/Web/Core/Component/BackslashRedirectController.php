@@ -17,12 +17,11 @@ namespace Acme\App\Presentation\Web\Core\Component;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @see https://symfony.com/doc/current/routing/redirect_trailing_slash.html
  */
-final class BackslashRedirectController extends AbstractController
+final class BackslashRedirectController
 {
     /**
      * @var ResponseFactoryInterface
