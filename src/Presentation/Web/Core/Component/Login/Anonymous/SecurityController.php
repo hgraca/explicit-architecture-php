@@ -14,9 +14,10 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Login\Anonymous;
 
+use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Controller used to manage the application security.
@@ -33,19 +34,30 @@ class SecurityController
      */
     private $templateEngine;
 
-    public function __construct(TemplateEngineInterface $templateEngine)
-    {
+    /**
+     * @var AuthenticationServiceInterface
+     */
+    private $authenticationService;
+
+    public function __construct(
+        TemplateEngineInterface $templateEngine,
+        AuthenticationServiceInterface $authenticationService
+    ) {
         $this->templateEngine = $templateEngine;
+        $this->authenticationService = $authenticationService;
     }
 
-    public function login(AuthenticationUtils $helper): ResponseInterface
+    public function login(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->templateEngine->renderResponse('@Login/Anonymous/login.html.twig', [
-            // last username entered by the user (if any)
-            'last_username' => $helper->getLastUsername(),
-            // last authentication error (if any)
-            'error' => $helper->getLastAuthenticationError(),
-        ]);
+        return $this->templateEngine->renderResponse(
+            '@Login/Anonymous/login.html.twig',
+            [
+                // last username entered by the user (if any)
+                'last_username' => $this->authenticationService->getLastAuthenticationUsername($request),
+                // last authentication error (if any)
+                'error' => $this->authenticationService->getLastAuthenticationError($request),
+            ]
+        );
     }
 
     /**
@@ -53,6 +65,10 @@ class SecurityController
      *
      * But, this will never be executed. Symfony will intercept this first
      * and handle the logout automatically. See logout in config/packages/security.yaml
+     *
+     * It's really a pity that Symfony doesn't have a facade that we can just call and have the user log out
+     * because, as it is, this behaviour might be very difficult to decouple from Symfony and implement with
+     * another framework, if we would switch frameworks.
      *
      * @throws \Exception
      */

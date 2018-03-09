@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Port\Auth;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface AuthenticationServiceInterface
 {
@@ -23,4 +24,11 @@ interface AuthenticationServiceInterface
     public function getLoggedInUserId(): int;
 
     public function getLoggedInUser(): User;
+
+    public function getLastAuthenticationError(
+        ServerRequestInterface $request,
+        bool $clearSession = true
+    ): ?AuthenticationException;
+
+    public function getLastAuthenticationUsername(ServerRequestInterface $request): string;
 }
