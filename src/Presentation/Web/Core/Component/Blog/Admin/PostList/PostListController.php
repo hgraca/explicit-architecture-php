@@ -26,7 +26,6 @@ use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Controller used to manage blog contents in the backend.
@@ -41,7 +40,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class PostListController extends AbstractController
+class PostListController
 {
     /**
      * @var PostService

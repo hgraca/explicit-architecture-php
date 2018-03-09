@@ -24,7 +24,6 @@ use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -33,7 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class CommentController extends AbstractController
+class CommentController
 {
     /**
      * @var CommentService
