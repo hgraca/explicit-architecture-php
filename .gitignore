@@ -14,6 +14,8 @@
 /public/build/fonts/glyphicons-*
 /public/build/images/glyphicons-*
 
+Makefile.custom.sh
+
 ###> symfony/framework-bundle ###
 .env
 /public/bundles/
