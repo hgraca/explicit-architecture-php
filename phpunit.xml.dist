@@ -30,6 +30,14 @@
         </testsuite>
     </testsuites>
 
+    <filter>
+        <!-- Perform code coverage for files in these folders, including the files not run. -->
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>src</directory>
+            <directory>lib/*/src</directory>
+        </whitelist>
+    </filter>
+
     <listeners>
         <!-- it begins a database transaction before every testcase and rolls it back after
              the test finished, so tests can manipulate the database without affecting other tests -->
