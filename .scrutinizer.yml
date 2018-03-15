@@ -26,6 +26,7 @@ build:
         coverage:
           file: var/coverage.clover.xml
           format: php-clover
+      - command: make test_cov-publish
 
 filter:
   paths:

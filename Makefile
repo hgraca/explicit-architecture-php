@@ -141,6 +141,9 @@ test_cov:
 test_cov-guest:
 	phpdbg -qrr vendor/bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
 
+test_cov-publish:
+	bash -c 'bash <(curl -s https://codecov.io/bash)'
+
 up:
 	if [ ! -f ${DB_PATH} ]; then $(MAKE) db-setup; fi
 	$(eval UP=ENV=dev docker-compose -f build/container/dev/docker-compose.yml up -t 0)
