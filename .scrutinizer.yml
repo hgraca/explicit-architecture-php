@@ -29,6 +29,8 @@ build:
         coverage:
           file: var/coverage.clover.xml
           format: php-clover
+      -
+        command: bash <(curl -s https://codecov.io/bash)
 
 filter:
   paths:
