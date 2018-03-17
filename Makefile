@@ -1,5 +1,6 @@
 CURRENT_BRANCH="$(shell git rev-parse --abbrev-ref HEAD)"
 CONTAINER_NAME_BASE="hgraca/explicit-architecture:app.sfn.base"
+CONTAINER_NAME_CI="hgraca/explicit-architecture:app.sfn.ci"
 CONTAINER_NAME_DEV="hgraca/explicit-architecture:app.sfn.dev"
 CONTAINER_NAME_PRD="hgraca/explicit-architecture:app.sfn.prd"
 COVERAGE_REPORT_PATH="var/coverage.clover.xml"
@@ -24,6 +25,9 @@ box-base-build:
 box-base-push:
 	docker push ${CONTAINER_NAME_BASE}
 
+box-ci-build:
+	docker build -t ${CONTAINER_NAME_CI} -f ./build/container/ci/app.dockerfile .
+
 box-dev-build:
 	docker build -t ${CONTAINER_NAME_DEV} -f ./build/container/dev/app.dockerfile .
 
@@ -47,13 +51,16 @@ dep-clearcache-guest:
 	composer clearcache
 
 dep-install:
-	ENV='dev' ./bin/run make dep-install-guest
+	ENV='dev' ./bin/run composer install
+
+dep-install-ci-guest:
+	composer install --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
 
 dep-install-prd-guest:
 	composer install --no-dev --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
 
 dep-update:
-	ENV='dev' ./bin/run make dep-update-guest
+	ENV='dev' ./bin/run composer update
 
 fix-cs:
 	ENV='tst' ./bin/run php vendor/bin/php-cs-fixer fix --verbose
@@ -65,10 +72,22 @@ test:
 	$(MAKE) fix-cs
 	ENV='tst' ./bin/stop
 
-#   We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
-#   Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
+test-ci:
+	$(MAKE) box-prd-build
+	ENV='ci' ./bin/run
+	ENV='ci' ./bin/run make db-setup-guest
+	ENV='ci' ./bin/run composer dumpautoload --optimize
+	ENV='ci' ./bin/run make test-cov-guest
+	docker exec -it app.sfn.ci cat ${COVERAGE_REPORT_PATH} > ${COVERAGE_REPORT_PATH}
+	ENV='ci' ./bin/run php vendor/bin/php-cs-fixer fix --verbose --dry-run
+
 test-cov:
-	ENV='tst' ./bin/run phpdbg -qrr vendor/bin/simple-phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
+	ENV='tst' ./bin/run make test-cov-guest
+
+# We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
+# Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
+test-cov-guest:
+	phpdbg -qrr vendor/bin/simple-phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
 
 up:
 	if [ ! -f ${DB_PATH} ]; then $(MAKE) db-setup; fi
