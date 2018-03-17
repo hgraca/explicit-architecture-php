@@ -76,7 +76,15 @@ class BlogController extends AbstractController
         //
         // dump($post, $this->getUser(), new \DateTime());
 
-        return $this->render('blog/post_show.html.twig', ['post' => $post]);
+        $commentList = $post->getComments()->toArray();
+        usort(
+            $commentList,
+            function (Comment $commentA, Comment $commentB) {
+                return ($commentA->getId() > $commentB->getId()) ? -1 : 1;
+            }
+        );
+
+        return $this->render('blog/post_show.html.twig', ['post' => $post, 'commentList' => $commentList]);
     }
 
     /**
