@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This script allows us to start the container and related containers, and then run other commands against it.
+ * With no arguments, the container will be started and kept alive for 1h
+ * With arguments, if the container is running it will send the commands to it and leave it running
+ * With arguments, if the container is NOT running it will start it, send the commands to it and terminate it
+ */
+
+include_once('lib/docker.php');
+
+$env = getenv('ENV') ?: 'dev';
+$argumentList = array_slice($argv, 1);
+$rootDir = __DIR__ . '/..';
+$returnVal = 0;
+$containerWasRunning = false;
+$detached = '';
+
+$containerName = 'app.sfn.' . $env;
+$yamlFile = "$rootDir/build/container/$env/docker-compose.yml";
+$downCommand = "docker-compose -f $yamlFile down -t 0"; // we use the "-t 0" so that we don't have a timeout of 10s
+
+if (empty($argumentList) && isContainerRunning($containerName)) {
+    exit($returnVal);
+}
+
+if (empty($argumentList)) {
+    // If no command is given to execute, just keep the container running in the background for 1h
+    $detached = '-d';
+    $guestCommand =  "sleep 3600";
+} else {
+    $guestCommand =  implode(' ', $argumentList);
+}
+
+// We wrap the $guestCommand in /bin/sh so that we get the full output if it breaks, ie with a segfault
+$hostCommand = "docker-compose -f $yamlFile run $detached -u $(id -u):$(id -g) --name $containerName app /bin/sh -c '$guestCommand'";
+
+if (!$detached) {
+    // We wrap the host command in bash trap so that we can trap a signal and destroy the stopped containers
+    // We only wrap it if it's not detached, otherwise detaching will make the container stop immediately
+    $hostCommand = "bash -c \"trap 'echo Trapped exit! Exit code: $? \n $downCommand' SIGINT SIGTERM ERR; $hostCommand\"";
+}
+
+if (isContainerRunning($containerName)) {
+    $containerWasRunning = true;
+    system("docker exec -it $containerName $guestCommand", $returnVal);
+} else {
+    system($hostCommand, $returnVal);
+}
+
+if (!$detached && !$containerWasRunning && isContainerExists($containerName)) {
+    system($downCommand);
+}
+
+exit($returnVal);
