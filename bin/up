@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+include_once('lib/docker.php');
+
+$env = getenv('ENV') ?: 'dev';
+$rootDir = __DIR__ . '/..';
+$returnVal = 0;
+
+$containerName = 'app.sfn.' . $env;
+if (isContainerRunning($containerName)) {
+    exit($returnVal);
+}
+
+$yamlFile = "$rootDir/build/container/$env/docker-compose.yml";
+
+$upCommand = 'php bin/console server:run 0.0.0.0:8000';
+$downCommand = "docker-compose -f $yamlFile down";
+
+// We wrap the guest command in /bin/sh so that we get the full output if it breaks, ie with a segfault
+$hostCommand = "docker-compose -f $yamlFile run -u $(id -u):$(id -g) --name $containerName -p 8000:8000 app $upCommand";
+// We wrap the host command in bash so that we can trap an EXIT signal and destroy the stopped containers
+$trappedHostCommand = "bash -c \"trap '$downCommand' SIGINT SIGTERM EXIT ERR; $hostCommand\"";
+
+system($trappedHostCommand, $returnVal);
+
+if (isContainerExists($containerName)) {
+    system($downCommand);
+}
+
+exit($returnVal);

@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+include_once('lib/docker.php');
+
+$env = getenv('ENV') ?: 'dev';
+$argumentList = array_slice($argv, 1);
+$rootDir = __DIR__ . '/..';
+$returnVal = 0;
+
+$containerName = 'app.sfn.' . $env;
+$yamlFile = "$rootDir/build/container/$env/docker-compose.yml";
+
+// we use the "-t 0" so that we don't have a timeout of 10s
+$downCommand = "docker-compose -f $yamlFile down -t 0";
+
+if (isContainerExists($containerName)) {
+    system($downCommand, $returnVal);
+}
+
+exit($returnVal);

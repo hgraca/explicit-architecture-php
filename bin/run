@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+include_once('lib/docker.php');
+
+$env = getenv('ENV') ?: 'dev';
+$argumentList = array_slice($argv, 1);
+$rootDir = __DIR__ . '/..';
+$returnVal = 0;
+$containerWasRunning = false;
+$detached = '';
+
+$containerName = 'app.sfn.' . $env;
+$yamlFile = "$rootDir/build/container/$env/docker-compose.yml";
+$downCommand = "docker-compose -f $yamlFile down -t 0";
+
+if (empty($argumentList)) {
+    $guestCommand =  'sleep 3600';
+    $detached = '-d';
+} else {
+    $guestCommand =  implode(' ', $argumentList);
+}
+
+// We wrap the guest command in /bin/sh so that we get the full output if it breaks, ie with a segfault
+$hostCommand = "docker-compose -f $yamlFile run $detached -u $(id -u):$(id -g) --name $containerName app /bin/sh -c '$guestCommand'";
+
+if (!$detached) {
+    // We wrap the host command in bash trap so that we can trap an EXIT signal and destroy the stopped containers
+    // We only wrap it if it's detached, otherwise detaching will make the container stop immediately
+    $hostCommand = "bash -c \"trap '$downCommand' SIGINT SIGTERM EXIT ERR; $hostCommand\"";
+}
+
+if (isContainerRunning($containerName)) {
+    $containerWasRunning = true;
+    system("docker exec -it $containerName $guestCommand", $returnVal);
+} else {
+    system($hostCommand, $returnVal);
+}
+
+if (!$detached && (!$containerWasRunning || $returnVal !== 0) && isContainerExists($containerName)) {
+    system($downCommand);
+}
+
+exit($returnVal);
