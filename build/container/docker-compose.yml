@@ -1,0 +1,10 @@
+version: '3.2'
+
+services:
+  app:
+    image: hgraca/explicit-architecture:app.sfn.base
+    container_name: app.sfn.base
+    working_dir: /opt/app
+    build:
+      context: ../../
+      dockerfile: ./build/container/app.base.dockerfile

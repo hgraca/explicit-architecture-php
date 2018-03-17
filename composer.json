@@ -27,6 +27,7 @@
         "symfony/twig-bundle": "^4.0",
         "symfony/validator": "^4.0",
         "symfony/yaml": "^4.0",
+        "symfony/web-server-bundle": "^4.0",
         "twig/extensions": "^1.5",
         "white-october/pagerfanta-bundle": "^1.1"
     },
@@ -41,8 +42,7 @@
         "symfony/dotenv": "^4.0",
         "symfony/phpunit-bridge": "^4.0",
         "symfony/stopwatch": "^4.0",
-        "symfony/web-profiler-bundle": "^4.0",
-        "symfony/web-server-bundle": "^4.0"
+        "symfony/web-profiler-bundle": "^4.0"
     },
     "config": {
         "platform": {

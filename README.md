@@ -61,5 +61,19 @@ $ cd symfony-demo/
 $ make test_cov
 ```
 
+Integration with PHPStorm
+-------------------------
+
+Integration with PHPStorm is straight forward.
+
+Configure the servers so we can debug a request made from the browser:
+![PHPStorm servers config](docs/IDE/PHPStorm/IDE_PHPSTORM_servers.png)
+
+Configure the CLI so we can run the tests:
+![PHPStorm CLI config](docs/IDE/PHPStorm/IDE_PHPSTORM_cli_interpreter.png)
+
+Configure the test run itself:
+![PHPStorm tests config](docs/IDE/PHPStorm/IDE_PHPSTORM_tests_run.png)
+
 [1]: https://symfony.com/doc/current/reference/requirements.html
 [2]: https://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html
