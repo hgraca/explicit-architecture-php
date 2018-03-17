@@ -7,11 +7,18 @@
 #
 # For example in a format like `subject-action-environment`, ie:
 #
+#   box-build-base:     # box is a generic term, we don't care if it is a virtual machine or a container
+#   box-build-ci:
+#   box-build-dev:
+#   box-push-base:
+#   box-push-prd:
 #   cs-fix:             # here we don't use the env because we only do it in dev
 #   dep-install:        # again, by default the env is dev
+#   dep-install-ci:
 #   dep-install-prd:
 #   dep-update:
 #   test:               # here we don't even have a subject because it is the app itself, and by default the env is dev
+#   test-ci:            # here we don't even have a subject because it is the app itself
 #
 
 # Mute all `make` specific output. Comment this out to get some debug information.
@@ -31,42 +38,75 @@ help:
 
 ########################################################################################################################
 
+CONTAINER_NAME_BASE="hgraca/explicit-architecture:app.sfn.base"
+CONTAINER_NAME_PRD="hgraca/explicit-architecture:app.sfn.prd"
 COVERAGE_REPORT_PATH="var/coverage.clover.xml"
 DB_PATH='var/data/blog.sqlite'
 
+box-build-base:
+	docker build -t ${CONTAINER_NAME_BASE} -f ./build/container/app.base.dockerfile .
+
+box-build-dev:
+	docker-compose -f build/container/dev/docker-compose.yml build --force-rm app
+
+box-build-prd:
+	docker-compose -f build/container/prd/docker-compose.yml build --force-rm app
+
+box-push-base:
+	docker push ${CONTAINER_NAME_BASE}
+
+box-push-prd:
+	docker push ${CONTAINER_NAME_PRD}
+
 #   We run this in tst ENV so that we never run it with xdebug on
 cs-fix:
-	php vendor/bin/php-cs-fixer fix --verbose
+	ENV='tst' ./bin/run php vendor/bin/php-cs-fixer fix --verbose
 
 db-setup:
-	mkdir -p var/data
+	ENV='dev' ./bin/run make db-setup-guest
+
+db-setup-guest:
+	mkdir -p /opt/app/var/data
 	php bin/console doctrine:database:drop -n --force
 	php bin/console doctrine:database:create -n
 	php bin/console doctrine:schema:create -n
 	php bin/console doctrine:fixtures:load -n
 
-dep-clearcache:
+dep-clearcache-guest:
 	composer clearcache
 
 dep-install:
-	composer install
+	ENV='dev' ./bin/run composer install
 
-dep-install-prd:
+#   We use this only when building the box used in PRD
+dep-install-prd-guest:
 	composer install --no-dev --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
 
 dep-update:
-	composer update
+	ENV='dev' ./bin/run composer update
+
+shell:
+	docker exec -it app.sfn.dev sh
 
 test:
-	$(MAKE) db-setup
-	php vendor/bin/phpunit
+	ENV='tst' ./bin/run
+	ENV='tst' ./bin/run make db-setup-guest
+	ENV='tst' ./bin/run php vendor/bin/phpunit
 	$(MAKE) cs-fix
+	ENV='tst' ./bin/stop
 
 #   We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
 #   Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
 test_cov:
-	phpdbg -qrr vendor/bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
+	ENV='tst' ./bin/run phpdbg -qrr vendor/bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
 
 up:
 	if [ ! -f ${DB_PATH} ]; then $(MAKE) db-setup; fi
-	php bin/console server:run 0.0.0.0:8000
+	$(eval UP=ENV=dev docker-compose -f build/container/dev/docker-compose.yml up -t 0)
+	$(eval DOWN=ENV=dev docker-compose -f build/container/dev/docker-compose.yml down -t 0)
+	- bash -c "trap '${DOWN}' EXIT; ${UP}"
+
+up-prd:
+	$(eval UP=ENV=prd docker-compose -f build/container/prd/docker-compose.yml up -t 0)
+	$(eval DOWN=ENV=prd docker-compose -f build/container/prd/docker-compose.yml down -t 0)
+	- bash -c "trap '${DOWN}' EXIT; ${UP}"
