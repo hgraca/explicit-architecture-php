@@ -32,6 +32,15 @@ build:
       -
         command: bash <(curl -s https://codecov.io/bash)
 
+  # Used for deployment.
+  # Will only be executed if all tests succeeded.
+  # If run in parallel, will be executed in the container where tests finish last.
+  deployment:
+    -
+      branch: acc
+      commands:
+        - heroku container:push hgraca/explicit-architecture:app.sfn.prd --app explicit-arch-sfn-acc
+
 filter:
   paths:
     - "src/"
