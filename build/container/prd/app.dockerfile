@@ -31,6 +31,6 @@ RUN make dep-install-prd-guest && \
     chmod -R 777 /opt/app/var && \
     make dep-clearcache-guest
 
-EXPOSE 8000
-
-CMD ["php", "bin/console", "server:run", "0.0.0.0:8000"]
+# Heroku starts the app and assigns a random port to it. We need to make our app listen to that random port,
+# so we can't just use the usual exec php command.
+CMD ./bin/up.sh
