@@ -101,6 +101,12 @@ dep-install-prd-guest:
 dep-update:
 	ENV='dev' ./bin/run composer update
 
+deploy_stg-ci:
+	bin/deploy staging ${SCRUTINIZER_BRANCH}
+
+deploy_prd-ci:
+	bin/deploy production ${SCRUTINIZER_BRANCH}
+
 shell:
 	docker exec -it app.sfn.dev sh
 
