@@ -32,6 +32,15 @@ build:
       -
         command: bash <(curl -s https://codecov.io/bash)
 
+  # Used for deployment.
+  # Will only be executed if all tests succeeded.
+  # If run in parallel, will be executed in the container where tests finish last.
+  deployment:
+    - commands:
+        - make deploy_stg-ci
+    - commands:
+        - make deploy_prd-ci
+
 filter:
   paths:
     - "src/"
