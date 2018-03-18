@@ -28,6 +28,17 @@ build:
           format: php-clover
       - command: make test_cov-publish
 
+  # Used for deployment.
+  # Will only be executed if all tests succeeded.
+  # If run in parallel, will be executed in the container where tests finish last.
+  deployment:
+    - branch: stg-*
+      commands:
+        - make deploy_stg-ci
+    - branch: master
+      commands:
+        - make deploy_prd-ci
+
 filter:
   paths:
     - "src/"
