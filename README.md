@@ -31,7 +31,14 @@ browser at <http://localhost:8000>:
 
 ```bash
 $ cd symfony-demo/
-$ php bin/console server:run
+$ make up
+```
+
+To see all commands available run:
+
+```bash
+$ cd symfony-demo/
+$ make
 ```
 
 Alternatively, you can [configure a fully-featured web server][2] like Nginx
@@ -44,7 +51,14 @@ Execute this command to run tests:
 
 ```bash
 $ cd symfony-demo/
-$ ./vendor/bin/phpunit
+$ make test
+```
+
+Or this command to run tests and get the coverage:
+
+```bash
+$ cd symfony-demo/
+$ make test_cov
 ```
 
 [1]: https://symfony.com/doc/current/reference/requirements.html
