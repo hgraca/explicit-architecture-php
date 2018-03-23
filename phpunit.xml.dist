@@ -30,7 +30,15 @@
         </testsuite>
     </testsuites>
 
+    <filter>
+        <!-- Perform code coverage PHP for files in these folders, including the files not run. -->
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+
     <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
         <!-- it begins a database transaction before every testcase and rolls it back after
              the test finished, so tests can manipulate the database without affecting other tests -->
         <listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
