@@ -1,0 +1,29 @@
+# Makefile.custom
+#
+# This file contains the custom commands and/or aliases.
+#
+# To use it, copy/paste this file with the name Makefile.custom and add commands as you wish.
+# This file is in .gitignore, so it will not be committed and is specific to you.
+#
+
+# Mute all `make` specific output. Comment this out to get some debug information.
+.SILENT:
+
+# make commands be run with `bash` instead of the default `sh`
+SHELL='/bin/bash'
+
+# .DEFAULT: If command does not exist in this makefile
+# default:  If no command was specified:
+.DEFAULT default:
+	if [ "$@" != "" ]; then echo "Command '$@' not found."; fi;
+	$(MAKE) help                        # goes to the main Makefile
+	$(MAKE) -f Makefile.custom help     # goes to this Makefile
+	if [ "$@" != "" ]; then exit 2; fi;
+
+help:
+	@echo
+	@echo "Available custom commands:"
+	@grep '^[^#[:space:]].*:' Makefile.custom | grep -v '^help' | grep -v '^default' | grep -v '^\.' | grep -v '=' | grep -v '^_' | sed 's/://' | xargs -n 1 echo ' -'
+
+########################################################################################################################
+
