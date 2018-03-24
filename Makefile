@@ -94,10 +94,11 @@ dep-update:
 
 deploy_stg-ci:
 #   Only deploy to STG it it's a PR to master
-	if [ ! $SCRUTINIZER_PR_NUMBER ] || [ "${SCRUTINIZER_BRANCH}" != 'master' ]; then \
-	    exit 0; \
+	if [ ! -z $SCRUTINIZER_PR_NUMBER ] || [ "${SCRUTINIZER_BRANCH}" != 'master' ]; then \
+	    echo "It's not a PR to master. Exiting..." \
+	    exit 1; \
 	fi
-#   If the app still doesn't exist in Heroku:
+#   If the app still doesn't exist in Heroku, create it and put it in the pipeline staging:
 	heroku apps:info ${SCRUTINIZER_BRANCH} > /dev/null 2>&1; \
 	if [ "$$?" != "0" ]; then \
 	    heroku container:login; \
@@ -118,8 +119,23 @@ deploy_stg-ci:
 deploy_prd-ci:
 #   Only deploy to PRD it it's a merge into master
 	if [ $SCRUTINIZER_PR_NUMBER ] || [ "${SCRUTINIZER_BRANCH}" != 'master' ]; then \
-	    exit 0; \
+	    echo "It's not a merge to master. Exiting..." \
+	    exit 1; \
 	fi
+#   If the app still doesn't exist in Heroku, create it and put it in the pipeline production:
+	heroku apps:info ${SCRUTINIZER_BRANCH} > /dev/null 2>&1; \
+	if [ "$$?" != "0" ]; then \
+	    heroku container:login; \
+	    heroku create ${SCRUTINIZER_BRANCH} --region eu; \
+	    heroku pipelines:add ppln-explicit-arch-php-sfn -a ${SCRUTINIZER_BRANCH} -s production; \
+	fi
+	heroku config:set -a ${SCRUTINIZER_BRANCH} \
+	    APP_DEBUG=${PRD_APP_DEBUG} \
+	    APP_ENV=${PRD_APP_ENV} \
+	    APP_SECRET=${PRD_APP_SECRET} \
+	    DATABASE_URL=${PRD_DATABASE_URL} \
+	    ENV=${PRD_ENV} \
+	    MAILER_URL=${PRD_DATABASE_URL}
 	docker login --username=_ --password=${HEROKU_TOKEN} registry.heroku.com
 	docker tag hgraca/explicit-architecture:app.sfn.prd registry.heroku.com/explicit-arch-sfn-prd/web
 	docker push registry.heroku.com/explicit-arch-sfn-prd/web
