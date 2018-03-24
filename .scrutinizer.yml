@@ -24,13 +24,11 @@ build:
 
   tests:
     override:
-      -
-        command: make test-ci
+      - command: make test-ci
         coverage:
           file: var/coverage.clover.xml
           format: php-clover
-      -
-        command: bash <(curl -s https://codecov.io/bash)
+      - command: bash <(curl -s https://codecov.io/bash)
 
   # Used for deployment.
   # Will only be executed if all tests succeeded.
