@@ -1,4 +1,3 @@
-/build/
 /node_modules/
 /var/*
 !/var/cache
@@ -15,16 +14,14 @@
 /public/build/fonts/glyphicons-*
 /public/build/images/glyphicons-*
 
+Makefile.custom
+
 ###> symfony/framework-bundle ###
 .env
 /public/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-
-###> symfony/phpunit-bridge ###
-/phpunit.xml
-###< symfony/phpunit-bridge ###
 
 ###> symfony/web-server-bundle ###
 .web-server-pid
@@ -34,3 +31,7 @@
 .php_cs
 .php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+###< phpunit/phpunit ###

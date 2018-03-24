@@ -22,7 +22,7 @@ use Pagerfanta\Pagerfanta;
  * This custom Doctrine repository contains some methods which are useful when
  * querying for blog post information.
  *
- * See https://symfony.com/doc/current/book/doctrine.html#custom-repository-classes
+ * See https://symfony.com/doc/current/doctrine/repository.html
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
@@ -94,7 +94,7 @@ class PostRepository extends ServiceEntityRepository
      */
     private function sanitizeSearchQuery(string $query): string
     {
-        return preg_replace('/[^[:alnum:] ]/', '', trim(preg_replace('/[[:space:]]+/', ' ', $query)));
+        return trim(preg_replace('/[[:space:]]+/', ' ', $query));
     }
 
     /**
@@ -102,7 +102,7 @@ class PostRepository extends ServiceEntityRepository
      */
     private function extractSearchTerms(string $searchQuery): array
     {
-        $terms = array_unique(explode(' ', mb_strtolower($searchQuery)));
+        $terms = array_unique(explode(' ', $searchQuery));
 
         return array_filter($terms, function ($term) {
             return 2 <= mb_strlen($term);

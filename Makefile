@@ -1,0 +1,179 @@
+# Makefile
+#
+# This file contains the commands most used in DEV, plus the ones used in CI and PRD environments.
+#
+# The commands are to be organized semantically and alphabetically, so that similar commands are nex to each other
+# and we can compare them and update them easily.
+#
+# For example in a format like `subject-action-environment`, ie:
+#
+#   box-build-base:     # box is a generic term, we don't care if it is a virtual machine or a container
+#   box-build-ci:
+#   box-build-dev:
+#   box-push-base:
+#   box-push-prd:
+#   cs-fix:             # here we don't use the env because we only do it in dev
+#   dep-install:        # again, by default the env is dev
+#   dep-install-ci:
+#   dep-install-prd:
+#   dep-update:
+#   test:               # here we don't even have a subject because it is the app itself, and by default the env is dev
+#   test-ci:            # here we don't even have a subject because it is the app itself
+#
+
+# Mute all `make` specific output. Comment this out to get some debug information.
+.SILENT:
+
+# .DEFAULT: If the command does not exist in this makefile
+# default:  If no command was specified
+.DEFAULT default:
+	if [ -f ./Makefile.custom ]; then $(MAKE) -f Makefile.custom "$@"; else $(MAKE) help; fi
+
+help:
+	@echo "Usage:"
+	@echo "     make [command]"
+	@echo
+	@echo "Available commands:"
+	@grep '^[^#[:space:]].*:' Makefile | grep -v '^default' | grep -v '^\.' | grep -v '=' | grep -v '^_' | sed 's/://' | xargs -n 1 echo ' -'
+
+########################################################################################################################
+
+CONTAINER_NAME_BASE="hgraca/explicit-architecture:app.sfn.base"
+CONTAINER_NAME_PRD="hgraca/explicit-architecture:app.sfn.prd"
+COVERAGE_REPORT_PATH="var/coverage.clover.xml"
+DB_PATH='var/data/blog.sqlite'
+
+box-build-base:
+	docker build -t ${CONTAINER_NAME_BASE} -f ./build/container/app.base.dockerfile .
+
+box-build-ci:
+	docker-compose -f build/container/ci/docker-compose.yml build --force-rm app
+
+box-build-dev:
+	docker-compose -f build/container/dev/docker-compose.yml build --force-rm app
+
+box-build-prd:
+	docker-compose -f build/container/prd/docker-compose.yml build --force-rm app
+
+box-push-base:
+	docker push ${CONTAINER_NAME_BASE}
+
+box-push-prd:
+	docker push ${CONTAINER_NAME_PRD}
+
+#   We run this in tst ENV so that we never run it with xdebug on
+cs-fix:
+	ENV='tst' ./bin/run php vendor/bin/php-cs-fixer fix --verbose
+
+db-setup:
+	ENV='dev' ./bin/run make db-setup-guest
+
+db-setup-guest:
+	mkdir -p /opt/app/var/data
+	php bin/console doctrine:database:drop -n --force
+	php bin/console doctrine:database:create -n
+	php bin/console doctrine:schema:create -n
+	php bin/console doctrine:fixtures:load -n
+
+dep-clearcache-guest:
+	composer clearcache
+
+dep-install:
+	ENV='dev' ./bin/run composer install
+
+#   We use this only when building the box used in the CI
+dep-install-ci-guest:
+	composer install --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
+
+#   We use this only when building the box used in PRD
+dep-install-prd-guest:
+	composer install --no-dev --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
+
+dep-update:
+	ENV='dev' ./bin/run composer update
+
+deploy_stg-ci:
+#   Only deploy to STG it it's a PR to master
+	if [ ! -z $SCRUTINIZER_PR_NUMBER ] || [ "${SCRUTINIZER_BRANCH}" != 'master' ]; then \
+	    echo "It's not a PR to master. Exiting..." \
+	    exit 1; \
+	fi
+#   If the app still doesn't exist in Heroku, create it and put it in the pipeline staging:
+	heroku apps:info ${SCRUTINIZER_BRANCH} > /dev/null 2>&1; \
+	if [ "$$?" != "0" ]; then \
+	    heroku container:login; \
+	    heroku create ${SCRUTINIZER_BRANCH} --region eu; \
+	    heroku pipelines:add ppln-explicit-arch-php-sfn -a ${SCRUTINIZER_BRANCH} -s staging; \
+	fi
+	heroku config:set -a ${SCRUTINIZER_BRANCH} \
+	    APP_DEBUG=${STG_APP_DEBUG} \
+	    APP_ENV=${STG_APP_ENV} \
+	    APP_SECRET=${STG_APP_SECRET} \
+	    DATABASE_URL=${STG_DATABASE_URL} \
+	    ENV=${STG_ENV} \
+	    MAILER_URL=${STG_DATABASE_URL}
+	docker login --username=_ --password=${HEROKU_TOKEN} registry.heroku.com
+	docker tag hgraca/explicit-architecture:app.sfn.prd registry.heroku.com/${SCRUTINIZER_BRANCH}/web
+	docker push registry.heroku.com/${SCRUTINIZER_BRANCH}/web
+
+deploy_prd-ci:
+#   Only deploy to PRD it it's a merge into master
+	if [ $SCRUTINIZER_PR_NUMBER ] || [ "${SCRUTINIZER_BRANCH}" != 'master' ]; then \
+	    echo "It's not a merge to master. Exiting..." \
+	    exit 1; \
+	fi
+#   If the app still doesn't exist in Heroku, create it and put it in the pipeline production:
+	heroku apps:info ${SCRUTINIZER_BRANCH} > /dev/null 2>&1; \
+	if [ "$$?" != "0" ]; then \
+	    heroku container:login; \
+	    heroku create ${SCRUTINIZER_BRANCH} --region eu; \
+	    heroku pipelines:add ppln-explicit-arch-php-sfn -a ${SCRUTINIZER_BRANCH} -s production; \
+	fi
+	heroku config:set -a ${SCRUTINIZER_BRANCH} \
+	    APP_DEBUG=${PRD_APP_DEBUG} \
+	    APP_ENV=${PRD_APP_ENV} \
+	    APP_SECRET=${PRD_APP_SECRET} \
+	    DATABASE_URL=${PRD_DATABASE_URL} \
+	    ENV=${PRD_ENV} \
+	    MAILER_URL=${PRD_DATABASE_URL}
+	docker login --username=_ --password=${HEROKU_TOKEN} registry.heroku.com
+	docker tag hgraca/explicit-architecture:app.sfn.prd registry.heroku.com/explicit-arch-sfn-prd/web
+	docker push registry.heroku.com/explicit-arch-sfn-prd/web
+
+shell:
+	docker exec -it app.sfn.dev sh
+
+test:
+	ENV='tst' ./bin/run
+	ENV='tst' ./bin/run make db-setup-guest
+	ENV='tst' ./bin/run php vendor/bin/phpunit
+	$(MAKE) cs-fix
+	ENV='tst' ./bin/stop
+
+test-ci:
+	$(MAKE) box-build-prd
+	ENV='ci' ./bin/run
+	ENV='ci' ./bin/run make db-setup-guest
+	ENV='ci' ./bin/run composer dumpautoload --optimize
+	ENV='ci' ./bin/run make test_cov-guest
+	docker exec -it app.sfn.ci cat ${COVERAGE_REPORT_PATH} > ${COVERAGE_REPORT_PATH}
+	ENV='ci' ./bin/run php vendor/bin/php-cs-fixer fix --verbose --dry-run
+
+test_cov:
+	ENV='tst' ./bin/run make test_cov-guest
+
+# We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
+# Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
+test_cov-guest:
+	phpdbg -qrr vendor/bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
+
+up:
+	if [ ! -f ${DB_PATH} ]; then $(MAKE) db-setup; fi
+	$(eval UP=ENV=dev docker-compose -f build/container/dev/docker-compose.yml up -t 0)
+	$(eval DOWN=ENV=dev docker-compose -f build/container/dev/docker-compose.yml down -t 0)
+	- bash -c "trap '${DOWN}' EXIT; ${UP}"
+
+up-prd:
+	$(eval UP=ENV=prd docker-compose -f build/container/prd/docker-compose.yml up -t 0)
+	$(eval DOWN=ENV=prd docker-compose -f build/container/prd/docker-compose.yml down -t 0)
+	- bash -c "trap '${DOWN}' EXIT; ${UP}"

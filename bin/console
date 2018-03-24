@@ -15,13 +15,13 @@ if (!class_exists(Application::class)) {
     throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
 }
 
-if (!isset($_SERVER['APP_ENV'])) {
+if (!isset($_ENV['APP_ENV'])) {
     (new Dotenv())->load(__DIR__.'/../.env');
 }
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'dev');
-$debug = ($_SERVER['APP_DEBUG'] ?? ('prod' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
+$env = $input->getParameterOption(['--env', '-e'], $_ENV['APP_ENV'] ?? 'dev');
+$debug = ($_ENV['APP_DEBUG'] ?? ('prod' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
 
 if ($debug) {
     umask(0000);
