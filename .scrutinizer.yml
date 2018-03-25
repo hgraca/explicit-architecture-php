@@ -1,0 +1,45 @@
+build:
+
+  environment:
+    variables:
+      ENV: 'ci'
+    mysql: false
+    postgresql: false
+    redis: false
+    rabbitmq: false
+    php:
+      version: 7.1
+      ini:
+        'date.timezone': 'Europe/Amsterdam'
+    docker:
+      remote_engine: true
+      cache:
+        images:
+          - 'php:7.1-alpine'
+          - 'hgraca/explicit-architecture:app.sfn.base'
+
+  dependencies:
+    override:
+      - true # so scrutinizer does't install the dependencies, which we don't need because they are inside the container
+
+  tests:
+    override:
+      - command: make test-ci
+        coverage:
+          file: var/coverage.clover.xml
+          format: php-clover
+
+filter:
+  paths:
+    - "src/"
+  dependency_paths:
+    - "vendor/"
+
+build_failure_conditions:
+  - 'issues.new.exists'
+  - 'project.metric_change("scrutinizer.test_coverage", < -0.05)'
+
+checks:
+  php:
+    code_rating: true
+    duplication: true

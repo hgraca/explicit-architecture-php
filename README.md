@@ -1,5 +1,13 @@
 Symfony Demo Application
 ========================
+[![Author][Author]](https://www.herbertograca.com)
+[![Software License][License]](LICENSE)
+
+[![Build Status][Build]](https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/build-status/master)
+[![Scrutinizer Code Quality][Score]](https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/?branch=master)
+[![Coverage Status][Coverage]](https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/code-structure)
+
+[![Code Intelligence Status][CodeInt]](https://scrutinizer-ci.com/code-intelligence)
 
 The "Symfony Demo Application" is a reference application created to show how
 to develop Symfony applications following the recommended best practices.
@@ -77,3 +85,11 @@ Configure the test run itself:
 
 [1]: https://symfony.com/doc/current/reference/requirements.html
 [2]: https://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html
+
+[Author]: http://img.shields.io/badge/author-@hgraca-blue.svg?style=flat-square
+[License]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+
+[Build]: https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/badges/build.png?b=master
+[Score]: https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/badges/quality-score.png?b=master
+[Coverage]: https://img.shields.io/scrutinizer/coverage/g/hgraca/explicit-architecture-php.svg?style=flat-square
+[CodeInt]: https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/badges/code-intelligence.svg?b=master

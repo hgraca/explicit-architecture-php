@@ -52,6 +52,9 @@ DB_PATH='var/data/blog.sqlite'
 box-build-base:
 	docker build -t ${CONTAINER_NAME_BASE} -f ./build/container/app.base.dockerfile .
 
+box-build-ci:
+	docker-compose -f build/container/ci/docker-compose.yml build --force-rm app
+
 box-build-dev:
 	docker-compose -f build/container/dev/docker-compose.yml build --force-rm app
 
@@ -84,6 +87,10 @@ dep-clearcache-guest:
 dep-install:
 	ENV='dev' ./bin/run composer install
 
+#   We use this only when building the box used in the CI
+dep-install-ci-guest:
+	composer install --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
+
 #   We use this only when building the box used in PRD
 dep-install-prd-guest:
 	composer install --no-dev --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
@@ -102,10 +109,22 @@ test:
 	$(MAKE) cs-fix
 	ENV='tst' ./bin/stop
 
-#   We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
-#   Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
+test-ci:
+	$(MAKE) box-build-prd
+	$(MAKE) box-build-ci  # This is always run by default in the Ci, but having it here makes it possible to run in dev
+	ENV='ci' ./bin/run
+	ENV='ci' ./bin/run make db-setup-guest
+	ENV='ci' ./bin/run make test_cov-guest
+	docker exec -it app.sfn.ci cat ${COVERAGE_REPORT_PATH} > ${COVERAGE_REPORT_PATH}
+	ENV='ci' ./bin/run php vendor/bin/php-cs-fixer fix --verbose --dry-run
+
 test_cov:
-	ENV='tst' ./bin/run phpdbg -qrr vendor/bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
+	ENV='tst' ./bin/run make test_cov-guest
+
+# We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
+# Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
+test_cov-guest:
+	phpdbg -qrr vendor/bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
 
 up:
 	if [ ! -f ${DB_PATH} ]; then $(MAKE) db-setup; fi
