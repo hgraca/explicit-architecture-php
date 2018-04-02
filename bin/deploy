@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+if [ "$#" == '0' ] || [ "$#" -gt "2" ] || [ "$1" == "--help" ] || [  "$1" == "-h"  ]; then
+    echo 'Usage:'
+    echo "      ${0} <stage> <heroku_app_name>"
+    echo 'Example:'
+    echo "      ${0} staging some-branch-name-that-will-be-the-url"
+    echo "      ${0} production some-branch-name-that-will-be-the-url"
+    echo 'Required environment variables:'
+    echo "      ENV, PRD_APP_DEBUG, PRD_APP_ENV, PRD_APP_SECRET, PRD_DATABASE_URL, PRD_ENV, PRD_DATABASE_URL"
+    echo "      ENV, STG_APP_DEBUG, STG_APP_ENV, STG_APP_SECRET, STG_DATABASE_URL, STG_ENV, STG_DATABASE_URL"
+    exit 0
+fi
+
+STAGE=${1}    # 'staging'|'production'
+APP_NAME=${2} # ${SCRUTINIZER_BRANCH}
+PIPELINE='ppln-explicit-arch-php-sfn'
+
+if [ "${ENV}" != 'ci' ]; then
+    echo 'Can only deploy from the `ci` environment.'
+    exit 1
+fi
+
+if [ "${STAGE}" == 'production' ]; then
+    APP_DEBUG=${PRD_APP_DEBUG}
+    APP_ENV=${PRD_APP_ENV}
+    APP_SECRET=${PRD_APP_SECRET}
+    DATABASE_URL=${PRD_DATABASE_URL}
+    ENV=${PRD_ENV}
+    MAILER_URL=${PRD_DATABASE_URL}
+elif [ "${STAGE}" == 'staging' ]; then
+    APP_DEBUG=${STG_APP_DEBUG}
+    APP_ENV=${STG_APP_ENV}
+    APP_SECRET=${STG_APP_SECRET}
+    DATABASE_URL=${STG_DATABASE_URL}
+    ENV=${STG_ENV}
+    MAILER_URL=${STG_DATABASE_URL}
+else
+    echo 'Can only deploy to `production` or `staging`.'
+    exit 2
+fi
+
+#   If the app still doesn't exist in Heroku, create it and put it in the pipeline:
+heroku apps:info ${APP_NAME} > /dev/null 2>&1
+if [ "$?" != "0" ]; then
+    heroku container:login
+    heroku create ${APP_NAME} --region eu
+    heroku pipelines | grep ${PIPELINE}
+    if [ "$?" != "0" ]; then
+        #   If the pipeline exists, add the app to it
+        heroku pipelines:add ${PIPELINE} -a ${APP_NAME} -s ${STAGE}
+    else
+        #   If the pipeline doesn't exist, create it and add the app to it
+        heroku pipelines:create ${PIPELINE} -a ${APP_NAME} -s ${STAGE}
+    fi
+fi
+
+#   Set or update the environment variables in the heroku app
+heroku config:set -a ${APP_NAME} \
+    APP_DEBUG=${APP_DEBUG} \
+    APP_ENV=${APP_ENV} \
+    APP_SECRET=${APP_SECRET} \
+    DATABASE_URL=${DATABASE_URL} \
+    ENV=${ENV} \
+    MAILER_URL=${DATABASE_URL}
+
+#   Push the production image to the heroku app
+docker login --username=_ --password=${HEROKU_TOKEN} registry.heroku.com
+docker tag hgraca/explicit-architecture:app.sfn.prd registry.heroku.com/${APP_NAME}/web
+docker push registry.heroku.com/${APP_NAME}/web
