@@ -37,7 +37,7 @@ build:
     - branch: stg-*
       commands:
         - make deploy_stg-ci
-    - branch: master
+    - branch: master-tst
       commands:
         - make deploy_prd-ci
 
