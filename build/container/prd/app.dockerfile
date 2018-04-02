@@ -7,13 +7,13 @@ ENV ENV='prd'
 
 COPY ./build/container/prd/php.ini /usr/local/etc/php/php.ini
 
-COPY ./assets       /opt/app
-COPY ./bin          /opt/app
-COPY ./config       /opt/app
-COPY ./public       /opt/app
-COPY ./src          /opt/app
-COPY ./templates    /opt/app
-COPY ./translations /opt/app
+COPY ./assets       /opt/app/assets
+COPY ./bin          /opt/app/bin
+COPY ./config       /opt/app/config
+COPY ./public       /opt/app/public
+COPY ./src          /opt/app/src
+COPY ./templates    /opt/app/templates
+COPY ./translations /opt/app/translations
 
 COPY ./composer.json        /opt/app
 COPY ./composer.lock        /opt/app
