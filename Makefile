@@ -24,9 +24,6 @@
 # Mute all `make` specific output. Comment this out to get some debug information.
 .SILENT:
 
-# make commands be run with `bash` instead of the default `sh`
-SHELL='/bin/bash'
-
 # .DEFAULT: If the command does not exist in this makefile
 # default:  If no command was specified
 .DEFAULT default:
