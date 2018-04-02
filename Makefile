@@ -117,9 +117,9 @@ test:
 
 test-ci:
 	$(MAKE) box-build-prd
+	$(MAKE) box-build-ci  # This is always run by default in the Ci, but having it here makes it possible to run in dev
 	ENV='ci' ./bin/run
 	ENV='ci' ./bin/run make db-setup-guest
-	ENV='ci' ./bin/run composer dumpautoload --optimize
 	ENV='ci' ./bin/run make test_cov-guest
 	docker exec -it app.sfn.ci cat ${COVERAGE_REPORT_PATH} > ${COVERAGE_REPORT_PATH}
 	ENV='ci' ./bin/run php vendor/bin/php-cs-fixer fix --verbose --dry-run

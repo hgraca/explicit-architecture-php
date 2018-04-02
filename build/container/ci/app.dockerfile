@@ -2,7 +2,10 @@ FROM hgraca/explicit-architecture:app.sfn.prd
 
 ENV ENV="ci"
 
-COPY ./tests /opt/app
+COPY ./tests /opt/app/tests
+
+COPY ./phpunit.xml.dist /opt/app/
+COPY ./.php_cs.dist     /opt/app/
 
 WORKDIR /opt/app
 
