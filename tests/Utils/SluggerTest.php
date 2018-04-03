@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Utils;
+namespace Acme\App\Tests\Utils;
 
-use App\Utils\Slugger;
+use Acme\App\Utils\Slugger;
 use PHPUnit\Framework\TestCase;
 
 /**

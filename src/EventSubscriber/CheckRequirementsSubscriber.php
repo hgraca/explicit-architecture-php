@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\EventSubscriber;
+namespace Acme\App\EventSubscriber;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\ORM\EntityManagerInterface;

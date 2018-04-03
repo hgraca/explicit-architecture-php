@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace App\EventSubscriber;
+namespace Acme\App\EventSubscriber;
 
-use App\Entity\Comment;
-use App\Events;
+use Acme\App\Entity\Comment;
+use Acme\App\Events;
 use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

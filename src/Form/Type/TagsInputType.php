@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Form\Type;
+namespace Acme\App\Form\Type;
 
-use App\Entity\Tag;
-use App\Form\DataTransformer\TagArrayToStringTransformer;
+use Acme\App\Entity\Tag;
+use Acme\App\Form\DataTransformer\TagArrayToStringTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;

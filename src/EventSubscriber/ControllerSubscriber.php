@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\EventSubscriber;
+namespace Acme\App\EventSubscriber;
 
-use App\Twig\SourceCodeExtension;
+use Acme\App\Twig\SourceCodeExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

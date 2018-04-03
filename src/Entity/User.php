@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Entity;
+namespace Acme\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Acme\App\Repository\UserRepository")
  * @ORM\Table(name="symfony_demo_user")
  *
  * Defines the properties of the User entity to represent the application users.

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Controller\Admin;
+namespace Acme\App\Controller\Admin;
 
-use App\Entity\Post;
-use App\Form\PostType;
-use App\Repository\PostRepository;
-use App\Utils\Slugger;
+use Acme\App\Entity\Post;
+use Acme\App\Form\PostType;
+use Acme\App\Repository\PostRepository;
+use Acme\App\Utils\Slugger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

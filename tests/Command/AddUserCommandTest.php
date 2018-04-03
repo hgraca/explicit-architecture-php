@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Command;
+namespace Acme\App\Tests\Command;
 
-use App\Command\AddUserCommand;
-use App\Entity\User;
-use App\Utils\Validator;
+use Acme\App\Command\AddUserCommand;
+use Acme\App\Entity\User;
+use Acme\App\Utils\Validator;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

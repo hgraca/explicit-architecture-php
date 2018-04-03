@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Form;
+namespace Acme\App\Form;
 
-use App\Entity\Post;
-use App\Form\Type\DateTimePickerType;
-use App\Form\Type\TagsInputType;
+use Acme\App\Entity\Post;
+use Acme\App\Form\Type\DateTimePickerType;
+use Acme\App\Form\Type\TagsInputType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;

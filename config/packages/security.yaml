@@ -2,7 +2,7 @@ security:
     encoders:
         # Our user class and the algorithm we'll use to encode passwords
         # https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
-        App\Entity\User: bcrypt
+        Acme\App\Entity\User: bcrypt
 
     providers:
         # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
@@ -10,7 +10,7 @@ security:
         # To see the users at src/App/DataFixtures/ORM/LoadFixtures.php
         # To load users from somewhere else: https://symfony.com/doc/current/security/custom_provider.html
         database_users:
-            entity: { class: App\Entity\User, property: username }
+            entity: { class: Acme\App\Entity\User, property: username }
 
     # https://symfony.com/doc/current/security.html#initial-security-yml-setup-authentication
     firewalls:

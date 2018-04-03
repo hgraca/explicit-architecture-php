@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Form;
+namespace Acme\App\Form;
 
-use App\Entity\Comment;
+use Acme\App\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

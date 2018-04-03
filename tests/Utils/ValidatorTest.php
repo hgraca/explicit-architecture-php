@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Utils;
+namespace Acme\App\Tests\Utils;
 
-use App\Utils\Validator;
+use Acme\App\Utils\Validator;
 use PHPUnit\Framework\TestCase;
 
 class ValidatorTest extends TestCase

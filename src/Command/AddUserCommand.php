@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Command;
+namespace Acme\App\Command;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Utils\Validator;
+use Acme\App\Entity\User;
+use Acme\App\Repository\UserRepository;
+use Acme\App\Utils\Validator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;

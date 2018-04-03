@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use App\Kernel;
+use Acme\App\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;

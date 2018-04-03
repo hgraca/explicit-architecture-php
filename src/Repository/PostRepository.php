@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Repository;
+namespace Acme\App\Repository;
 
-use App\Entity\Post;
+use Acme\App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;

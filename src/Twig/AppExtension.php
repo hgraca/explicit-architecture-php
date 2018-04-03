@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Twig;
+namespace Acme\App\Twig;
 
-use App\Utils\Markdown;
+use Acme\App\Utils\Markdown;
 use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Controller;
+namespace Acme\App\Controller;
 
-use App\Entity\Comment;
-use App\Entity\Post;
-use App\Events;
-use App\Form\CommentType;
-use App\Repository\PostRepository;
+use Acme\App\Entity\Comment;
+use Acme\App\Entity\Post;
+use Acme\App\Events;
+use Acme\App\Form\CommentType;
+use Acme\App\Repository\PostRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

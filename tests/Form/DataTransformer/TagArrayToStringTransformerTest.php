@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Form\DataTransformer;
+namespace Acme\App\Tests\Form\DataTransformer;
 
-use App\Entity\Tag;
-use App\Form\DataTransformer\TagArrayToStringTransformer;
+use Acme\App\Entity\Tag;
+use Acme\App\Form\DataTransformer\TagArrayToStringTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
