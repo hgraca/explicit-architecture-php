@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Security;
+namespace Acme\App\Security;
 
-use App\Entity\Post;
-use App\Entity\User;
+use Acme\App\Entity\Post;
+use Acme\App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

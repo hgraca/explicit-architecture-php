@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Twig;
+namespace Acme\App\Twig;
 
 use ReflectionFunction;
 use ReflectionMethod;

@@ -55,12 +55,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Acme\\App\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Acme\\App\\Tests\\": "tests/"
         }
     },
     "scripts": {

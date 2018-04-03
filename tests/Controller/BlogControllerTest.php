@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Controller;
+namespace Acme\App\Tests\Controller;
 
-use App\Entity\Post;
+use Acme\App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**

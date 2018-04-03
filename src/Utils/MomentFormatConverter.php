@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Utils;
+namespace Acme\App\Utils;
 
 /**
  * This class is used to convert PHP date format to moment.js format.

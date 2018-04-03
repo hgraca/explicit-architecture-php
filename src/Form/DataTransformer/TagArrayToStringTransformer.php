@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Form\DataTransformer;
+namespace Acme\App\Form\DataTransformer;
 
-use App\Entity\Tag;
+use Acme\App\Entity\Tag;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -71,7 +71,7 @@ class TagArrayToStringTransformer implements DataTransformerInterface
             $tags[] = $tag;
 
             // There's no need to persist these new tags because Doctrine does that automatically
-            // thanks to the cascade={"persist"} option in the App\Entity\Post::$tags property.
+            // thanks to the cascade={"persist"} option in the Acme\App\Entity\Post::$tags property.
         }
 
         // Return an array of tags to transform them back into a Doctrine Collection.

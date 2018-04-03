@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace App\DataFixtures;
+namespace Acme\App\DataFixtures;
 
-use App\Entity\Comment;
-use App\Entity\Post;
-use App\Entity\Tag;
-use App\Entity\User;
-use App\Utils\Slugger;
+use Acme\App\Entity\Comment;
+use Acme\App\Entity\Post;
+use Acme\App\Entity\Tag;
+use Acme\App\Entity\User;
+use Acme\App\Utils\Slugger;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

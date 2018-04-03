@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Utils;
+namespace Acme\App\Utils;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 
