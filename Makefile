@@ -59,6 +59,7 @@ box-build-dev:
 	docker-compose -f build/container/dev/docker-compose.yml build --force-rm app
 
 box-build-prd:
+	make db-setup-guest
 	docker-compose -f build/container/prd/docker-compose.yml build --force-rm app
 
 box-push-base:
@@ -120,13 +121,13 @@ test-acc:
 	- ENV='tst' ./bin/stop # Just in case some container is left over stopped, as is the case after PHPStorm runs tests
 	ENV='tst' ./bin/run make db-setup-guest
 	ENV='tst' docker-compose -f build/container/tst/docker-compose.yml up -d -t 0
-	php vendor/bin/codecept run acceptance
+	php vendor/bin/codecept run -g acceptance
 	ENV='tst' ./bin/stop
 
 test-acc-ci:
 	- ENV='prd' ./bin/stop # Just in case some container is left over stopped, as is the case after PHPStorm runs tests
 	ENV='prd' docker-compose -f build/container/prd/docker-compose.yml up -d -t 0
-	php vendor/bin/codecept run acceptance
+	php vendor/bin/codecept run -g acceptance
 	ENV='prd' ./bin/stop
 
 test-ci:

@@ -37,6 +37,4 @@ Makefile.custom
 .php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-###< phpunit/phpunit ###
+!**/.gitkeep

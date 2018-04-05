@@ -5,7 +5,7 @@ paths:
     tests: tests
     output: var/acc_tests/output
     data: tests/Fixture
-    support: tests/_support
+    support: tests/Framework/Acceptance
     envs: tests/_envs
 actor_suffix: Tester
 extensions:

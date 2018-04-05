@@ -16,9 +16,15 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
         mappings:
-            App:
+            Acme\App\Core\Component\Blog:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'Acme\App\Entity'
-                alias: App
+                dir: '%kernel.project_dir%/src/Core/Component/Blog/Domain/Entity'
+                prefix: 'Acme\App\Core\Component\Blog\Domain\Entity'
+                alias: Blog
+            Acme\App\Core\Component\User:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Core/Component/User/Domain/Entity'
+                prefix: 'Acme\App\Core\Component\User\Domain\Entity'
+                alias: User
