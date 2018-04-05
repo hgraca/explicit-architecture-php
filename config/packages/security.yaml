@@ -2,15 +2,15 @@ security:
     encoders:
         # Our user class and the algorithm we'll use to encode passwords
         # https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
-        Acme\App\Entity\User: bcrypt
+        Acme\App\Core\Component\User\Domain\Entity\User: bcrypt
 
     providers:
         # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
         # In this example, users are stored via Doctrine in the database
-        # To see the users at src/App/DataFixtures/ORM/LoadFixtures.php
+        # To see the users at tests/Build/DataFixtures/ORM/LoadFixtures.php
         # To load users from somewhere else: https://symfony.com/doc/current/security/custom_provider.html
         database_users:
-            entity: { class: Acme\App\Entity\User, property: username }
+            entity: { class: Acme\App\Core\Component\User\Domain\Entity\User, property: username }
 
     # https://symfony.com/doc/current/security.html#initial-security-yml-setup-authentication
     firewalls:

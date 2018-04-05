@@ -56,12 +56,15 @@
     },
     "autoload": {
         "psr-4": {
-            "Acme\\App\\": "src/"
+            "Acme\\App\\Build\\": "build/",
+            "Acme\\App\\": "src/",
+            "Acme\\PhpExtension\\": "lib/php-extension/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Acme\\App\\Tests\\": "tests/"
+            "Acme\\App\\Test\\": "tests/",
+            "Acme\\PhpExtension\\Test\\": "lib/php-extension/tests/"
         }
     },
     "scripts": {

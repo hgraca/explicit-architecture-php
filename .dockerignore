@@ -1,3 +1,4 @@
 no-vcs
 var
+!var/data/blog.sqlite
 .env

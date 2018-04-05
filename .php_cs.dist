@@ -13,12 +13,9 @@ file that was distributed with this source code.
 COMMENT;
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
-    ->exclude('config')
-    ->exclude('var')
-    ->exclude('public/bundles')
-    ->exclude('public/build')
+    ->in(['src', 'tests', 'lib', 'build/Migration', 'build/Fixture'])
     ->exclude('tests/_support/_generated')
+    ->name('*.php')
 ;
 
 return PhpCsFixer\Config::create()
