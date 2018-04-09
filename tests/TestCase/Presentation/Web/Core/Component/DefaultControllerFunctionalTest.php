@@ -62,7 +62,7 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
         $blogPost = $this->findPostById(1);
         $this->getClient()->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
 
-        $this->assertSame(Response::HTTP_OK, $this->getClient()->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_OK, $this->getClient());
     }
 
     /**
@@ -76,11 +76,10 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
     {
         $this->getClient()->request('GET', $url);
 
-        $response = $this->getClient()->getResponse();
-        $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_FOUND, $this->getClient());
         $this->assertSame(
             'http://localhost/en/login',
-            $response->getTargetUrl(),
+            $this->getClient()->getResponse()->getTargetUrl(),
             sprintf('The %s secure URL redirects to the login form.', $url)
         );
     }
