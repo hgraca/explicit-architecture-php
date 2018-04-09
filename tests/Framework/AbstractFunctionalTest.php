@@ -50,4 +50,17 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
     {
         return $this->getClient()->getContainer();
     }
+
+    protected static function assertResponseStatusCode(int $expectedResponseCode, Client $client): void
+    {
+        $response = $client->getResponse();
+
+        self::assertSame(
+            $expectedResponseCode,
+            $actualStatusCode = $response->getStatusCode(),
+            "The response status code doesn't match the expected value. \n"
+            . "Expected $expectedResponseCode and got $actualStatusCode. \n"
+            . "The response title was: '" . trim($client->getCrawler()->filterXPath('//title')->text()) . "'"
+        );
+    }
 }

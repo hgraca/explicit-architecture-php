@@ -49,7 +49,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         ]);
 
         $client->request($httpMethod, $url);
-        $this->assertSame(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $client);
     }
 
     public function getUrlsForRegularUsers()
@@ -65,7 +65,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         ]);
 
         $crawler = $client->request('GET', '/en/admin/posts');
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_OK, $client);
 
         $this->assertGreaterThanOrEqual(
             1,
@@ -98,7 +98,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         ]);
         $client->submit($form);
 
-        $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_FOUND, $client);
 
         /** @var Post $post */
         $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->findOneBy([

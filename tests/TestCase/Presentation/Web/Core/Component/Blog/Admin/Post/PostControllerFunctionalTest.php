@@ -46,7 +46,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         ]);
 
         $client->request($httpMethod, $url);
-        $this->assertSame(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $client);
     }
 
     public function getUrlsForRegularUsers()
@@ -64,7 +64,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         ]);
         $client->request('GET', '/en/admin/posts/1');
 
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_OK, $client);
     }
 
     /**
@@ -87,7 +87,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         ]);
         $client->submit($form);
 
-        $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_FOUND, $client);
 
         /** @var Post $post */
         $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
@@ -109,7 +109,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         $crawler = $client->request('GET', '/en/admin/posts/1');
         $client->submit($crawler->filter('#delete-form')->form());
 
-        $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCode(Response::HTTP_FOUND, $client);
 
         $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
         $this->assertNull($post);
