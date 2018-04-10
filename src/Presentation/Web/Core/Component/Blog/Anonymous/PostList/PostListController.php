@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 
+use Acme\App\Core\Component\Blog\Application\Query\FindPostsBySearchRequestQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
@@ -54,18 +55,25 @@ class PostListController
      */
     private $postRepository;
 
+    /**
+     * @var FindPostsBySearchRequestQueryInterface
+     */
+    private $findPostsBySearchRequestQuery;
+
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
         UrlGeneratorInterface $urlGenerator,
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
-        PostRepositoryInterface $postRepository
+        PostRepositoryInterface $postRepository,
+        FindPostsBySearchRequestQueryInterface $findPostsBySearchRequestQuery
     ) {
         $this->paginatorFactory = $paginatorFactory;
         $this->urlGenerator = $urlGenerator;
         $this->templateEngine = $templateEngine;
         $this->responseFactory = $responseFactory;
         $this->postRepository = $postRepository;
+        $this->findPostsBySearchRequestQuery = $findPostsBySearchRequestQuery;
     }
 
     /**
@@ -100,14 +108,14 @@ class PostListController
 
         $query = $request->getQueryParams()['q'] ?? '';
         $limit = $request->getQueryParams()['l'] ?? 10;
-        $foundPosts = $this->postRepository->findBySearchQuery($query, (int) $limit);
+        $foundPosts = $this->findPostsBySearchRequestQuery->execute($query, (int) $limit);
 
         $results = [];
         foreach ($foundPosts as $post) {
             $results[] = [
                 'title' => htmlspecialchars($post->getTitle()),
                 'date' => $post->getPublishedAt()->format('M d, Y'),
-                'author' => htmlspecialchars($post->getAuthor()->getFullName()),
+                'author' => htmlspecialchars($post->getFullName()),
                 'summary' => htmlspecialchars($post->getSummary()),
                 'url' => $this->urlGenerator->generateUrl('post', ['slug' => $post->getSlug()]),
             ];
@@ -116,7 +124,7 @@ class PostListController
         return $this->responseFactory->respondJson($results);
     }
 
-    private function isXmlHttpRequest(ServerRequestInterface $request)
+    private function isXmlHttpRequest(ServerRequestInterface $request): bool
     {
         return ($request->getHeader('X-Requested-With')[0] ?? '') === 'XMLHttpRequest';
     }

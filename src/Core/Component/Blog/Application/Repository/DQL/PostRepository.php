@@ -18,9 +18,7 @@ use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
-use Acme\App\Core\Port\Persistence\QueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
-use Acme\App\Core\Port\Persistence\ResultCollection;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
 use DateTime;
 
@@ -126,55 +124,5 @@ class PostRepository implements PostRepositoryInterface
             ->build();
 
         return $this->queryService->query($dqlQuery);
-    }
-
-    /**
-     * @return Post[]
-     */
-    public function findBySearchQuery(
-        string $rawQuery,
-        int $limit = QueryBuilderInterface::DEFAULT_MAX_RESULTS
-    ): ResultCollectionInterface {
-        $query = $this->sanitizeSearchQuery($rawQuery);
-        $searchTerms = $this->extractSearchTerms($query);
-
-        if (\count($searchTerms) === 0) {
-            return new ResultCollection();
-        }
-
-        $this->dqlQueryBuilder->create(Post::class);
-
-        foreach ($searchTerms as $key => $term) {
-            $this->dqlQueryBuilder
-                ->orWhere('Post.title LIKE :t_' . $key)
-                ->setParameter('t_' . $key, '%' . $term . '%');
-        }
-
-        $this->dqlQueryBuilder->orderBy('Post.publishedAt', 'DESC')->setMaxResults($limit);
-
-        return $this->queryService->query($this->dqlQueryBuilder->build());
-    }
-
-    /**
-     * Removes all non-alphanumeric characters except whitespaces.
-     */
-    private function sanitizeSearchQuery(string $query): string
-    {
-        return trim(preg_replace('/[[:space:]]+/', ' ', $query));
-    }
-
-    /**
-     * Splits the search query into terms and removes the ones which are irrelevant.
-     */
-    private function extractSearchTerms(string $searchQuery): array
-    {
-        $terms = array_unique(explode(' ', $searchQuery));
-
-        return array_filter(
-            $terms,
-            function ($term) {
-                return 2 <= mb_strlen($term);
-            }
-        );
     }
 }
