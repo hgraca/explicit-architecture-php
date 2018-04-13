@@ -11,6 +11,10 @@
 
 namespace App\Utils;
 
+use HTMLPurifier;
+use HTMLPurifier_Config;
+use Parsedown;
+
 /**
  * This class is a light interface between an external Markdown parser library
  * and the application. It's generally recommended to create these light interfaces
@@ -21,17 +25,24 @@ namespace App\Utils;
  */
 class Markdown
 {
+    /**
+     * @var Parsedown
+     */
     private $parser;
+
+    /**
+     * @var HTMLPurifier
+     */
     private $purifier;
 
     public function __construct()
     {
-        $this->parser = new \Parsedown();
+        $this->parser = new Parsedown();
 
-        $purifierConfig = \HTMLPurifier_Config::create([
+        $purifierConfig = HTMLPurifier_Config::create([
             'Cache.DefinitionImpl' => null, // Disable caching
         ]);
-        $this->purifier = new \HTMLPurifier($purifierConfig);
+        $this->purifier = new HTMLPurifier($purifierConfig);
     }
 
     public function toHtml(string $text): string

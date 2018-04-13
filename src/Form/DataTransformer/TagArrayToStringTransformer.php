@@ -26,6 +26,9 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class TagArrayToStringTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ObjectManager
+     */
     private $manager;
 
     public function __construct(ObjectManager $manager)

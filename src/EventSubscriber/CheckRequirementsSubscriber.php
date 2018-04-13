@@ -30,6 +30,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class CheckRequirementsSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var EntityManagerInterface
+     */
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -56,13 +59,15 @@ class CheckRequirementsSubscriber implements EventSubscriberInterface
      * This method checks if there has been an error in a command related to
      * the database and then, it checks if the 'sqlite3' PHP extension is enabled
      * or not to display a better error message.
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function handleConsoleError(ConsoleErrorEvent $event): void
     {
         $commandNames = ['doctrine:fixtures:load', 'doctrine:database:create', 'doctrine:schema:create', 'doctrine:database:drop'];
 
-        if ($event->getCommand() && in_array($event->getCommand()->getName(), $commandNames, true)) {
-            if ($this->isSQLitePlatform() && !extension_loaded('sqlite3')) {
+        if ($event->getCommand() && \in_array($event->getCommand()->getName(), $commandNames, true)) {
+            if ($this->isSQLitePlatform() && !\extension_loaded('sqlite3')) {
                 $io = new SymfonyStyle($event->getInput(), $event->getOutput());
                 $io->error('This command requires to have the "sqlite3" PHP extension enabled because, by default, the Symfony Demo application uses SQLite to store its information.');
             }
@@ -72,6 +77,8 @@ class CheckRequirementsSubscriber implements EventSubscriberInterface
     /**
      * This method checks if the triggered exception is related to the database
      * and then, it checks if the required 'sqlite3' PHP extension is enabled.
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function handleKernelException(GetResponseForExceptionEvent $event): void
     {
@@ -91,6 +98,8 @@ class CheckRequirementsSubscriber implements EventSubscriberInterface
 
     /**
      * Checks if the application is using SQLite as its database.
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
     private function isSQLitePlatform(): bool
     {

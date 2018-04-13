@@ -27,8 +27,19 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var UrlGeneratorInterface
+     */
     private $urlGenerator;
+
+    /**
+     * @var array
+     */
     private $locales;
+
+    /**
+     * @var mixed
+     */
     private $defaultLocale;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, string $locales, string $defaultLocale = null)
@@ -42,7 +53,7 @@ class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterface
 
         $this->defaultLocale = $defaultLocale ?: $this->locales[0];
 
-        if (!in_array($this->defaultLocale, $this->locales, true)) {
+        if (!\in_array($this->defaultLocale, $this->locales, true)) {
             throw new \UnexpectedValueException(sprintf('The default locale ("%s") must be one of "%s".', $this->defaultLocale, $locales));
         }
 

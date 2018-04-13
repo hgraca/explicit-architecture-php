@@ -22,6 +22,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
@@ -29,14 +32,14 @@ class AppFixtures extends Fixture
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->loadUsers($manager);
         $this->loadTags($manager);
         $this->loadPosts($manager);
     }
 
-    private function loadUsers(ObjectManager $manager)
+    private function loadUsers(ObjectManager $manager): void
     {
         foreach ($this->getUserData() as [$fullname, $username, $password, $email, $roles]) {
             $user = new User();
@@ -53,7 +56,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadTags(ObjectManager $manager)
+    private function loadTags(ObjectManager $manager): void
     {
         foreach ($this->getTagData() as $index => $name) {
             $tag = new Tag();
@@ -66,7 +69,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadPosts(ObjectManager $manager)
+    private function loadPosts(ObjectManager $manager): void
     {
         foreach ($this->getPostData() as [$title, $slug, $summary, $content, $publishedAt, $author, $tags]) {
             $post = new Post();
@@ -118,7 +121,7 @@ class AppFixtures extends Fixture
         ];
     }
 
-    private function getPostData()
+    private function getPostData(): array
     {
         $posts = [];
         foreach ($this->getPhrases() as $i => $title) {
@@ -230,7 +233,7 @@ MARKDOWN;
     {
         $tagNames = $this->getTagData();
         shuffle($tagNames);
-        $selectedTags = array_slice($tagNames, 0, random_int(2, 4));
+        $selectedTags = \array_slice($tagNames, 0, random_int(2, 4));
 
         return array_map(function ($tagName) { return $this->getReference('tag-'.$tagName); }, $selectedTags);
     }
