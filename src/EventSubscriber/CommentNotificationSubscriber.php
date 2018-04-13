@@ -13,6 +13,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Comment;
 use App\Events;
+use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,13 +26,32 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class CommentNotificationSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var Swift_Mailer
+     */
     private $mailer;
+
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
     private $urlGenerator;
+
+    /**
+     * @var string
+     */
     private $sender;
 
-    public function __construct(\Swift_Mailer $mailer, UrlGeneratorInterface $urlGenerator, TranslatorInterface $translator, $sender)
-    {
+    public function __construct(
+        Swift_Mailer $mailer,
+        UrlGeneratorInterface $urlGenerator,
+        TranslatorInterface $translator,
+        string $sender
+    ) {
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->translator = $translator;

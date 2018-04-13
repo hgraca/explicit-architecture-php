@@ -35,7 +35,7 @@ class BlogControllerTest extends WebTestCase
     /**
      * @dataProvider getUrlsForRegularUsers
      */
-    public function testAccessDeniedForRegularUsers($httpMethod, $url)
+    public function testAccessDeniedForRegularUsers(string $httpMethod, string $url): void
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'john_user',
@@ -54,7 +54,7 @@ class BlogControllerTest extends WebTestCase
         yield ['POST', '/en/admin/post/1/delete'];
     }
 
-    public function testAdminBackendHomePage()
+    public function testAdminBackendHomePage(): void
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
@@ -77,7 +77,7 @@ class BlogControllerTest extends WebTestCase
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
      */
-    public function testAdminNewPost()
+    public function testAdminNewPost(): void
     {
         $postTitle = 'Blog Post Title '.mt_rand();
         $postSummary = $this->generateRandomString(255);
@@ -97,6 +97,7 @@ class BlogControllerTest extends WebTestCase
 
         $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
 
+        /** @var Post $post */
         $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->findOneBy([
             'title' => $postTitle,
         ]);
@@ -105,7 +106,7 @@ class BlogControllerTest extends WebTestCase
         $this->assertSame($postContent, $post->getContent());
     }
 
-    public function testAdminShowPost()
+    public function testAdminShowPost(): void
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
@@ -122,7 +123,7 @@ class BlogControllerTest extends WebTestCase
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
      */
-    public function testAdminEditPost()
+    public function testAdminEditPost(): void
     {
         $newBlogPostTitle = 'Blog Post Title '.mt_rand();
 
@@ -149,7 +150,7 @@ class BlogControllerTest extends WebTestCase
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
      */
-    public function testAdminDeletePost()
+    public function testAdminDeletePost(): void
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',

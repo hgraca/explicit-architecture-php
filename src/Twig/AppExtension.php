@@ -29,11 +29,22 @@ use Twig\TwigFunction;
  */
 class AppExtension extends AbstractExtension
 {
+    /**
+     * @var Markdown
+     */
     private $parser;
+
+    /**
+     * @var array
+     */
     private $localeCodes;
+
+    /**
+     * @var array
+     */
     private $locales;
 
-    public function __construct(Markdown $parser, $locales)
+    public function __construct(Markdown $parser, string $locales)
     {
         $this->parser = $parser;
         $this->localeCodes = explode('|', $locales);

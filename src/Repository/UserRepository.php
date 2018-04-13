@@ -24,6 +24,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ *
+ * @method User findOneByUsername(string $username)
  */
 class UserRepository extends ServiceEntityRepository
 {

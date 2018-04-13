@@ -13,6 +13,7 @@ namespace App\Command;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Swift_Mailer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,14 +37,29 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ListUsersCommand extends Command
 {
-    // a good practice is to use the 'app:' prefix to group all your custom application commands
+    /**
+     * A good practice is to use the 'app:' prefix to group all your custom application commands.
+     *
+     * @var string
+     */
     protected static $defaultName = 'app:list-users';
 
+    /**
+     * @var Swift_Mailer
+     */
     private $mailer;
+
+    /**
+     * @var
+     */
     private $emailSender;
+
+    /**
+     * @var UserRepository
+     */
     private $users;
 
-    public function __construct(\Swift_Mailer $mailer, $emailSender, UserRepository $users)
+    public function __construct(Swift_Mailer $mailer, string $emailSender, UserRepository $users)
     {
         parent::__construct();
 
@@ -55,7 +71,7 @@ class ListUsersCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Lists all the existing users')
@@ -87,7 +103,7 @@ HELP
      * This method is executed after initialize(). It usually contains the logic
      * to execute to complete this command task.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $maxResults = $input->getOption('max-results');
         // Use ->findBy() instead of ->findAll() to allow result sorting and limiting
@@ -131,7 +147,7 @@ HELP
      * @param string $contents
      * @param string $recipient
      */
-    private function sendReport($contents, $recipient)
+    private function sendReport($contents, $recipient): void
     {
         // See https://symfony.com/doc/current/cookbook/email/email.html
         $message = $this->mailer->createMessage()

@@ -11,10 +11,15 @@
 
 namespace App\Twig;
 
+use ReflectionFunction;
+use ReflectionMethod;
+use ReflectionObject;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Template;
 use Twig\TwigFunction;
+use Twig_Template;
+use Twig_TemplateWrapper;
 
 /**
  * CAUTION: this is an extremely advanced Twig extension. It's used to get the
@@ -27,9 +32,12 @@ use Twig\TwigFunction;
  */
 class SourceCodeExtension extends AbstractExtension
 {
+    /**
+     * @var callable| null
+     */
     private $controller;
 
-    public function setController(?callable $controller)
+    public function setController(?callable $controller): void
     {
         $this->controller = $controller;
     }
@@ -44,6 +52,13 @@ class SourceCodeExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @param string|Twig_Template|Twig_TemplateWrapper|array $template
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
     public function showSourceCode(Environment $twig, $template): string
     {
         return $twig->render('debug/source_code.html.twig', [
@@ -62,13 +77,13 @@ class SourceCodeExtension extends AbstractExtension
         $method = $this->getCallableReflector($this->controller);
 
         $classCode = file($method->getFileName());
-        $methodCode = array_slice($classCode, $method->getStartLine() - 1, $method->getEndLine() - $method->getStartLine() + 1);
+        $methodCode = \array_slice($classCode, $method->getStartLine() - 1, $method->getEndLine() - $method->getStartLine() + 1);
         $controllerCode = '    '.$method->getDocComment()."\n".implode('', $methodCode);
 
         return [
             'file_path' => $method->getFileName(),
             'starting_line' => $method->getStartLine(),
-            'source_code' => $this->unindentCode($controllerCode),
+            'source_code' => $this->unIndentCode($controllerCode),
         ];
     }
 
@@ -76,20 +91,22 @@ class SourceCodeExtension extends AbstractExtension
      * Gets a reflector for a callable.
      *
      * This logic is copied from Symfony\Component\HttpKernel\Controller\ControllerResolver::getArguments
+     *
+     * @throws \ReflectionException
      */
     private function getCallableReflector(callable $callable): \ReflectionFunctionAbstract
     {
-        if (is_array($callable)) {
-            return new \ReflectionMethod($callable[0], $callable[1]);
+        if (\is_array($callable)) {
+            return new ReflectionMethod($callable[0], $callable[1]);
         }
 
-        if (is_object($callable) && !$callable instanceof \Closure) {
-            $r = new \ReflectionObject($callable);
+        if (\is_object($callable) && !$callable instanceof \Closure) {
+            $r = new ReflectionObject($callable);
 
             return $r->getMethod('__invoke');
         }
 
-        return new \ReflectionFunction($callable);
+        return new ReflectionFunction($callable);
     }
 
     private function getTemplateSource(Template $template): array
@@ -108,10 +125,10 @@ class SourceCodeExtension extends AbstractExtension
     }
 
     /**
-     * Utility method that "unindents" the given $code when all its lines start
+     * Utility method that "unIndents" the given $code when all its lines start
      * with a tabulation of four white spaces.
      */
-    private function unindentCode(string $code): string
+    private function unIndentCode(string $code): string
     {
         $formattedCode = $code;
         $codeLines = explode("\n", $code);
@@ -120,7 +137,7 @@ class SourceCodeExtension extends AbstractExtension
             return '' === $lineOfCode || '    ' === mb_substr($lineOfCode, 0, 4);
         });
 
-        if (count($indentedLines) === count($codeLines)) {
+        if (\count($indentedLines) === \count($codeLines)) {
             $formattedCode = array_map(function ($lineOfCode) {
                 return mb_substr($lineOfCode, 4);
             }, $codeLines);

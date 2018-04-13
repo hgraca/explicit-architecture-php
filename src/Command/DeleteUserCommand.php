@@ -41,12 +41,27 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class DeleteUserCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'app:delete-user';
 
     /** @var SymfonyStyle */
     private $io;
+
+    /**
+     * @var EntityManagerInterface
+     */
     private $entityManager;
+
+    /**
+     * @var Validator
+     */
     private $validator;
+
+    /**
+     * @var UserRepository
+     */
     private $users;
 
     public function __construct(EntityManagerInterface $em, Validator $validator, UserRepository $users)
@@ -61,7 +76,7 @@ class DeleteUserCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Deletes users from the database')
@@ -79,7 +94,7 @@ HELP
             );
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         // SymfonyStyle is an optional feature that Symfony provides so you can
         // apply a consistent look to the commands of your application.
@@ -87,7 +102,7 @@ HELP
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('username')) {
             return;
@@ -108,7 +123,7 @@ HELP
         $input->setArgument('username', $username);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $username = $this->validator->validateUsername($input->getArgument('username'));
 

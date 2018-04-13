@@ -34,7 +34,7 @@ class DefaultControllerTest extends WebTestCase
      *
      * @dataProvider getPublicUrls
      */
-    public function testPublicUrls($url)
+    public function testPublicUrls(string $url): void
     {
         $client = static::createClient();
         $client->request('GET', $url);
@@ -53,10 +53,11 @@ class DefaultControllerTest extends WebTestCase
      * blog post fixtures are randomly generated and there's no guarantee that
      * a given blog post slug will be available.
      */
-    public function testPublicBlogPost()
+    public function testPublicBlogPost(): void
     {
         $client = static::createClient();
         // the service container is always available via the test client
+        /** @var Post $blogPost */
         $blogPost = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
         $client->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
 
@@ -70,7 +71,7 @@ class DefaultControllerTest extends WebTestCase
      *
      * @dataProvider getSecureUrls
      */
-    public function testSecureUrls($url)
+    public function testSecureUrls(string $url): void
     {
         $client = static::createClient();
         $client->request('GET', $url);
