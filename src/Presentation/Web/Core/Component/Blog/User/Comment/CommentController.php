@@ -100,10 +100,7 @@ class CommentController
         if (!$form->shouldBeProcessed()) {
             return $this->templateEngine->renderResponse(
                 '@Blog/User/Comment/edit_error.html.twig',
-                [
-                    'post' => $post,
-                    'form' => $form->createView(),
-                ]
+                EditViewModel::fromPostAndForm($post, $form)
             );
         }
 
@@ -119,14 +116,12 @@ class CommentController
      */
     public function editAction(int $postId): ResponseInterface
     {
-        $form = $this->formFactory->createCommentForm();
-
         return $this->templateEngine->renderResponse(
             '@Blog/User/Comment/edit.html.twig',
-            [
-                'post' => $this->postRepository->find($postId),
-                'form' => $form->createView(),
-            ]
+            EditViewModel::fromPostAndForm(
+                $this->postRepository->find($postId),
+                $this->formFactory->createCommentForm()
+            )
         );
     }
 }

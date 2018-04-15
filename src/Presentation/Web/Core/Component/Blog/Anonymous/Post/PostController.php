@@ -77,6 +77,9 @@ class PostController
         //
         // dump($post, $this->getUser(), new \DateTime());
 
-        return $this->templateEngine->renderResponse('@Blog/Anonymous/Post/get.html.twig', ['post' => $post, 'commentList' => $commentList]);
+        return $this->templateEngine->renderResponse(
+            '@Blog/Anonymous/Post/get.html.twig',
+            GetViewModel::fromPostAndCommentList($post, ...$commentList)
+        );
     }
 }

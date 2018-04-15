@@ -43,9 +43,9 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
     {
         $this->getClient()->request('GET', $url);
 
-        $this->assertSame(
+        $this->assertResponseStatusCode(
             Response::HTTP_OK,
-            $this->getClient()->getResponse()->getStatusCode(),
+            $this->getClient(),
             sprintf('The %s public URL does not load correctly.', $url)
         );
     }

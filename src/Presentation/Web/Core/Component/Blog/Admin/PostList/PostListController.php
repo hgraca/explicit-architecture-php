@@ -108,11 +108,14 @@ class PostListController
      */
     public function getAction(PostRepositoryInterface $postRepository): ResponseInterface
     {
-        $authorPosts = $postRepository->findByAuthorOrderedByPublishDate(
+        $postList = $postRepository->findByAuthorOrderedByPublishDate(
             $this->authenticationService->getLoggedInUserId()
         );
 
-        return $this->templateEngine->renderResponse('@Blog/Admin/PostList/get.html.twig', ['posts' => $authorPosts]);
+        return $this->templateEngine->renderResponse(
+            '@Blog/Admin/PostList/get.html.twig',
+            GetViewModel::fromPostList(...$postList)
+        );
     }
 
     /**
@@ -124,10 +127,9 @@ class PostListController
      */
     public function newAction(): ResponseInterface
     {
-        $post = new Post();
-        $form = $this->createCreatePostForm($post);
+        $form = $this->createCreatePostForm(new Post());
 
-        return $this->renderCreatePost($form, $post);
+        return $this->renderCreatePost($form);
     }
 
     /**
@@ -150,7 +152,7 @@ class PostListController
         // However, we explicitly add it to improve code readability.
         // See https://symfony.com/doc/current/best_practices/forms.html#handling-form-submits
         if (!$form->shouldBeProcessed()) {
-            return $this->renderCreatePost($form, $post);
+            return $this->renderCreatePost($form);
         }
 
         $this->postService->create($post, $this->authenticationService->getLoggedInUser());
@@ -177,14 +179,11 @@ class PostListController
         );
     }
 
-    protected function renderCreatePost(FormInterface $form, Post $post): ResponseInterface
+    protected function renderCreatePost(FormInterface $form): ResponseInterface
     {
         return $this->templateEngine->renderResponse(
             '@Blog/Admin/PostList/new.html.twig',
-            [
-                'post' => $post,
-                'form' => $form->createView(),
-            ]
+            NewViewModel::fromPostAndForm($form)
         );
     }
 }

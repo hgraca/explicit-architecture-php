@@ -51,12 +51,10 @@ class SecurityController
     {
         return $this->templateEngine->renderResponse(
             '@Login/Anonymous/login.html.twig',
-            [
-                // last username entered by the user (if any)
-                'last_username' => $this->authenticationService->getLastAuthenticationUsername($request),
-                // last authentication error (if any)
-                'error' => $this->authenticationService->getLastAuthenticationError($request),
-            ]
+            LoginViewModel::fromLastUsernameAndError(
+                $this->authenticationService->getLastAuthenticationUsername($request),
+                $this->authenticationService->getLastAuthenticationError($request)
+            )
         );
     }
 

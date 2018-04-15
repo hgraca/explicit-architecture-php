@@ -6,7 +6,12 @@
     {{ form_start(form, {method: ..., action: ..., attr: {novalidate: 'novalidate'}}) }}
 #}
 
-{{ form_start(form, {method: 'POST', action: path('comment_new', {'postSlug': post.slug})}) }}
+{# I would prefer to do this in the ViewModel... #}
+{# We do this here instead of in the ViewModel because otherwise we would have the #}
+{# view model getForm method type hinting a Symfony FormView return type #}
+{% set form = form.createView %}
+
+{{ form_start(form, {method: 'POST', action: path('comment_new', {'postSlug': postSlug})}) }}
     {#  instead of displaying form fields one by one, you can also display them
         all with their default options and styles just by calling to this function:
 

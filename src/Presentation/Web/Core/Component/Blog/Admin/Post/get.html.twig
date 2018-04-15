@@ -3,31 +3,31 @@
 {% block body_id 'admin_post_show' %}
 
 {% block main %}
-    <h1>{{ post.title }}</h1>
+    <h1>{{ postTitle }}</h1>
 
     <p class="post-metadata">
-        <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
-        <span class="metadata"><i class="fa fa-user"></i> {{ post.author.fullName }}</span>
+        <span class="metadata"><i class="fa fa-calendar"></i> {{ postPublishedAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
+        <span class="metadata"><i class="fa fa-user"></i> {{ postAuthorFullName }}</span>
     </p>
 
     <div class="well">
-        <p class="m-b-0"><strong>{{ 'label.summary'|trans }}</strong>: {{ post.summary }}</p>
+        <p class="m-b-0"><strong>{{ 'label.summary'|trans }}</strong>: {{ postSummary }}</p>
     </div>
 
-    {{ post.content|md2html }}
+    {{ postContent|md2html }}
 
-    {{ include('@Blog/_post_tags.html.twig') }}
+    {% include '@Blog/_post_tags.html.twig' with {'tagList': postTagList} only %}
 {% endblock %}
 
 {% block sidebar %}
     <div class="section">
-        <a href="{{ path('admin_post_edit', {id: post.id}) }}" class="btn btn-lg btn-block btn-success">
+        <a href="{{ path('admin_post_edit', {id: postId}) }}" class="btn btn-lg btn-block btn-success">
             <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_contents'|trans }}
         </a>
     </div>
 
     <div class="section">
-        {{ include('@Blog/Admin/Post/_delete_form.html.twig', {post: post}, with_context = false) }}
+        {{ include('@Blog/Admin/Post/_delete_form.html.twig', {postId: postId}, with_context = false) }}
     </div>
 
     {{ parent() }}

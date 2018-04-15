@@ -3,7 +3,7 @@
 {% block body_id 'blog_index' %}
 
 {% block main %}
-    {% for post in posts %}
+    {% for post in postList %}
         <article class="post">
             <h2>
                 <a href="{{ path('post', {slug: post.slug}) }}">
@@ -13,20 +13,20 @@
 
             <p class="post-metadata">
                 <span class="metadata"><i class="fa fa-calendar"></i> {{ post.publishedAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
-                <span class="metadata"><i class="fa fa-user"></i> {{ post.author.fullName }}</span>
+                <span class="metadata"><i class="fa fa-user"></i> {{ post.authorFullName }}</span>
             </p>
 
             {{ post.summary|md2html }}
 
-            {{ include('@Blog/_post_tags.html.twig') }}
+            {% include '@Blog/_post_tags.html.twig' with {'tagList': post.tagList} only %}
         </article>
     {% else %}
         <div class="well">{{ 'post.no_posts_found'|trans }}</div>
     {% endfor %}
 
-    {% if posts.haveToPaginate %}
+    {% if postList.haveToPaginate %}
         <div class="navigation text-center">
-            {{ pagerfanta(posts, 'twitter_bootstrap3_translated', {routeName: 'post_list_paginated'}) }}
+            {{ pagerfanta(postList, 'twitter_bootstrap3_translated', {routeName: 'post_list_paginated'}) }}
         </div>
     {% endif %}
 {% endblock %}

@@ -123,7 +123,7 @@ class PostController
 
         return $this->templateEngine->renderResponse(
             '@Blog/Admin/Post/get.html.twig',
-            ['post' => $post]
+            GetViewModel::fromPost($post)
         );
     }
 
@@ -148,10 +148,7 @@ class PostController
 
         return $this->templateEngine->renderResponse(
             '@Blog/Admin/Post/edit.html.twig',
-            [
-                'post' => $post,
-                'form' => $form->createView(),
-            ]
+            EditViewModel::fromPostAndForm($post, $form)
         );
     }
 
