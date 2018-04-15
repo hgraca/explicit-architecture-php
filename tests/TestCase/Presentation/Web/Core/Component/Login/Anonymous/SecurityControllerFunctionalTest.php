@@ -43,7 +43,7 @@ final class SecurityControllerFunctionalTest extends AbstractFunctionalTest
         );
         $crawler = $client->submit($form);
 
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client);
 
         $this->assertSame(
             $urlGenerator->generateUrl(RouteData::ANONYMOUS_POST_LIST, [], UrlType::absoluteUrl()),

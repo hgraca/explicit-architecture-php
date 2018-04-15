@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Infrastructure\TemplateEngine\Twig;
 
+use Acme\App\Presentation\Web\Core\Port\TemplateEngine\NullTemplateViewModel;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionClass;
+use ReflectionMethod;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -47,19 +51,30 @@ final class TemplateEngine implements TemplateEngineInterface
         $this->psrResponseFactory = $psrResponseFactory;
     }
 
-    public function render(string $template, array $parameters = []): string
+    /**
+     * @throws \ReflectionException
+     */
+    public function render(string $template, TemplateViewModelInterface $viewModel = null): string
     {
-        return $this->templateEngine->render($template, $parameters);
+        return $this->templateEngine->render(
+            $template,
+            $this->extractParametersFromViewModel($viewModel ?? new NullTemplateViewModel())
+        );
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function renderResponse(
         string $template,
-        array $parameters = [],
+        TemplateViewModelInterface $viewModel = null,
         ResponseInterface $response = null
     ): ResponseInterface {
         if ($response) {
             $response = $this->symfonyResponseFactory->createResponse($response);
         }
+
+        $parameters = $this->extractParametersFromViewModel($viewModel ?? new NullTemplateViewModel());
 
         $response = $this->psrResponseFactory->createResponse(
             $this->templateEngine->renderResponse($template, $parameters, $response)
@@ -73,5 +88,32 @@ final class TemplateEngine implements TemplateEngineInterface
     public function exists(string $template): bool
     {
         return $this->templateEngine->exists($template);
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    private function extractParametersFromViewModel(TemplateViewModelInterface $viewModel): array
+    {
+        $parameters = ['viewModel' => $viewModel];
+        $viewModelReflection = new ReflectionClass($viewModel);
+        $methods = $viewModelReflection->getMethods(ReflectionMethod::IS_PUBLIC);
+        foreach ($methods as $method) {
+            if ($this->methodNameHasTemplatePrefix($method)) {
+                $parameters[$this->generateTemplateVariableName($method)] = $method->invoke($viewModel);
+            }
+        }
+
+        return $parameters;
+    }
+
+    private function methodNameHasTemplatePrefix(ReflectionMethod $method): bool
+    {
+        return (bool) preg_match('/^(' . self::PARSED_METHOD_PREFIXES . ')/', $method->getName());
+    }
+
+    private function generateTemplateVariableName(ReflectionMethod $method): string
+    {
+        return lcfirst(str_replace('get', '', $method->getName()));
     }
 }

@@ -16,6 +16,7 @@ namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\Anonymous\
 
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorInterface;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Functional test for the controllers defined inside PostListController.
@@ -37,6 +38,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $client = static::createClient();
         $crawler = $client->request('GET', '/en/blog/posts');
 
+        self::assertResponseStatusCode(Response::HTTP_OK, $client);
         $this->assertCount(
             PaginatorInterface::DEFAULT_MAX_ITEMS_PER_PAGE,
             $crawler->filter('article.post'),
@@ -52,6 +54,7 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $client = static::createClient();
         $crawler = $client->request('GET', '/en/blog/posts/rss.xml');
 
+        self::assertResponseStatusCode(Response::HTTP_OK, $client);
         $this->assertSame(
             'text/xml; charset=UTF-8',
             $client->getResponse()->headers->get('Content-Type')

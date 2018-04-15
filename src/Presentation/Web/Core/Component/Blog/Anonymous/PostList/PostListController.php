@@ -77,15 +77,16 @@ class PostListController
     public function getAction(int $page, string $_format): ResponseInterface
     {
         $latestPosts = $this->postRepository->findLatest();
-        $paginator = $this->paginatorFactory->createPaginator($latestPosts->toArray());
-        $paginator->setCurrentPage($page);
 
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templating.html#template-suffix
+
         $response = $this->templateEngine->renderResponse(
             '@Blog/Anonymous/PostList/get.' . $_format . '.twig',
-            ['posts' => $paginator]
+            $_format === 'xml'
+                ? GetXmlViewModel::fromPostList($this->paginatorFactory, $page, ...$latestPosts)
+                : GetHtmlViewModel::fromPostList($this->paginatorFactory, $page, ...$latestPosts)
         );
 
         return $response->withAddedHeader('Cache-Control', 's-maxage=10');

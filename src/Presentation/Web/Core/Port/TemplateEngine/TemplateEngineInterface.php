@@ -18,11 +18,13 @@ use Psr\Http\Message\ResponseInterface;
 
 interface TemplateEngineInterface
 {
-    public function render(string $template, array $parameters = []): string;
+    public const PARSED_METHOD_PREFIXES = 'get|has|is|should|can';
+
+    public function render(string $template, TemplateViewModelInterface $viewModel = null): string;
 
     public function renderResponse(
         string $template,
-        array $parameters = [],
+        TemplateViewModelInterface $viewModel = null,
         ResponseInterface $response = null
     ): ResponseInterface;
 

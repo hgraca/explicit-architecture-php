@@ -8,9 +8,9 @@
 {% endblock %}
 
 {% block main %}
-    {% if error %}
+    {% if errorMessageKey %}
         <div class="alert alert-danger">
-            {{ error.messageKey|trans(error.messageData, 'security') }}
+            {{ errorMessageKey|trans(errorMessageData, 'security') }}
         </div>
     {% endif %}
 
@@ -22,7 +22,7 @@
                         <legend><i class="fa fa-lock" aria-hidden="true"></i> {{ 'title.login'|trans }}</legend>
                         <div class="form-group">
                             <label for="username">{{ 'label.username'|trans }}</label>
-                            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control"/>
+                            <input type="text" id="username" name="_username" value="{{ lastUsername }}" class="form-control"/>
                         </div>
                         <div class="form-group">
                             <label for="password">{{ 'label.password'|trans }}</label>
