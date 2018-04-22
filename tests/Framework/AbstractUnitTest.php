@@ -23,8 +23,9 @@ use PHPUnit\Framework\TestCase;
  * How isolated the test needs to be, it depends on the situation and how you decide to test the application.
  * However, it is important to note that these tests do not need to boot the application.
  */
-abstract class AbstractUnitTest extends TestCase
+abstract class AbstractUnitTest extends TestCase implements AppTestInterface
 {
+    use AppTestTrait;
     use MockeryPHPUnitIntegration;
     use MockTrait;
 }

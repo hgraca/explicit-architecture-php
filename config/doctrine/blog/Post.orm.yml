@@ -15,7 +15,7 @@ Acme\App\Core\Component\Blog\Domain\Entity\Post:
         content:
             type: text
         publishedAt:
-            type: datetime
+            type: datetime_immutable
     manyToOne:
         author:
             targetEntity: Acme\App\Core\Component\User\Domain\Entity\User

@@ -20,7 +20,7 @@ use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
-use DateTime;
+use Acme\StdLib\DateTime\DateTimeGenerator;
 
 /**
  * This custom Doctrine repository contains some methods which are useful when
@@ -120,7 +120,7 @@ class PostRepository implements PostRepositoryInterface
             ->leftJoin('Post.tags', 'tags')
             ->where('Post.publishedAt <= :now')
             ->orderBy('Post.publishedAt', 'DESC')
-            ->setParameter('now', new DateTime())
+            ->setParameter('now', DateTimeGenerator::generate())
             ->build();
 
         return $this->queryService->query($dqlQuery);

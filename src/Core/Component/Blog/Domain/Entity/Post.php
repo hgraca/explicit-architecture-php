@@ -15,8 +15,11 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Domain\Entity;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use Acme\PhpExtension\String\Slugger;
 use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 
 /**
  * Defines the properties of the Post entity to represent the blog posts.
@@ -67,7 +70,7 @@ class Post
     private $content;
 
     /**
-     * @var DateTime
+     * @var DateTimeImmutable
      */
     private $publishedAt;
 
@@ -88,7 +91,7 @@ class Post
 
     public function __construct()
     {
-        $this->publishedAt = new DateTime();
+        $this->publishedAt = DateTimeGenerator::generate();
     }
 
     public function getId(): int
@@ -126,14 +129,19 @@ class Post
         $this->content = $content;
     }
 
-    public function getPublishedAt(): DateTime
+    public function getPublishedAt(): DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(DateTime $publishedAt): void
+    public function setPublishedAt(DateTimeInterface $publishedAt): void
     {
-        $this->publishedAt = $publishedAt;
+        /*
+         * We need this check here because Symfony/Form 4.0 can not create DateTimeImmutable, but 4.1 will
+         */
+        $this->publishedAt = $publishedAt instanceof DateTime
+            ? DateTimeImmutable::createFromMutable($publishedAt)
+            : $publishedAt;
     }
 
     public function getAuthor(): User
