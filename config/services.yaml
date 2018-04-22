@@ -67,6 +67,9 @@ services:
               event: 'Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent'
               method: notifyPostAuthorAboutNewComment
 
+    Acme\App\Core\Port\Persistence\QueryServiceRouter:
+        - '@Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService'
+
     Acme\App\Presentation\Web\Core\Exception\ExceptionController:
         public: true
         arguments:

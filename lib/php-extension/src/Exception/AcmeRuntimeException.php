@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\StdLib\Exception;
+namespace Acme\PhpExtension\Exception;
 
 use RuntimeException;
 
@@ -26,7 +26,7 @@ use RuntimeException;
  * They are used only to signal the developers that there is a bug somewhere,
  * so they should not be caught, they should result in an application error.
  *
- * This exception is in the StdLib, which means that it can be used in several projects of the same vendor.
+ * This exception is in the PhpExtension, which means that it can be used in several projects of the same vendor.
  * Therefore, by catching this exception we might be catching an exception of another library created by
  * the same vendor.
  *
