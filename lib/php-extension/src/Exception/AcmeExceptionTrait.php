@@ -12,19 +12,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\StdLib\Exception;
+namespace Acme\PhpExtension\Exception;
 
+use Acme\PhpExtension\Helper\ClassHelper;
 use Throwable;
 
 trait AcmeExceptionTrait
 {
     public function __construct(string $message = '', int $code = 0, Throwable $previous = null)
     {
-        parent::__construct($message ?: $this->extractCanonicalClassName(static::class), $code, $previous);
-    }
-
-    private function extractCanonicalClassName(string $classFqcn): string
-    {
-        return mb_substr($classFqcn, mb_strrpos($classFqcn, '\\') + 1);
+        parent::__construct($message ?: ClassHelper::extractCanonicalClassName(static::class), $code, $previous);
     }
 }

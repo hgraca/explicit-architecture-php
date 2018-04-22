@@ -5,6 +5,7 @@ parameters:
         - 'Acme\App\Core\Component\Blog\Application\Repository\Doctrine\PostRepository'
         - 'Acme\App\Core\Port\Persistence\QueryServiceRouterInterface'
         - 'Acme\App\Presentation\Console\Component\User\AddUserCommand'
+        - 'Doctrine\ORM\EntityManagerInterface'
 
 services:
     # default configuration for services in *this* file
