@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\PhpExtension\Test;
 
+use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
@@ -25,4 +26,12 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractUnitTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
+
+    /**
+     * @after
+     */
+    public function resetDateTimeGenerator(): void
+    {
+        DateTimeGenerator::reset();
+    }
 }

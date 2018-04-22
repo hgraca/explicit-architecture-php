@@ -9,7 +9,7 @@ Acme\App\Core\Component\Blog\Domain\Entity\Comment:
         content:
             type: text
         publishedAt:
-            type: datetime
+            type: datetime_immutable
     manyToOne:
         post:
             targetEntity: Acme\App\Core\Component\Blog\Domain\Entity\Post

@@ -28,8 +28,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Usually, for this, we need to get services out of the container, etc. This top class makes it easier.
  * Furthermore, integration tests need to boot the application and therefore they are slower than the Unit tests.
  */
-abstract class AbstractIntegrationTest extends KernelTestCase implements DatabaseAwareTestInterface
+abstract class AbstractIntegrationTest extends KernelTestCase implements DatabaseAwareTestInterface, AppTestInterface
 {
+    use AppTestTrait;
     use ContainerAwareTestTrait;
     use DatabaseAwareTestTrait;
     use MockeryPHPUnitIntegration;

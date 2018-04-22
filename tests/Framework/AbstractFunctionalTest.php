@@ -29,8 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Furthermore, as the integration tests, the functional tests need to boot the application and have the overhead of
  * simulating http requests so they are even slower than the Integration tests.
  */
-abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwareTestInterface
+abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwareTestInterface, AppTestInterface
 {
+    use AppTestTrait;
     use ContainerAwareTestTrait;
     use DatabaseAwareTestTrait;
     use MockeryPHPUnitIntegration;

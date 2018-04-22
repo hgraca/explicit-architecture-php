@@ -18,6 +18,7 @@ use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\App\Test\Fixture\FixturesTrait;
+use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -52,7 +53,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
             $post->setSummary($this->getRandomPostSummary());
             $post->regenerateSlug();
             $post->setContent($this->getPostContent());
-            $post->setPublishedAt(new \DateTime('now - ' . $i . 'days'));
+            $post->setPublishedAt(DateTimeGenerator::generate('now - ' . $i . 'days'));
 
             // Ensure that the first post is written by Jane Doe to simplify tests
             // "References" are the way to share objects between fixtures defined
@@ -73,7 +74,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
                 /** @var User $commentAuthor */
                 $commentAuthor = $this->getReference('john-user');
                 $comment->setAuthor($commentAuthor);
-                $comment->setPublishedAt(new \DateTime('now + ' . ($i + $j) . 'seconds'));
+                $comment->setPublishedAt(DateTimeGenerator::generate('now + ' . ($i + $j) . 'seconds'));
                 $comment->setContent($this->getRandomCommentContent());
 
                 $post->addComment($comment);
