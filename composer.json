@@ -12,6 +12,7 @@
         "doctrine/orm": "^2.5.11",
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "^4.9",
+        "ramsey/uuid": "^3.7",
         "sensio/framework-extra-bundle": "^5.0",
         "sensiolabs/security-checker": "^4.1",
         "symfony/asset": "^4.0",
@@ -28,8 +29,8 @@
         "symfony/translation": "^4.0",
         "symfony/twig-bundle": "^4.0",
         "symfony/validator": "^4.0",
-        "symfony/yaml": "^4.0",
         "symfony/web-server-bundle": "^4.0",
+        "symfony/yaml": "^4.0",
         "twig/extensions": "^1.5",
         "white-october/pagerfanta-bundle": "^1.1",
         "zendframework/zend-diactoros": "^1.7"

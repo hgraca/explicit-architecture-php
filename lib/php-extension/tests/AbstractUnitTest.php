@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\PhpExtension\Test;
 
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
+use Acme\PhpExtension\Uuid\UuidGenerator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
@@ -33,5 +34,13 @@ abstract class AbstractUnitTest extends TestCase
     public function resetDateTimeGenerator(): void
     {
         DateTimeGenerator::reset();
+    }
+
+    /**
+     * @after
+     */
+    public function resetUuidGenerator(): void
+    {
+        UuidGenerator::reset();
     }
 }
