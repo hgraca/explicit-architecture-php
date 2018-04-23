@@ -12,11 +12,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\Framework;
+namespace Acme\PhpExtension\Uuid;
 
-interface AppTestInterface
+use Acme\PhpExtension\Exception\AcmeLogicException;
+
+final class InvalidUuidStringException extends AcmeLogicException
 {
-    public function resetDateTimeGenerator(): void;
-
-    public function resetUuidGenerator(): void;
+    public function __construct(string $uuid)
+    {
+        parent::__construct("Invalid Uuid string '$uuid'.");
+    }
 }

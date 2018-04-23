@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Test\Framework;
 
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
+use Acme\PhpExtension\Uuid\UuidGenerator;
 
 trait AppTestTrait
 {
@@ -24,5 +25,13 @@ trait AppTestTrait
     public function resetDateTimeGenerator(): void
     {
         DateTimeGenerator::reset();
+    }
+
+    /**
+     * @after
+     */
+    public function resetUuidGenerator(): void
+    {
+        UuidGenerator::reset();
     }
 }
