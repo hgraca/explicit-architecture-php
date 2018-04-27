@@ -3,8 +3,8 @@ Acme\App\Core\Component\Blog\Domain\Entity\Tag:
     table: symfony_demo_tag
     id:
         id:
-            type: integer
-            generator: { strategy: AUTO }
+            type: tag_id
+            generator: { strategy: NONE }
     fields:
         name:
             type: string
