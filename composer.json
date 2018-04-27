@@ -13,6 +13,7 @@
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "^4.9",
         "ramsey/uuid": "^3.7",
+        "ramsey/uuid-doctrine": "^1.4",
         "sensio/framework-extra-bundle": "^5.0",
         "sensiolabs/security-checker": "^4.1",
         "symfony/asset": "^4.0",
