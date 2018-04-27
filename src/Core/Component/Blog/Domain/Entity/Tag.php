@@ -25,7 +25,7 @@ namespace Acme\App\Core\Component\Blog\Domain\Entity;
 class Tag implements \JsonSerializable
 {
     /**
-     * @var int
+     * @var TagId
      */
     private $id;
 
@@ -34,7 +34,12 @@ class Tag implements \JsonSerializable
      */
     private $name;
 
-    public function getId(): int
+    public function __construct()
+    {
+        $this->id = new TagId();
+    }
+
+    public function getId(): TagId
     {
         return $this->id;
     }
