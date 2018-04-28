@@ -33,7 +33,7 @@ class User implements UserInterface, \Serializable
     public const ROLE_USER = 'ROLE_USER';
 
     /**
-     * @var int
+     * @var UserId
      */
     private $id;
 
@@ -62,6 +62,11 @@ class User implements UserInterface, \Serializable
      */
     private $roles = [];
 
+    private function __construct()
+    {
+        $this->id = new UserId();
+    }
+
     public static function constructWithoutPassword(
         string $username,
         string $email,
@@ -77,7 +82,7 @@ class User implements UserInterface, \Serializable
         return $user;
     }
 
-    public function getId(): int
+    public function getId(): UserId
     {
         return $this->id;
     }
@@ -182,7 +187,7 @@ class User implements UserInterface, \Serializable
     public function unserialize($serialized): void
     {
         // add $this->salt too if you don't use Bcrypt or Argon2i
-        [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+        [$this->id, $this->username, $this->password] = unserialize($serialized, [UserId::class]);
     }
 
     public function isAdmin(): bool

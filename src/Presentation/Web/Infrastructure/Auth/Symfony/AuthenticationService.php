@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\User\Domain\Entity\UserId;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationException;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\NoUserAuthenticatedException;
@@ -66,7 +67,7 @@ final class AuthenticationService implements AuthenticationServiceInterface
         return $this->csrfTokenManager->isTokenValid(new CsrfToken($id, $token));
     }
 
-    public function getLoggedInUserId(): int
+    public function getLoggedInUserId(): UserId
     {
         return $this->getLoggedInUser()->getId();
     }

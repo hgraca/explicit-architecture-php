@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\User\Application\Repository;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\User\Domain\Entity\UserId;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
 
 interface UserRepositoryInterface
@@ -32,5 +33,5 @@ interface UserRepositoryInterface
 
     public function findOneByEmail(string $email): User;
 
-    public function findOneById(int $id): User;
+    public function findOneById(UserId $id): User;
 }

@@ -16,6 +16,7 @@ namespace Acme\App\Core\Component\User\Application\Repository\DQL;
 
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\User\Domain\Entity\UserId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
@@ -107,7 +108,7 @@ class UserRepository implements UserRepositoryInterface
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }
 
-    public function findOneById(int $id): User
+    public function findOneById(UserId $id): User
     {
         $dqlQuery = $this->dqlQueryBuilder->create(User::class)
             ->where('User.id = :id')

@@ -16,6 +16,7 @@ namespace Acme\App\Test\TestCase\Core\Component\User\Application\Repository\DQL;
 
 use Acme\App\Core\Component\User\Application\Repository\DQL\UserRepository;
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\User\Domain\Entity\UserId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService;
@@ -58,15 +59,17 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function upsert_updates_entity(): void
     {
+        $user = $this->findAUser();
+        $userId = $user->getId();
         $newName = 'New Name';
-        $user = $this->findById(1);
+        $user = $this->findById($userId);
         $user->setFullName($newName);
         $this->persistenceService->startTransaction();
         $this->repository->upsert($user);
         $this->persistenceService->finishTransaction();
         $this->clearDatabaseCache();
 
-        $user = $this->findById(1);
+        $user = $this->findById($userId);
 
         self::assertSame($newName, $user->getFullName());
     }
@@ -108,7 +111,9 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function delete_removes_the_entity(): void
     {
-        $user = $this->findById(1);
+        $user = $this->findAUser();
+        $userId = $user->getId();
+        $user = $this->findById($userId);
 
         $this->persistenceService->startTransaction();
         $this->repository->delete($user);
@@ -116,7 +121,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
 
         $this->clearDatabaseCache();
 
-        $this->findById(1);
+        $this->findById($userId);
     }
 
     /**
@@ -129,7 +134,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         $previousUser = null;
         foreach ($allUsersOrderedDesc as $user) {
             if ($previousUser) {
-                self::assertLessThanOrEqual($previousUser->getId(), $user->getId());
+                self::assertLessThanOrEqual($previousUser->getId()->toScalar(), $user->getId()->toScalar());
             }
             $previousUser = $user;
         }
@@ -145,7 +150,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         $previousUser = null;
         foreach ($allUsersOrderedDesc as $user) {
             if ($previousUser) {
-                self::assertGreaterThanOrEqual($previousUser->getId(), $user->getId());
+                self::assertGreaterThanOrEqual($previousUser->getId()->toScalar(), $user->getId()->toScalar());
             }
             $previousUser = $user;
         }
@@ -166,14 +171,15 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function findOneByUsername(): void
     {
-        $userId = 1;
+        $user = $this->findAUser();
+        $userId = $user->getId();
         $username = $this->findById($userId)->getUsername();
 
         $this->clearDatabaseCache();
 
         $user = $this->repository->findOneByUsername($username);
 
-        self::assertSame($userId, $user->getId());
+        self::assertTrue($userId->equals($user->getId()));
     }
 
     /**
@@ -181,14 +187,15 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function findOneByEmail(): void
     {
-        $userId = 1;
+        $user = $this->findAUser();
+        $userId = $user->getId();
         $email = $this->findById($userId)->getEmail();
 
         $this->clearDatabaseCache();
 
         $user = $this->repository->findOneByEmail($email);
 
-        self::assertSame($userId, $user->getId());
+        self::assertTrue($userId->equals($user->getId()));
     }
 
     /**
@@ -196,19 +203,27 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function findOneById(): void
     {
-        $userId = 1;
+        $user = $this->findAUser();
+        $userId = $user->getId();
 
         $user = $this->repository->findOneById($userId);
 
-        self::assertSame($userId, $user->getId());
+        self::assertTrue($userId->equals($user->getId()));
     }
 
-    private function findById(int $id): User
+    private function findById(UserId $id): User
     {
         $dqlQuery = $this->dqlQueryBuilder->create(User::class)
             ->where('User.id = :id')
             ->setParameter('id', $id)
             ->build();
+
+        return $this->queryService->query($dqlQuery)->getSingleResult();
+    }
+
+    private function findAUser(): User
+    {
+        $dqlQuery = $this->dqlQueryBuilder->create(User::class)->setMaxResults(1)->build();
 
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }

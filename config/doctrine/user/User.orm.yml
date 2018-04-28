@@ -3,8 +3,8 @@ Acme\App\Core\Component\User\Domain\Entity\User:
     table: symfony_demo_user
     id:
         id:
-            type: integer
-            generator: { strategy: AUTO }
+            type: user_id
+            generator: { strategy: NONE }
     fields:
         fullName:
             type: string
