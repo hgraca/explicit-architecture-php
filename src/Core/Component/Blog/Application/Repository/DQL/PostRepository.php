@@ -16,6 +16,7 @@ namespace Acme\App\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
@@ -60,7 +61,7 @@ class PostRepository implements PostRepositoryInterface
         $this->persistenceService = $persistenceService;
     }
 
-    public function find(int $id): Post
+    public function find(PostId $id): Post
     {
         $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
             ->where('Post.id = :id')

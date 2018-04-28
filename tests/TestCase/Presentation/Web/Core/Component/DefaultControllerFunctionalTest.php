@@ -59,7 +59,7 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function testPublicBlogPost(): void
     {
-        $blogPost = $this->findPostById(1);
+        $blogPost = $this->findAPost();
         $this->getClient()->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
 
         self::assertResponseStatusCode(Response::HTTP_OK, $this->getClient());
@@ -74,7 +74,10 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function testSecureUrls(string $url): void
     {
-        $this->getClient()->request('GET', $url);
+        $post = $this->findAPost();
+        $postId = $post->getId();
+
+        $this->getClient()->request('GET', sprintf($url, (string) $postId));
 
         self::assertResponseStatusCode(Response::HTTP_FOUND, $this->getClient());
         $this->assertSame(
@@ -95,16 +98,13 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
     {
         yield ['/en/admin/posts'];
         yield ['/en/admin/posts/new'];
-        yield ['/en/admin/posts/1'];
-        yield ['/en/admin/posts/1/edit'];
+        yield ['/en/admin/posts/%s'];
+        yield ['/en/admin/posts/%s/edit'];
     }
 
-    private function findPostById(int $id): Post
+    private function findAPost(): Post
     {
-        $dqlQuery = $this->getDqlQueryBuilder()->create(Post::class)
-            ->where('Post.id = :id')
-            ->setParameter('id', $id)
-            ->build();
+        $dqlQuery = $this->getDqlQueryBuilder()->create(Post::class)->setMaxResults(1)->build();
 
         return $this->getQueryService()->query($dqlQuery)->getSingleResult();
     }

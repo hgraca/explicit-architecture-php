@@ -16,6 +16,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
@@ -113,7 +114,7 @@ class PostController
      */
     public function getAction(ServerRequestInterface $request): ResponseInterface
     {
-        $post = $this->postRepository->find((int) $request->getAttribute('id'));
+        $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
         $this->authorizationService->denyAccessUnlessGranted(
             [],
             'show',
@@ -132,7 +133,7 @@ class PostController
      */
     public function editAction(ServerRequestInterface $request): ResponseInterface
     {
-        $post = $this->postRepository->find((int) $request->getAttribute('id'));
+        $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
@@ -143,7 +144,7 @@ class PostController
 
         $form = $this->formFactory->createEditPostForm(
             $post,
-            ['action' => $this->urlGenerator->generateUrl('admin_post_post', ['id' => $post->getId()])]
+            ['action' => $this->urlGenerator->generateUrl('admin_post_post', ['id' => (string) $post->getId()])]
         );
 
         return $this->templateEngine->renderResponse(
@@ -157,7 +158,7 @@ class PostController
      */
     public function postAction(ServerRequestInterface $request): ResponseInterface
     {
-        $post = $this->postRepository->find((int) $request->getAttribute('id'));
+        $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
@@ -170,14 +171,14 @@ class PostController
         $form->handleRequest($request);
 
         if (!($form->shouldBeProcessed())) {
-            return $this->responseFactory->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
+            return $this->responseFactory->redirectToRoute('admin_post_edit', ['id' => (string) $post->getId()]);
         }
 
         $this->postService->update($post);
 
         $this->flashMessageService->success('post.updated_successfully');
 
-        return $this->responseFactory->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
+        return $this->responseFactory->redirectToRoute('admin_post_edit', ['id' => (string) $post->getId()]);
     }
 
     /**
@@ -188,7 +189,7 @@ class PostController
      */
     public function deleteAction(ServerRequestInterface $request): ResponseInterface
     {
-        $post = $this->postRepository->find((int) $request->getAttribute('id'));
+        $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],

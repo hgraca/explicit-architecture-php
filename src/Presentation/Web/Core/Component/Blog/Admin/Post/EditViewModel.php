@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Presentation\Web\Core\Port\Form\FormInterface;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
 
@@ -26,14 +27,14 @@ final class EditViewModel implements TemplateViewModelInterface
     private $form;
 
     /**
-     * @var int
+     * @var PostId
      */
     private $postId;
 
     /**
      * The view model constructor depends on the most raw elements possible.
      */
-    public function __construct(int $postId, FormInterface $form)
+    public function __construct(PostId $postId, FormInterface $form)
     {
         $this->postId = $postId;
         $this->form = $form;
@@ -52,7 +53,7 @@ final class EditViewModel implements TemplateViewModelInterface
         return $this->form;
     }
 
-    public function getPostId(): int
+    public function getPostId(): PostId
     {
         return $this->postId;
     }

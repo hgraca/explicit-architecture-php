@@ -4,7 +4,7 @@ admin_post_show:
     methods: [GET]
     requirements:
         _locale: '%app_locales%'
-        id: '\d+'
+        id: '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'
     defaults:
         _locale: '%locale%'
 
@@ -14,7 +14,7 @@ admin_post_edit:
     methods: [GET]
     requirements:
         _locale: '%app_locales%'
-        id: '\d+'
+        id: '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'
     defaults:
         _locale: '%locale%'
 
@@ -24,7 +24,7 @@ admin_post_post:
     methods: [POST]
     requirements:
         _locale: '%app_locales%'
-        id: '\d+'
+        id: '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'
     defaults:
         _locale: '%locale%'
 
@@ -34,7 +34,7 @@ admin_post_delete:
     methods: [POST]
     requirements:
         _locale: '%app_locales%'
-        id: '\d+'
+        id: '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'
     defaults:
         _locale: '%locale%'
 

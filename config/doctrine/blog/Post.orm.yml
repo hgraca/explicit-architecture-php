@@ -3,8 +3,8 @@ Acme\App\Core\Component\Blog\Domain\Entity\Post:
     table: symfony_demo_post
     id:
         id:
-            type: integer
-            generator: { strategy: AUTO }
+            type: post_id
+            generator: { strategy: NONE }
     fields:
         title:
             type: string

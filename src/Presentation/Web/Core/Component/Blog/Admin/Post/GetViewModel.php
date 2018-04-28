@@ -15,13 +15,14 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use DateTimeInterface;
 
 final class GetViewModel implements TemplateViewModelInterface
 {
     /**
-     * @var int
+     * @var PostId
      */
     private $postId;
 
@@ -59,7 +60,7 @@ final class GetViewModel implements TemplateViewModelInterface
      * The view model constructor depends on the most raw elements possible.
      */
     public function __construct(
-        int $id,
+        PostId $id,
         string $title,
         DateTimeInterface $publishedAt,
         string $authorFullName,
@@ -97,7 +98,7 @@ final class GetViewModel implements TemplateViewModelInterface
         );
     }
 
-    public function getPostId(): int
+    public function getPostId(): PostId
     {
         return $this->postId;
     }

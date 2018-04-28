@@ -15,13 +15,14 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use DateTimeInterface;
 
 final class GetViewModel implements TemplateViewModelInterface
 {
     /**
-     * @var array [int, string, DateTimeInterface]
+     * @var array [PostId, string, DateTimeInterface]
      */
     private $postList = [];
 
@@ -48,7 +49,7 @@ final class GetViewModel implements TemplateViewModelInterface
     }
 
     private function addPostData(
-        int $id,
+        PostId $id,
         string $title,
         DateTimeInterface $publishedAt
     ): void {
