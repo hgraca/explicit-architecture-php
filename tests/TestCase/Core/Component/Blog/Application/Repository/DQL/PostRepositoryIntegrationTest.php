@@ -16,6 +16,7 @@ namespace Acme\App\Test\TestCase\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\DQL\PostRepository;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService;
@@ -59,14 +60,15 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
     public function upsert_updates_entity(): void
     {
         $newContent = 'some new content';
-        $post = $this->findById(1);
+        $post = $this->findAPost();
+        $postId = $post->getId();
         $post->setContent($newContent);
         $this->persistenceService->startTransaction();
         $this->repository->upsert($post);
         $this->persistenceService->finishTransaction();
         $this->clearDatabaseCache();
 
-        $post = $this->findById(1);
+        $post = $this->findById($postId);
 
         self::assertSame($newContent, $post->getContent());
     }
@@ -78,7 +80,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function upsert_creates_entity(): void
     {
-        $auxiliaryPost = $this->findById(1);
+        $auxiliaryPost = $this->findAPost();
 
         $post = new Post();
         $post->setAuthor($auxiliaryPost->getAuthor());
@@ -109,7 +111,8 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function delete_removes_the_entity(): void
     {
-        $post = $this->findById(1);
+        $post = $this->findAPost();
+        $postId = $post->getId();
 
         $this->persistenceService->startTransaction();
         $this->repository->delete($post);
@@ -117,7 +120,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
 
         $this->clearDatabaseCache();
 
-        $this->findById(1);
+        $this->findById($postId);
     }
 
     /**
@@ -128,7 +131,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function delete_removes_the_associated_tags(): void
     {
-        $post = $this->findById(1);
+        $post = $this->findAPost();
 
         $postId = $post->getId();
 
@@ -147,7 +150,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function findByAuthorOrderedByPublishDate(): void
     {
-        $author = $this->findById(1)->getAuthor();
+        $author = $this->findAPost()->getAuthor();
         $userId = $author->getId();
         $postList = $this->repository->findByAuthorOrderedByPublishDate($userId);
 
@@ -169,7 +172,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function findLatest(): void
     {
-        $auxiliaryPost = $this->findById(1);
+        $auxiliaryPost = $this->findAPost();
 
         $post = new Post();
         $post->setAuthor($auxiliaryPost->getAuthor());
@@ -197,7 +200,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         }
     }
 
-    private function findById(int $id): Post
+    private function findById(PostId $id): Post
     {
         $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
             ->where('Post.id = :id')
@@ -207,15 +210,22 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }
 
+    private function findAPost(): Post
+    {
+        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)->setMaxResults(1)->build();
+
+        return $this->queryService->query($dqlQuery)->getSingleResult();
+    }
+
     /**
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function getTagListCountByPostId(int $postId): int
+    private function getTagListCountByPostId(PostId  $postId): int
     {
         $statement = $this->getEntityManager()
             ->getConnection()
             ->executeQuery(
-                'SELECT count(`post_id`) as `count` FROM `symfony_demo_post_tag` WHERE `post_id` = ' . $postId
+                "SELECT count(`post_id`) as `count` FROM `symfony_demo_post_tag` WHERE `post_id` = '$postId'"
             );
 
         $result = $statement->fetchAll();

@@ -15,11 +15,12 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Repository;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
 
 interface PostRepositoryInterface
 {
-    public function find(int $id): Post;
+    public function find(PostId $id): Post;
 
     public function findBySlug(string $slug): Post;
 

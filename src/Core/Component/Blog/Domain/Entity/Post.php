@@ -45,7 +45,7 @@ class Post
     const NUM_ITEMS = 10;
 
     /**
-     * @var int
+     * @var PostId
      */
     private $id;
 
@@ -92,9 +92,10 @@ class Post
     public function __construct()
     {
         $this->publishedAt = DateTimeGenerator::generate();
+        $this->id = new PostId();
     }
 
-    public function getId(): int
+    public function getId(): PostId
     {
         return $this->id;
     }

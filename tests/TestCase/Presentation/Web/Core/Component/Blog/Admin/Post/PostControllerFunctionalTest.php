@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
@@ -64,26 +65,30 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
             'PHP_AUTH_USER' => 'john_user',
             'PHP_AUTH_PW' => 'kitten',
         ]);
+        $post = $this->findAPost();
+        $postId = $post->getId();
 
-        $client->request($httpMethod, $url);
+        $client->request($httpMethod, sprintf($url, (string) $postId));
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $client);
     }
 
     public function getUrlsForRegularUsers()
     {
-        yield ['GET', '/en/admin/posts/1'];
-        yield ['GET', '/en/admin/posts/1/edit'];
-        yield ['POST', '/en/admin/posts/1'];
-        yield ['POST', '/en/admin/posts/1/delete'];
+        yield ['GET', '/en/admin/posts/%s'];
+        yield ['GET', '/en/admin/posts/%s/edit'];
+        yield ['POST', '/en/admin/posts/%s'];
+        yield ['POST', '/en/admin/posts/%s/delete'];
     }
 
     public function testAdminGetPost(): void
     {
+        $post = $this->findAPost();
+        $postId = $post->getId();
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
             'PHP_AUTH_PW' => 'kitten',
         ]);
-        $client->request('GET', '/en/admin/posts/1');
+        $client->request('GET', '/en/admin/posts/' . $postId);
 
         self::assertResponseStatusCode(Response::HTTP_OK, $client);
     }
@@ -96,13 +101,15 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function testAdminEditPost(): void
     {
+        $post = $this->findAPost();
+        $postId = $post->getId();
         $newBlogPostTitle = 'Blog Post Title ' . mt_rand();
 
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
             'PHP_AUTH_PW' => 'kitten',
         ]);
-        $crawler = $client->request('GET', '/en/admin/posts/1/edit');
+        $crawler = $client->request('GET', "/en/admin/posts/$postId/edit");
         $form = $crawler->selectButton('Save changes')->form([
             'edit_post_form[title]' => $newBlogPostTitle,
         ]);
@@ -111,7 +118,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         self::assertResponseStatusCode(Response::HTTP_FOUND, $client);
 
         /** @var Post $post */
-        $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
+        $post = $this->findById($postId);
         $this->assertSame($newBlogPostTitle, $post->getTitle());
     }
 
@@ -128,13 +135,14 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $this->getService(UrlGeneratorInterface::class);
 
-        $postId = 1;
+        $post = $this->findAPost();
+        $postId = $post->getId();
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
             'PHP_AUTH_PW' => 'kitten',
         ]);
         $client->followRedirects();
-        $crawler = $client->request('GET', '/en/admin/posts/1');
+        $crawler = $client->request('GET', '/en/admin/posts/' . $postId);
         $crawler = $client->submit($crawler->filter('#delete-form')->form());
 
         self::assertResponseStatusCode(Response::HTTP_OK, $client);
@@ -162,9 +170,10 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         );
         $client->followRedirects();
 
+        $post = $this->findAPost();
         $crawler = $client->request(
             'POST',
-            '/en/admin/posts/1/delete',
+            '/en/admin/posts/' . $post->getId() . '/delete',
             ['token' => 'invalid_token']
         );
 
@@ -176,12 +185,19 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         self::assertSame(0, $crawler->filter('.alert-success')->count());
     }
 
-    private function findById(int $id): Post
+    private function findById(PostId $id): Post
     {
         $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
             ->where('Post.id = :id')
             ->setParameter('id', $id)
             ->build();
+
+        return $this->queryService->query($dqlQuery)->getSingleResult();
+    }
+
+    private function findAPost(): Post
+    {
+        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)->setMaxResults(1)->build();
 
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }

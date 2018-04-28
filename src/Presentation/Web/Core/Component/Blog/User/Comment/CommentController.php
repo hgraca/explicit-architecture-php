@@ -17,6 +17,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\CommentService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
@@ -114,7 +115,7 @@ class CommentController
      * Blog/Anonymous/Post/get.html.twig template. That's why it's not needed to define
      * a route name for it.
      */
-    public function editAction(int $postId): ResponseInterface
+    public function editAction(PostId $postId): ResponseInterface
     {
         return $this->templateEngine->renderResponse(
             '@Blog/User/Comment/edit.html.twig',
