@@ -16,6 +16,7 @@ namespace Acme\App\Core\Component\Blog\Application\Repository;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
+use Acme\App\Core\Component\User\Domain\Entity\UserId;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
 
 interface PostRepositoryInterface
@@ -31,7 +32,7 @@ interface PostRepositoryInterface
     /**
      * @return Post[]
      */
-    public function findByAuthorOrderedByPublishDate(int $userId): ResultCollectionInterface;
+    public function findByAuthorOrderedByPublishDate(UserId $userId): ResultCollectionInterface;
 
     /**
      * @return Post[]

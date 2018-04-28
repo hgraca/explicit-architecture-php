@@ -17,6 +17,7 @@ doctrine:
             binary_uuid: Acme\App\Infrastructure\Persistence\Doctrine\Type\BinaryUuidType
             tag_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\TagIdType
             post_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\PostIdType
+            user_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\UserIdType
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore

@@ -15,13 +15,14 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Port\Auth;
 
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\User\Domain\Entity\UserId;
 use Psr\Http\Message\ServerRequestInterface;
 
 interface AuthenticationServiceInterface
 {
     public function isCsrfTokenValid(string $id, string $token): bool;
 
-    public function getLoggedInUserId(): int;
+    public function getLoggedInUserId(): UserId;
 
     public function getLoggedInUser(): User;
 

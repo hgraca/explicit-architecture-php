@@ -100,7 +100,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         self::assertSame($content, $post->getContent());
         self::assertSame($title, $post->getTitle());
         self::assertSame($summary, $post->getSummary());
-        self::assertSame($auxiliaryPost->getAuthor()->getId(), $post->getAuthor()->getId());
+        self::assertTrue($auxiliaryPost->getAuthor()->getId()->equals($post->getAuthor()->getId()));
     }
 
     /**

@@ -94,7 +94,7 @@ final class CommentRepositoryIntegrationTest extends AbstractIntegrationTest
         $comment = $this->findById($commentId);
 
         self::assertSame($content, $comment->getContent());
-        self::assertSame($auxiliaryComment->getAuthor()->getId(), $comment->getAuthor()->getId());
+        self::assertTrue($auxiliaryComment->getAuthor()->getId()->equals($comment->getAuthor()->getId()));
         self::assertTrue($auxiliaryComment->getPost()->getId()->equals($comment->getPost()->getId()));
     }
 
