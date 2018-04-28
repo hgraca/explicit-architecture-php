@@ -32,7 +32,7 @@ use DateTimeImmutable;
 class Comment
 {
     /**
-     * @var int
+     * @var CommentId
      */
     private $id;
 
@@ -59,6 +59,7 @@ class Comment
     public function __construct()
     {
         $this->publishedAt = DateTimeGenerator::generate();
+        $this->id = new CommentId();
     }
 
     public function isLegitComment(): bool
@@ -68,7 +69,7 @@ class Comment
         return !$containsInvalidCharacters;
     }
 
-    public function getId(): int
+    public function getId(): CommentId
     {
         return $this->id;
     }

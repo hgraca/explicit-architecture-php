@@ -16,6 +16,7 @@ namespace Acme\App\Test\TestCase\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\DQL\CommentRepository;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Core\Component\Blog\Domain\Entity\CommentId;
 use Acme\App\Core\Port\Persistence\DQL\DQLQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Infrastructure\Persistence\Doctrine\DQLPersistenceService;
@@ -58,15 +59,16 @@ final class CommentRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function upsert_updates_entity(): void
     {
+        $comment = $this->findAComment();
+        $commentId = $comment->getId();
         $newContent = 'some new content';
-        $comment = $this->findById(1);
         $comment->setContent($newContent);
         $this->persistenceService->startTransaction();
         $this->repository->upsert($comment);
         $this->persistenceService->finishTransaction();
         $this->clearDatabaseCache();
 
-        $comment = $this->findById(1);
+        $comment = $this->findById($commentId);
 
         self::assertSame($newContent, $comment->getContent());
     }
@@ -78,9 +80,10 @@ final class CommentRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function upsert_creates_entity(): void
     {
-        $auxiliaryComment = $this->findById(1);
+        $auxiliaryComment = $this->findAComment();
 
         $comment = new Comment();
+        $commentId = $comment->getId();
         $comment->setAuthor($auxiliaryComment->getAuthor());
         $comment->setContent($content = 'some new content');
         $comment->setPost($auxiliaryComment->getPost());
@@ -88,7 +91,6 @@ final class CommentRepositoryIntegrationTest extends AbstractIntegrationTest
         $this->persistenceService->startTransaction();
         $this->repository->upsert($comment);
         $this->persistenceService->finishTransaction();
-        $commentId = $comment->getId();
         $this->clearDatabaseCache();
 
         $comment = $this->findById($commentId);
@@ -98,12 +100,19 @@ final class CommentRepositoryIntegrationTest extends AbstractIntegrationTest
         self::assertTrue($auxiliaryComment->getPost()->getId()->equals($comment->getPost()->getId()));
     }
 
-    private function findById(int $id): Comment
+    private function findById(CommentId $id): Comment
     {
         $dqlQuery = $this->dqlQueryBuilder->create(Comment::class)
             ->where('Comment.id = :id')
             ->setParameter('id', $id)
             ->build();
+
+        return $this->queryService->query($dqlQuery)->getSingleResult();
+    }
+
+    private function findAComment(): Comment
+    {
+        $dqlQuery = $this->dqlQueryBuilder->create(Comment::class)->setMaxResults(1)->build();
 
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }

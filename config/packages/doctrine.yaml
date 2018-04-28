@@ -13,6 +13,7 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
 
         types:
+            comment_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\CommentIdType
             uuid: Acme\App\Infrastructure\Persistence\Doctrine\Type\UuidType
             binary_uuid: Acme\App\Infrastructure\Persistence\Doctrine\Type\BinaryUuidType
             tag_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\TagIdType

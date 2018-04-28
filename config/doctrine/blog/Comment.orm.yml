@@ -3,8 +3,8 @@ Acme\App\Core\Component\Blog\Domain\Entity\Comment:
     table: symfony_demo_comment
     id:
         id:
-            type: integer
-            generator: { strategy: AUTO }
+            type: comment_id
+            generator: { strategy: NONE }
     fields:
         content:
             type: text
