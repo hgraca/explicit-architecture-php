@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -74,7 +76,7 @@ class CommentNotificationSubscriber implements EventSubscriberInterface
 
         $linkToPost = $this->urlGenerator->generate('blog_post', [
             'slug' => $post->getSlug(),
-            '_fragment' => 'comment_'.$comment->getId(),
+            '_fragment' => 'comment_' . $comment->getId(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $subject = $this->translator->trans('notification.comment_created');
@@ -90,8 +92,7 @@ class CommentNotificationSubscriber implements EventSubscriberInterface
             ->setSubject($subject)
             ->setTo($post->getAuthor()->getEmail())
             ->setFrom($this->sender)
-            ->setBody($body, 'text/html')
-        ;
+            ->setBody($body, 'text/html');
 
         // In config/packages/dev/swiftmailer.yaml the 'disable_delivery' option is set to 'true'.
         // That's why in the development environment you won't actually receive any email.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -14,7 +16,7 @@ function isContainerRunning(string $containerName): bool
 {
     if (
         isContainerExists($containerName)
-        && 'true' === trim(shell_exec("docker inspect -f '{{.State.Running}}' $containerName 2>/dev/null"))
+        && trim(shell_exec("docker inspect -f '{{.State.Running}}' $containerName 2>/dev/null")) === 'true'
     ) {
         return true;
     }
@@ -26,7 +28,7 @@ function isContainerStopped(string $containerName): bool
 {
     if (
         isContainerExists($containerName)
-        && 'false' === trim(shell_exec("docker inspect -f '{{.State.Running}}' $containerName 2>/dev/null"))
+        && trim(shell_exec("docker inspect -f '{{.State.Running}}' $containerName 2>/dev/null")) === 'false'
     ) {
         return true;
     }
@@ -36,7 +38,7 @@ function isContainerStopped(string $containerName): bool
 
 function isContainerExists(string $containerName): bool
 {
-    if ('' === shell_exec("docker ps -a | grep $containerName")) {
+    if (shell_exec("docker ps -a | grep $containerName") === '') {
         return false;
     }
 

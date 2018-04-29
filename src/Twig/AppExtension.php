@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -86,7 +88,7 @@ class AppExtension extends AbstractExtension
      */
     public function getLocales(): array
     {
-        if (null !== $this->locales) {
+        if ($this->locales !== null) {
             return $this->locales;
         }
 

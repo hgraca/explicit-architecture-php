@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -105,7 +107,7 @@ HELP
 
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        if (null !== $input->getArgument('username')) {
+        if ($input->getArgument('username') !== null) {
             return;
         }
 
@@ -131,7 +133,7 @@ HELP
         /** @var User $user */
         $user = $this->users->findOneByUsername($username);
 
-        if (null === $user) {
+        if ($user === null) {
             throw new RuntimeException(sprintf('User with username "%s" not found.', $username));
         }
 

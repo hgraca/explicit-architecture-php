@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -71,7 +73,7 @@ class SourceCodeExtension extends AbstractExtension
     private function getController(): ?array
     {
         // this happens for example for exceptions (404 errors, etc.)
-        if (null === $this->controller) {
+        if ($this->controller === null) {
             return null;
         }
 
@@ -79,7 +81,7 @@ class SourceCodeExtension extends AbstractExtension
 
         $classCode = file($method->getFileName());
         $methodCode = \array_slice($classCode, $method->getStartLine() - 1, $method->getEndLine() - $method->getStartLine() + 1);
-        $controllerCode = '    '.$method->getDocComment()."\n".implode('', $methodCode);
+        $controllerCode = '    ' . $method->getDocComment() . "\n" . implode('', $methodCode);
 
         return [
             'file_path' => $method->getFileName(),
@@ -135,7 +137,7 @@ class SourceCodeExtension extends AbstractExtension
         $codeLines = explode("\n", $code);
 
         $indentedLines = array_filter($codeLines, function ($lineOfCode) {
-            return '' === $lineOfCode || '    ' === mb_substr($lineOfCode, 0, 4);
+            return $lineOfCode === '' || mb_substr($lineOfCode, 0, 4) === '    ';
         });
 
         if (\count($indentedLines) === \count($codeLines)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -80,7 +82,7 @@ class BlogControllerTest extends WebTestCase
      */
     public function testAdminNewPost(): void
     {
-        $postTitle = 'Blog Post Title '.mt_rand();
+        $postTitle = 'Blog Post Title ' . mt_rand();
         $postSummary = $this->generateRandomString(255);
         $postContent = $this->generateRandomString(1024);
 
@@ -126,7 +128,7 @@ class BlogControllerTest extends WebTestCase
      */
     public function testAdminEditPost(): void
     {
-        $newBlogPostTitle = 'Blog Post Title '.mt_rand();
+        $newBlogPostTitle = 'Blog Post Title ' . mt_rand();
 
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
@@ -170,6 +172,6 @@ class BlogControllerTest extends WebTestCase
     {
         $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-        return mb_substr(str_shuffle(str_repeat($chars, ceil($length / mb_strlen($chars)))), 1, $length);
+        return mb_substr(str_shuffle(str_repeat($chars, (int) ceil($length / mb_strlen($chars)))), 1, $length);
     }
 }

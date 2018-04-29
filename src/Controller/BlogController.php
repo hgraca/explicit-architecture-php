@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -56,7 +58,7 @@ class BlogController extends AbstractController
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templating.html#template-suffix
-        return $this->render('blog/index.'.$_format.'.twig', ['posts' => $latestPosts]);
+        return $this->render('blog/index.' . $_format . '.twig', ['posts' => $latestPosts]);
     }
 
     /**

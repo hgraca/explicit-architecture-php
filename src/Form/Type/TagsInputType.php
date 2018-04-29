@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -53,8 +55,7 @@ class TagsInputType extends AbstractType
             // but here we're doing the transformation in two steps (Collection <-> array <-> string)
             // and reuse the existing CollectionToArrayTransformer.
             ->addModelTransformer(new CollectionToArrayTransformer(), true)
-            ->addModelTransformer(new TagArrayToStringTransformer($this->manager), true)
-        ;
+            ->addModelTransformer(new TagArrayToStringTransformer($this->manager), true);
     }
 
     /**
