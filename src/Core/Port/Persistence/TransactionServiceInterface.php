@@ -19,11 +19,6 @@ interface TransactionServiceInterface
     public function startTransaction(): void;
 
     /**
-     * @deprecated Don't use unless we need an entity to get an ID. Will be removed when we start using UUIDs.
-     */
-    public function commitChanges(): void;
-
-    /**
      * This is is when the ORM writes all staged changes, to the DB
      *      so we should do this only once in a request, and only if the use case command was successful.
      */

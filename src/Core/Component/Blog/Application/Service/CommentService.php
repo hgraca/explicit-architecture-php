@@ -19,7 +19,6 @@ use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\App\Core\Port\EventDispatcher\EventDispatcherInterface;
-use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
 
 final class CommentService
@@ -30,22 +29,15 @@ final class CommentService
     private $commentRepository;
 
     /**
-     * @var TransactionServiceInterface
-     */
-    private $transactionService;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
     public function __construct(
         CommentRepositoryInterface $commentRepository,
-        TransactionServiceInterface $transactionService,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->commentRepository = $commentRepository;
-        $this->transactionService = $transactionService;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -55,17 +47,6 @@ final class CommentService
         $post->addComment($comment);
 
         $this->commentRepository->upsert($comment);
-
-        // Committing the transaction should only be done once at the moment the application sends the response back,
-        // in the RequestTransactionSubscriber.
-        // However, the logic following this needs the new comment to have an ID, which is created by the DB server.
-        // This is a good example of breaking dependency rules, as we have an inner layer (Domain, as it is the entity
-        // that has the ID) depending on an outer layer (Tools).
-        // To solve this problem, we need the entities to create their own IDs, and to make sure they are unique we
-        // can use UUIDs.
-        // At the moment this does not break the application because we are using doctrine autocommit,
-        // so we will solve this at a later time.
-        $this->transactionService->commitChanges();
 
         // When triggering an event, you can optionally pass some information.
         // For simple applications, use the GenericEvent object provided by Symfony
