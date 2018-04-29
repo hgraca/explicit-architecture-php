@@ -17,6 +17,8 @@ namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comme
 use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
+use Acme\PhpExtension\DateTime\DateTimeGenerator;
+use DateTimeImmutable;
 
 /**
  * Functional test for the controllers defined inside CommentController.
@@ -38,6 +40,8 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function testNewComment(): void
     {
+        $this->overrideDateTimeGenerator();
+
         $client = $this->getClient([], [
             'PHP_AUTH_USER' => 'john_user',
             'PHP_AUTH_PW' => 'kitten',
@@ -49,15 +53,22 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
         $postLink = $crawler->filter('article.post > h2 a')->link();
 
         $crawler = $client->click($postLink);
+        $contentBefore = $client->getResponse()->getContent();
 
         $form = $crawler->selectButton('Publish comment')->form([
             'comment_form[content]' => 'Hi, Symfony!',
         ]);
         $crawler = $client->submit($form);
+        $contentAfter = $client->getResponse()->getContent();
 
         $newComment = $crawler->filter('.post-comment')->first()->filter('div > p')->text();
 
-        $this->assertSame('Hi, Symfony!', $newComment);
+        $this->assertSame(
+            'Hi, Symfony!',
+            $newComment,
+            'Content before: ' . $contentBefore . "\n\n\n"
+            . 'Content after: ' . $contentAfter . "\n\n\n"
+        );
     }
 
     /**
@@ -84,6 +95,15 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
         $this->assertSame(
             $urlGenerator->generateUrl('security_login', [], UrlType::absoluteUrl()),
             $crawler->getUri()
+        );
+    }
+
+    private function overrideDateTimeGenerator(): void
+    {
+        DateTimeGenerator::overrideDefaultGenerator(
+            function () {
+                return new DateTimeImmutable('now + 1 hour');
+            }
         );
     }
 }

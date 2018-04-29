@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
-use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -57,19 +56,6 @@ class PostController
     {
         $post = $this->postRepository->findBySlug($request->getAttribute('slug'));
 
-        /*
-         * For some reason when running the tests we get the comment dates, and order, all weird.
-         * For now we will order them by their ID, we will fix this when we have a way to control the DateTime
-         * objects during the tests, to make sure the dates and times are as they would in production.
-         */
-        $commentList = $post->getComments()->toArray();
-        usort(
-            $commentList,
-            function (Comment $commentA, Comment $commentB) {
-                return ($commentA->getId() > $commentB->getId()) ? -1 : 1;
-            }
-        );
-
         // Symfony's 'dump()' function is an improved version of PHP's 'var_dump()' but
         // it's not available in the 'prod' environment to prevent leaking sensitive information.
         // It can be used both in PHP files and Twig templates, but it requires to
@@ -79,7 +65,7 @@ class PostController
 
         return $this->templateEngine->renderResponse(
             '@Blog/Anonymous/Post/get.html.twig',
-            GetViewModel::fromPostAndCommentList($post, ...$commentList)
+            GetViewModel::fromPostAndCommentList($post, ...$post->getComments())
         );
     }
 }
