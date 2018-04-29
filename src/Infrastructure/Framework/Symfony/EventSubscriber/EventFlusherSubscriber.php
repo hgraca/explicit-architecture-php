@@ -24,8 +24,12 @@ final class EventFlusherSubscriber implements EventSubscriberInterface
      * The default is 0.
      * The highest the priority, the earlier a listener is executed.
      * The symfony subscribers use values from -250 to +250, but we can use whatever integers we want.
+     *
+     * We want to execute this subscriber after committing the main use case DB transactions, so that the events
+     * already have available the DB changes made by the main use case that triggered the events.
+     * So we make sure the this subscriber priority is lower than the RequestTransactionSubscriber.
      */
-    private const PRIORITY = 5;
+    private const PRIORITY = RequestTransactionSubscriber::PRIORITY - 5;
 
     /**
      * @var BufferedEventDispatcherInterface
