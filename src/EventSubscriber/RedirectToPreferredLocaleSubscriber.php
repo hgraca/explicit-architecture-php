@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -77,12 +79,12 @@ class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         // Ignore sub-requests and all URLs but the homepage
-        if (!$event->isMasterRequest() || '/' !== $request->getPathInfo()) {
+        if (!$event->isMasterRequest() || $request->getPathInfo() !== '/') {
             return;
         }
         // Ignore requests from referrers with the same HTTP host in order to prevent
         // changing language for users who possibly already selected it for this application.
-        if (0 === mb_stripos($request->headers->get('referer'), $request->getSchemeAndHttpHost())) {
+        if (mb_stripos((string) $request->headers->get('referer'), $request->getSchemeAndHttpHost()) === 0) {
             return;
         }
 

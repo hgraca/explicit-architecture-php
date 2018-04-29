@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -47,8 +49,7 @@ class PostRepository extends ServiceEntityRepository
                 WHERE p.publishedAt <= :now
                 ORDER BY p.publishedAt DESC
             ')
-            ->setParameter('now', new \DateTime())
-        ;
+            ->setParameter('now', new \DateTime());
 
         return $this->createPaginator($query, $page);
     }
@@ -70,7 +71,7 @@ class PostRepository extends ServiceEntityRepository
         $query = $this->sanitizeSearchQuery($rawQuery);
         $searchTerms = $this->extractSearchTerms($query);
 
-        if (0 === count($searchTerms)) {
+        if (count($searchTerms) === 0) {
             return [];
         }
 
@@ -78,9 +79,8 @@ class PostRepository extends ServiceEntityRepository
 
         foreach ($searchTerms as $key => $term) {
             $queryBuilder
-                ->orWhere('p.title LIKE :t_'.$key)
-                ->setParameter('t_'.$key, '%'.$term.'%')
-            ;
+                ->orWhere('p.title LIKE :t_' . $key)
+                ->setParameter('t_' . $key, '%' . $term . '%');
         }
 
         return $queryBuilder

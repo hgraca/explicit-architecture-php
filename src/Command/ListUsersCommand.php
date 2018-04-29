@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Explicit Architecture POC,
  * which is created on top of the Symfony Demo application.
@@ -96,8 +98,7 @@ HELP
             // commands can optionally define arguments and/or options (mandatory and optional)
             // see https://symfony.com/doc/current/components/console/console_arguments.html
             ->addOption('max-results', null, InputOption::VALUE_OPTIONAL, 'Limits the number of users listed', 50)
-            ->addOption('send-to', null, InputOption::VALUE_OPTIONAL, 'If set, the result is sent to the given email address')
-        ;
+            ->addOption('send-to', null, InputOption::VALUE_OPTIONAL, 'If set, the result is sent to the given email address');
     }
 
     /**
@@ -155,8 +156,7 @@ HELP
             ->setSubject(sprintf('app:list-users report (%s)', date('Y-m-d H:i:s')))
             ->setFrom($this->emailSender)
             ->setTo($recipient)
-            ->setBody($contents, 'text/plain')
-        ;
+            ->setBody($contents, 'text/plain');
 
         $this->mailer->send($message);
     }
