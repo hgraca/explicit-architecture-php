@@ -78,17 +78,12 @@ final class DqlPersistenceService implements QueryServiceInterface, PersistenceS
         }
     }
 
-    public function commitChanges(): void
-    {
-        $this->entityManager->flush();
-    }
-
     /**
      * @throws ConnectionException
      */
     public function finishTransaction(): void
     {
-        $this->commitChanges();
+        $this->entityManager->flush();
         if (!$this->autoCommit && $this->entityManager->getConnection()->isTransactionActive()) {
             $this->entityManager->getConnection()->commit();
         }
