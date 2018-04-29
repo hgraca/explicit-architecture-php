@@ -107,7 +107,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
-    public function delete(): void
+    public function delete_removes_the_entity(): void
     {
         $post = $this->findById(1);
 
@@ -118,6 +118,28 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $this->clearDatabaseCache();
 
         $this->findById(1);
+    }
+
+    /**
+     * @test
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function delete_removes_the_associated_tags(): void
+    {
+        $post = $this->findById(1);
+
+        $postId = $post->getId();
+
+        $this->persistenceService->startTransaction();
+        $this->repository->delete($post);
+        $post = null;
+        $this->persistenceService->finishTransaction();
+
+        $this->clearDatabaseCache();
+
+        self::assertSame(0, $this->getTagListCountByPostId($postId));
     }
 
     /**
@@ -182,5 +204,21 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
             ->build();
 
         return $this->queryService->query($dqlQuery)->getSingleResult();
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function getTagListCountByPostId(int $postId): int
+    {
+        $statement = $this->getEntityManager()
+            ->getConnection()
+            ->executeQuery(
+                'SELECT count(`post_id`) as `count` FROM `symfony_demo_post_tag` WHERE `post_id` = ' . $postId
+            );
+
+        $result = $statement->fetchAll();
+
+        return (int) $result[0]['count'];
     }
 }
