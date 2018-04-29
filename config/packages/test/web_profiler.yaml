@@ -4,7 +4,7 @@ web_profiler:
 
 framework:
     profiler:
-      enabled: false # Turn it on or off altogether
-      collect: true # If set to true, the profiler collects data for all requests, if not we have to start it in the code
+      enabled: true # Turn it on or off altogether
+      collect: false # If set to true, the profiler collects data for all requests, if not we have to start it in the code
       only_exceptions: false # When true, it will only be enabled when an exception is thrown while handling a request
       only_master_requests: false # When true, it will only be enabled on the master requests (not on the subrequests)
