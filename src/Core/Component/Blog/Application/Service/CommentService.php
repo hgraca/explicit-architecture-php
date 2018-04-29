@@ -14,28 +14,38 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Service;
 
+use Acme\App\Core\Component\Blog\Application\Repository\CommentRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
 use Acme\App\Core\Port\EventDispatcher\EventDispatcherInterface;
+use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
-use Doctrine\Common\Persistence\ObjectManager;
 
 final class CommentService
 {
     /**
-     * @var ObjectManager
+     * @var CommentRepositoryInterface
      */
-    private $entityManager;
+    private $commentRepository;
+
+    /**
+     * @var TransactionServiceInterface
+     */
+    private $transactionService;
 
     /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
-    public function __construct(ObjectManager $entityManager, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        CommentRepositoryInterface $commentRepository,
+        TransactionServiceInterface $transactionService,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->commentRepository = $commentRepository;
+        $this->transactionService = $transactionService;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -44,11 +54,18 @@ final class CommentService
         $comment->setAuthor($author);
         $post->addComment($comment);
 
-        // TODO replace by the repository
-        $this->entityManager->persist($comment);
-        // Flushing is when doctrine writes all staged changes, to the DB
-        // so we should do this only once in a request, and only if the use case command was successful
-        $this->entityManager->flush(); // if we would use a command bus, we would do this in a middleware
+        $this->commentRepository->upsert($comment);
+
+        // Committing the transaction should only be done once at the moment the application sends the response back,
+        // in the RequestTransactionSubscriber.
+        // However, the logic following this needs the new comment to have an ID, which is created by the DB server.
+        // This is a good example of breaking dependency rules, as we have an inner layer (Domain, as it is the entity
+        // that has the ID) depending on an outer layer (Tools).
+        // To solve this problem, we need the entities to create their own IDs, and to make sure they are unique we
+        // can use UUIDs.
+        // At the moment this does not break the application because we are using doctrine autocommit,
+        // so we will solve this at a later time.
+        $this->transactionService->commitChanges();
 
         // When triggering an event, you can optionally pass some information.
         // For simple applications, use the GenericEvent object provided by Symfony

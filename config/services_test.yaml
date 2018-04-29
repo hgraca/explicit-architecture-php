@@ -2,6 +2,7 @@ parameters:
     # All services in this list will be added to the container used in tests
     # This is specially useful for the services provided by 3rd party bundles
     test.container.service_list:
+        - 'Acme\App\Core\Component\Blog\Application\Repository\DQL\CommentRepository'
         - 'Acme\App\Core\Component\Blog\Application\Repository\DQL\PostRepository'
         - 'Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface'
         - 'Acme\App\Core\Port\Persistence\QueryServiceRouterInterface'

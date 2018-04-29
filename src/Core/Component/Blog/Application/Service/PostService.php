@@ -14,20 +14,20 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Service;
 
+use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
-use Doctrine\Common\Persistence\ObjectManager;
 
 final class PostService
 {
     /**
-     * @var ObjectManager
+     * @var PostRepositoryInterface
      */
-    private $entityManager;
+    private $postRepository;
 
-    public function __construct(ObjectManager $entityManager)
+    public function __construct(PostRepositoryInterface $postRepository)
     {
-        $this->entityManager = $entityManager;
+        $this->postRepository = $postRepository;
     }
 
     public function create(Post $post, User $user): void
@@ -35,20 +35,12 @@ final class PostService
         $post->setAuthor($user);
         $post->regenerateSlug();
 
-        // TODO replace by the repository
-        $this->entityManager->persist($post);
-        // Flushing is when doctrine writes all staged changes, to the DB
-        // so we should do this only once in a request, and only if the use case command was successful
-        $this->entityManager->flush(); // if we would use a command bus, we would do this in a middleware
+        $this->postRepository->upsert($post);
     }
 
     public function update(Post $post): void
     {
         $post->regenerateSlug();
-        // TODO replace by the repository
-        // Flushing is when doctrine writes all staged changes, to the DB
-        // so we should do this only once in a request, and only if the use case command was successful
-        $this->entityManager->flush(); // if we would use a command bus, we would do this in a middleware
     }
 
     /**
@@ -66,15 +58,6 @@ final class PostService
      */
     public function delete(Post $post): void
     {
-        // Delete the tags associated with this blog post. This is done automatically
-        // by Doctrine, except for SQLite (the database used in this application)
-        // because foreign key support is not enabled by default in SQLite
-        $post->getTags()->clear();
-
-        // TODO replace by the repository
-        $this->entityManager->remove($post);
-        // Flushing is when doctrine writes all staged changes, to the DB
-        // so we should do this only once in a request, and only if the use case command was successful
-        $this->entityManager->flush(); // if we would use a command bus, we would do this in a middleware
+        $this->postRepository->delete($post);
     }
 }
