@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $fileHeaderComment = <<<COMMENT
 This file is part of the Symfony package.
 
@@ -15,6 +17,7 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('var')
     ->exclude('public/bundles')
     ->exclude('public/build')
+    ->exclude('tests/_support/_generated')
 ;
 
 return PhpCsFixer\Config::create()

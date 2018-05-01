@@ -32,6 +32,7 @@
         "white-october/pagerfanta-bundle": "^1.1"
     },
     "require-dev": {
+        "codeception/codeception": "^2.4",
         "dama/doctrine-test-bundle": "^5.0",
         "friendsofphp/php-cs-fixer": "^2.7",
         "phpunit/phpunit": "^7.0",

@@ -1,0 +1,13 @@
+params:
+    - .env # load params from .env file
+    - env # load params from environment
+paths:
+    tests: tests
+    output: var/acc_tests/output
+    data: tests/Fixture
+    support: tests/_support
+    envs: tests/_envs
+actor_suffix: Tester
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed

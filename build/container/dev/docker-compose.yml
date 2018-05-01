@@ -10,7 +10,8 @@ services:
       dockerfile: ./build/container/dev/app.dockerfile
     tty: true # fix for symfony saying: "proc_open(/dev/tty): failed to open stream: No such device or address"
     ports:
-      - '80:8000' # This way we can run the application locally at http://localhost
+      # This way we can run the application locally at http://localhost:8000, and run ACC tests against PRD in port 80
+      - '80:8000'
     volumes:
       - ../../../:/opt/app
       - ~/.composer:/.composer                            # so we can use the host composer cache

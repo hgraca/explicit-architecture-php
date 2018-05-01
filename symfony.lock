@@ -1,4 +1,16 @@
 {
+    "behat/gherkin": {
+        "version": "v4.5.1"
+    },
+    "codeception/codeception": {
+        "version": "2.4.1"
+    },
+    "codeception/phpunit-wrapper": {
+        "version": "7.0.6"
+    },
+    "codeception/stub": {
+        "version": "1.0.2"
+    },
     "composer/ca-bundle": {
         "version": "1.0.8"
     },

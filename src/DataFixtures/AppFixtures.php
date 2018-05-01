@@ -22,6 +22,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    public const JANE_ADMIN_NUM_POSTS = 25;
+
     /**
      * @var UserPasswordEncoderInterface
      */
@@ -133,7 +135,7 @@ class AppFixtures extends Fixture
                 $this->getPostContent(),
                 new \DateTime('now - '.$i.'days'),
                 // Ensure that the first post is written by Jane Doe to simplify tests
-                $this->getReference(['jane_admin', 'tom_admin'][0 === $i ? 0 : random_int(0, 1)]),
+                $this->getReference(['jane_admin', 'tom_admin'][$i < self::JANE_ADMIN_NUM_POSTS ? 0 : 1]),
                 $this->getRandomTags(),
             ];
         }

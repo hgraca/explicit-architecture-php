@@ -3,6 +3,7 @@ build:
   environment:
     variables:
       ENV: 'ci'
+      ACCEPTANCE_TESTS_PORT: 80
     mysql: false
     postgresql: false
     redis: false
@@ -18,12 +19,9 @@ build:
           - 'php:7.1-alpine'
           - 'hgraca/explicit-architecture:app.sfn.base'
 
-  dependencies:
-    override:
-      - true # so scrutinizer does't install the dependencies, which we don't need because they are inside the container
-
   tests:
     override:
+      - command: export ACCEPTANCE_TESTS_HOST=$DOCKER_IP
       - command: make test-ci
         coverage:
           file: var/coverage.clover.xml
