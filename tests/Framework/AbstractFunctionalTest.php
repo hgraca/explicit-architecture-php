@@ -17,10 +17,13 @@ namespace Acme\App\Test\Framework;
 use Acme\App\Test\Framework\Container\ContainerAwareTestTrait;
 use Acme\App\Test\Framework\Database\DatabaseAwareTestTrait;
 use Acme\App\Test\Framework\Mock\MockTrait;
+use Acme\PhpExtension\Helper\StringHelper;
 use Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DatabaseAwareTestInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -68,5 +71,71 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
                 . "The response title was: '" . trim($client->getCrawler()->filterXPath('//title')->text()) . "'\n"
 //                . "The response content was: '" . trim($client->getResponse()->getContent()) . "'"
         );
+    }
+
+    /**
+     * This assertion requires that the FunctionalTest enables the profiler before making the http request with:
+     *      `$client->enableProfiler();`
+     * And that the request does not follow redirects automatically.
+     *
+     * @see http://symfony.com/doc/current/email/testing.html
+     */
+    protected static function assertEmailWasSent(
+        MessageDataCollector $mailCollector,
+        string $fromEmail = null,
+        string $toEmail = null,
+        string $subject = null,
+        string ...$bodyPartList
+    ): void {
+        /** @var Swift_Message[] $collectedEmailList */
+        $collectedEmailList = $mailCollector->getMessages();
+
+        self::assertGreaterThan(0, \count($collectedEmailList), 'No email has been sent.');
+
+        foreach ($collectedEmailList as $message) {
+            if (
+                $message instanceof Swift_Message
+                && (!$fromEmail || $fromEmail === key($message->getFrom()))
+                && (!$toEmail || $toEmail === key($message->getTo()))
+                && (!$subject || $subject === $message->getSubject())
+                && self::emailBodyContainsAllParts($message, ...$bodyPartList)
+            ) {
+                self::assertTrue(true);
+
+                return;
+            }
+        }
+        self::fail(
+            "Emails were sent, but could not find an email from '$fromEmail', to '$toEmail', with subject '$subject'"
+            . " containing '" . implode("', '", $bodyPartList) . "'.\n"
+            . "Emails sent: \n"
+            . self::formatSentEmailList($collectedEmailList)
+        );
+    }
+
+    private static function emailBodyContainsAllParts(Swift_Message $message, string ...$bodyPartList): bool
+    {
+        foreach ($bodyPartList as $bodyPart) {
+            if (!StringHelper::contains($bodyPart, $message->getBody())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function formatSentEmailList($collectedEmailList): string
+    {
+        $messageList = '';
+        foreach ($collectedEmailList as $message) {
+            if ($message instanceof Swift_Message) {
+                $fromEmail = key($message->getFrom());
+                $toEmail = key($message->getTo());
+                $subject = $message->getSubject();
+                $messageList .= "From: $fromEmail, To: $toEmail, Subject: $subject\n";
+            }
+        }
+
+        return $messageList;
     }
 }
