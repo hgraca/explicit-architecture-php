@@ -28,6 +28,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class CommentCreatedListener
 {
+    public const EMAIL_SUBJECT_KEY = 'notification.comment_created';
+
     /**
      * @var Swift_Mailer
      */

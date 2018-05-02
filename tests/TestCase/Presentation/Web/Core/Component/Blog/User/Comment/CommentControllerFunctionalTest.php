@@ -14,11 +14,16 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comment;
 
+use Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
+use Acme\App\Test\Fixture\Doctrine\UserFixtures;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use DateTimeImmutable;
+use InvalidArgumentException;
+use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Functional test for the controllers defined inside CommentController.
@@ -46,7 +51,6 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
             'PHP_AUTH_USER' => 'john_user',
             'PHP_AUTH_PW' => 'kitten',
         ]);
-        $client->followRedirects();
 
         // Find first blog post
         $crawler = $client->request('GET', '/en/blog/posts');
@@ -58,10 +62,33 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
         $form = $crawler->selectButton('Publish comment')->form([
             'comment_form[content]' => 'Hi, Symfony!',
         ]);
-        $crawler = $client->submit($form);
+
+        // enables the profiler for the next request (it does nothing if the profiler is not available)
+        $client->enableProfiler();
+
+        $client->submit($form);
+
+        /** @var MessageDataCollector $mailCollector */
+        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        self::assertEmailWasSent(
+            $mailCollector,
+            'anonymous@example.com',
+            UserFixtures::JANE_EMAIL,
+            $this->getTranslator()->trans(CommentCreatedListener::EMAIL_SUBJECT_KEY)
+        );
+
+        $crawler = $client->followRedirect();
         $contentAfter = $client->getResponse()->getContent();
 
-        $newComment = $crawler->filter('.post-comment')->first()->filter('div > p')->text();
+        try {
+            $newComment = $crawler->filter('.post-comment')->first()->filter('div > p')->text();
+        } catch (InvalidArgumentException $e) {
+            self::fail('Something went wrong: ' . $e->getMessage() . "\n\n\n"
+                . 'Content before: ' . $contentBefore . "\n\n\n"
+                . 'Content after: ' . $contentAfter . "\n\n\n");
+
+            return;
+        }
 
         $this->assertSame(
             'Hi, Symfony!',
@@ -105,5 +132,10 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
                 return new DateTimeImmutable('now + 1 hour');
             }
         );
+    }
+
+    private function getTranslator(): TranslatorInterface
+    {
+        return self::getService(TranslatorInterface::class);
     }
 }
