@@ -22,6 +22,7 @@ parameters:
         - 'Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface'
         - 'Doctrine\ORM\EntityManagerInterface'
         - 'session'
+        - 'Symfony\Component\Translation\TranslatorInterface'
 
 services:
     # default configuration for services in *this* file
