@@ -15,10 +15,10 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Event;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Core\Port\Translation\TranslatorInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
 use Swift_Mailer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Listens to the CommentCreatedEvent and triggers all the logic associated with it, in this component.
@@ -77,8 +77,8 @@ class CommentCreatedListener
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        $subject = $this->translator->trans('notification.comment_created');
-        $body = $this->translator->trans(
+        $subject = $this->translator->translate('notification.comment_created');
+        $body = $this->translator->translate(
             'notification.comment_created.description',
             [
                 '%title%' => $post->getTitle(),
