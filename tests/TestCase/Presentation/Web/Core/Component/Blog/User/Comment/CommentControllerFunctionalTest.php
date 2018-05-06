@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comment;
 
 use Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener;
+use Acme\App\Core\Port\Translation\TranslatorInterface;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
 use Acme\App\Test\Fixture\Doctrine\UserFixtures;
@@ -23,7 +24,6 @@ use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Functional test for the controllers defined inside CommentController.
@@ -74,7 +74,7 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
             $mailCollector,
             'anonymous@example.com',
             UserFixtures::JANE_EMAIL,
-            $this->getTranslator()->trans(CommentCreatedListener::EMAIL_SUBJECT_KEY)
+            $this->getTranslator()->translate(CommentCreatedListener::EMAIL_SUBJECT_KEY)
         );
 
         $crawler = $client->followRedirect();
