@@ -1,0 +1,19 @@
+# https://stackoverflow.com/questions/39850819/kubernetes-minikube-external-ip-does-not-work
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog-service
+spec:
+  externalIPs:
+    - 192.168.122.20 # I don't know why this is not working :(
+  ports:
+    - nodePort: 32431 # this needs to be here otherwise we can not access the service from outside
+      port: 80 # the port that this service should serve on
+      targetPort: 8000 # the container name or port (e.g. 'www' or 80)
+      protocol: TCP
+  # just like the selector in the deployment, but this time it identifies the set of pods to load balance traffic to.
+  selector:
+    app: blog-pod
+  type: LoadBalancer # this needs to be here because of nodePort: 32431
+status:
+  loadBalancer: {} # dunno what this is for, maybe to guess the status of the application running in this service?
