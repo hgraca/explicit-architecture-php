@@ -18,12 +18,12 @@ use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\TemplateEngine\Twig\Extension\SourceCode;
+namespace Acme\App\Infrastructure\TemplateEngine\Twig\Extension\SourceCode;
 
 use ReflectionFunction;
 use ReflectionMethod;
@@ -64,7 +64,7 @@ class SourceCodeExtension extends AbstractExtension
      */
     public function showSourceCode(Environment $twig, $template): string
     {
-        return $twig->render('@Web/Infrastructure/TemplateEngine/Twig/Extension/SourceCode/source_code.html.twig', [
+        return $twig->render('@TemplateEngine/Twig/Extension/SourceCode/source_code.html.twig', [
             'controller' => $this->getController(),
             'template' => $this->getTemplateSource($twig->resolveTemplate($template)),
         ]);

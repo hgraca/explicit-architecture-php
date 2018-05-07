@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Port\TemplateEngine;
+namespace Acme\App\Core\Port\TemplateEngine;
 
 /**
  * This interface is used for type hinting only, providing intentionality to the code.

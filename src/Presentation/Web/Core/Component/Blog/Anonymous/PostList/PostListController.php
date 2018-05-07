@@ -17,9 +17,9 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 use Acme\App\Core\Component\Blog\Application\Query\FindPostsBySearchRequestQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

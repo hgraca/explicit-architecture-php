@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\TemplateEngine\Twig;
+namespace Acme\App\Infrastructure\TemplateEngine\Twig;
 
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\NullTemplateViewModel;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
+use Acme\App\Core\Port\TemplateEngine\NullTemplateViewModel;
+use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
 use ReflectionMethod;

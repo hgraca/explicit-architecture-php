@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
 
 final class EditViewModel implements TemplateViewModelInterface
 {

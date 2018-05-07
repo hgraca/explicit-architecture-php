@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Login\Anonymous;
 
+use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

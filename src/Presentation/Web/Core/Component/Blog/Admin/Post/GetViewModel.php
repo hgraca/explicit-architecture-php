@@ -16,7 +16,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
+use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use DateTimeInterface;
 
 final class GetViewModel implements TemplateViewModelInterface

@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Infrastructure\TemplateEngine\Twig;
+namespace Acme\App\Test\TestCase\Infrastructure\TemplateEngine\Twig;
 
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
-use Acme\App\Presentation\Web\Infrastructure\TemplateEngine\Twig\TemplateEngine;
+use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
+use Acme\App\Infrastructure\TemplateEngine\Twig\TemplateEngine;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use DateTime;
 use ReflectionException;
@@ -24,8 +24,8 @@ use Zend\Diactoros\Response;
 
 final class TemplateEngineIntegrationTest extends AbstractIntegrationTest
 {
-    private const TEMPLATE_1 = '@Test/Infrastructure/TemplateEngine/Twig/test1.html.twig';
-    private const TEMPLATE_2 = '@Test/Infrastructure/TemplateEngine/Twig/test2.html.twig';
+    private const TEMPLATE_1 = '@TestCase/Infrastructure/TemplateEngine/Twig/test1.html.twig';
+    private const TEMPLATE_2 = '@TestCase/Infrastructure/TemplateEngine/Twig/test2.html.twig';
 
     /**
      * @var TemplateEngine
@@ -51,7 +51,7 @@ final class TemplateEngineIntegrationTest extends AbstractIntegrationTest
     {
         return [
             [self::TEMPLATE_1, true],
-            ['@Test/unexisting_test.html.twig', false],
+            ['@TestCase/unexisting_test.html.twig', false],
         ];
     }
 
