@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\SharedKernel\Component\Blog\Application\Event;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Core\Component\Blog\Domain\Entity\CommentId;
 use Acme\App\Core\Port\EventDispatcher\EventInterface;
 
 /**
@@ -25,17 +25,17 @@ use Acme\App\Core\Port\EventDispatcher\EventInterface;
 final class CommentCreatedEvent implements EventInterface
 {
     /**
-     * @var Comment
+     * @var CommentId
      */
-    private $comment;
+    private $commentId;
 
-    public function __construct(Comment $comment)
+    public function __construct(CommentId $commentId)
     {
-        $this->comment = $comment;
+        $this->commentId = $commentId;
     }
 
-    public function getComment(): Comment
+    public function getCommentId(): CommentId
     {
-        return $this->comment;
+        return $this->commentId;
     }
 }

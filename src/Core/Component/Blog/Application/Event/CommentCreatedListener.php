@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Event;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Core\Component\Blog\Application\Repository\CommentRepositoryInterface;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Core\Port\Translation\TranslatorInterface;
@@ -30,6 +30,11 @@ use Swift_Mailer;
 class CommentCreatedListener
 {
     public const EMAIL_SUBJECT_KEY = 'notification.comment_created';
+
+    /**
+     * @var CommentRepositoryInterface
+     */
+    private $commentRepository;
 
     /**
      * @var Swift_Mailer
@@ -52,11 +57,13 @@ class CommentCreatedListener
     private $senderEmail;
 
     public function __construct(
+        CommentRepositoryInterface $commentRepository,
         Swift_Mailer $mailer,
         UrlGeneratorInterface $urlGenerator,
         TranslatorInterface $translator,
         string $senderEmail
     ) {
+        $this->commentRepository = $commentRepository;
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->translator = $translator;
@@ -65,8 +72,8 @@ class CommentCreatedListener
 
     public function notifyPostAuthorAboutNewComment(CommentCreatedEvent $event): void
     {
-        /** @var Comment $comment */
-        $comment = $event->getComment();
+        $commentId = $event->getCommentId();
+        $comment = $this->commentRepository->find($commentId);
         $post = $comment->getPost();
 
         $linkToPost = $this->urlGenerator->generateUrl(

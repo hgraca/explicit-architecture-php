@@ -15,11 +15,14 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Repository;
 
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Core\Component\Blog\Domain\Entity\CommentId;
 
 /**
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
 interface CommentRepositoryInterface
 {
+    public function find(CommentId $id): Comment;
+
     public function upsert(Comment $entity): void;
 }
