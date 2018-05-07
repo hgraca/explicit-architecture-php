@@ -16,7 +16,11 @@ namespace Acme\App\Infrastructure\EventDispatcher;
 
 use Acme\App\Core\Port\EventDispatcher\BufferedEventDispatcherInterface;
 use Acme\App\Core\Port\EventDispatcher\EventInterface;
+use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\PhpExtension\ObjectDispatcher\AbstractDispatcher;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Throwable;
 
 /**
  * Conceptually, the code triggering an event must not rely on the logic that the event triggers. So that logic doesn't
@@ -43,6 +47,22 @@ final class SyncEventDispatcher extends AbstractDispatcher implements BufferedEv
      */
     private $eventBuffer = [];
 
+    /**
+     * @var TransactionServiceInterface
+     */
+    private $transactionService;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(TransactionServiceInterface $transactionService, LoggerInterface $logger = null)
+    {
+        $this->transactionService = $transactionService;
+        $this->logger = $logger ?? new NullLogger();
+    }
+
     public function dispatch(EventInterface $event, array $metadata = []): void
     {
         $this->eventBuffer[] = [$event, $metadata];
@@ -52,7 +72,30 @@ final class SyncEventDispatcher extends AbstractDispatcher implements BufferedEv
     {
         foreach ($this->eventBuffer as [$event, $metadata]) {
             foreach ($this->getDestinationListForObject(\get_class($event)) as $listener) {
-                $listener($event, $metadata);
+                /*
+                 * Since these events are going to be handled outside of the main use case transaction,
+                 * they will also be executed outside of the request transaction (after it is closed) so we will need
+                 * to open a new transaction for the event listeners.
+                 * Furthermore, since each event is independent from each other, we need to open a new transaction
+                 * for each individual event listener.
+                 */
+                try {
+                    $this->transactionService->startTransaction();
+                    $listener($event, $metadata);
+                    $this->transactionService->finishTransaction();
+                } catch (Throwable $e) {
+                    /*
+                     * We simply log the exception and continue because if we rethrow the exception, the remaining
+                     * event listeners will not be triggered.
+                     */
+                    $this->logger->error(
+                        'Error occurred while handling event \'' . \get_class($event)
+                        . "' with listener '" . \get_class($listener) . "'.\n"
+                        . 'Exception message: ' . $e->getMessage() . "\n"
+                        . 'Exception trace: ' . $e->getTraceAsString() . "\n"
+                    );
+                    $this->transactionService->rollbackTransaction();
+                }
             }
         }
     }

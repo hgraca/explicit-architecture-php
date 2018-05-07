@@ -14,13 +14,27 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Infrastructure\EventDispatcher;
 
+use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\App\Infrastructure\EventDispatcher\SyncEventDispatcher;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Acme\PhpExtension\Helper\ReflectionHelper;
+use Exception;
 use Mockery;
+use Mockery\MockInterface;
+use Psr\Log\LoggerInterface;
 
 final class SyncEventDispatcherUnitTest extends AbstractUnitTest
 {
+    /**
+     * @var MockInterface|TransactionServiceInterface
+     */
+    private $transactionServiceSpy;
+
+    /**
+     * @var MockInterface|LoggerInterface
+     */
+    private $loggerSpy;
+
     /**
      * @var SyncEventDispatcher
      */
@@ -28,7 +42,9 @@ final class SyncEventDispatcherUnitTest extends AbstractUnitTest
 
     public function setUp(): void
     {
-        $this->dispatcher = new SyncEventDispatcher();
+        $this->transactionServiceSpy = Mockery::spy(TransactionServiceInterface::class);
+        $this->loggerSpy = Mockery::spy(LoggerInterface::class);
+        $this->dispatcher = new SyncEventDispatcher($this->transactionServiceSpy, $this->loggerSpy);
     }
 
     /**
@@ -84,8 +100,57 @@ final class SyncEventDispatcherUnitTest extends AbstractUnitTest
         $this->dispatcher->dispatch($event);
         $this->dispatcher->flush();
 
+        $this->transactionServiceSpy->shouldHaveReceived('startTransaction');
         $listener1->shouldHaveReceived($firstListenerMethod)->with($event, []);
+        $this->transactionServiceSpy->shouldHaveReceived('finishTransaction');
+
+        $this->transactionServiceSpy->shouldHaveReceived('startTransaction');
         $listener1->shouldHaveReceived($secondListenerMethod)->with($event, []);
+        $this->transactionServiceSpy->shouldHaveReceived('finishTransaction');
+
         $listener2->shouldNotHaveReceived($thirdListenerMethod);
+        $this->loggerSpy->shouldNotHaveReceived('error');
+        $this->transactionServiceSpy->shouldNotHaveReceived('rollbackTransaction');
+    }
+
+    /**
+     * @test
+     */
+    public function flush_logs_exception_and_continues(): void
+    {
+        $firstListenerMethod = 'doSomething';
+        $secondListenerMethod = 'doSomethingElse';
+        $thirdListenerMethod = 'doSomethingDifferent';
+        $errorMessage = 'Some error';
+
+        $listener1 = function () use ($errorMessage): void {
+            throw new Exception($errorMessage);
+        };
+        $listener2 = Mockery::spy(DummyTwoListener::class);
+
+        $this->dispatcher->addDestination(DummyEvent::class, [$listener2, $firstListenerMethod]);
+        $this->dispatcher->addDestination(DummyEvent::class, $listener1);
+        $this->dispatcher->addDestination(DummyEvent::class, [$listener2, $secondListenerMethod]);
+        $this->dispatcher->addDestination(DummyEvent::class, [$listener2, $thirdListenerMethod]);
+
+        $event = new DummyEvent();
+        $this->dispatcher->dispatch($event);
+        $this->dispatcher->flush();
+
+        $this->transactionServiceSpy->shouldHaveReceived('startTransaction');
+        $listener2->shouldHaveReceived($firstListenerMethod)->with($event, []);
+        $this->transactionServiceSpy->shouldHaveReceived('finishTransaction');
+
+        $this->transactionServiceSpy->shouldHaveReceived('startTransaction');
+        $this->loggerSpy->shouldHaveReceived('error');
+        $this->transactionServiceSpy->shouldHaveReceived('rollbackTransaction');
+
+        $this->transactionServiceSpy->shouldHaveReceived('startTransaction');
+        $listener2->shouldHaveReceived($secondListenerMethod)->with($event, []);
+        $this->transactionServiceSpy->shouldHaveReceived('finishTransaction');
+
+        $this->transactionServiceSpy->shouldHaveReceived('startTransaction');
+        $listener2->shouldHaveReceived($secondListenerMethod)->with($event, []);
+        $this->transactionServiceSpy->shouldHaveReceived('finishTransaction');
     }
 }
