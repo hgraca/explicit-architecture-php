@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comment;
 
 use Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener;
+use Acme\App\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Core\Port\Translation\TranslatorInterface;
-use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
-use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
 use Acme\App\Test\Fixture\Doctrine\UserFixtures;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;

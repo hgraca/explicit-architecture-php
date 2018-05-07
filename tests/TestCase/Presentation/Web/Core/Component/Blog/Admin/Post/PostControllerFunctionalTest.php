@@ -18,8 +18,8 @@ use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
-use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
-use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
+use Acme\App\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Login\Anonymous;
 
-use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
-use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
+use Acme\App\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Acme\App\Test\Framework\Data\RouteData;
 use Acme\App\Test\Framework\Data\UserData;

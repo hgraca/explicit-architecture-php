@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Infrastructure\Response\ZendDiactoros;
 
+use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
-use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Presentation\Web\Infrastructure\Response\ZendDiactoros\ResponseFactory;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use stdClass;
