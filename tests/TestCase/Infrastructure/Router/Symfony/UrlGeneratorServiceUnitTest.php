@@ -12,9 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Infrastructure\Router\Symfony;
+namespace Acme\App\Test\TestCase\Infrastructure\Router\Symfony;
 
-use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
+use Acme\App\Core\Port\Router\UrlType;
+use Acme\App\Infrastructure\Router\Symfony\UrlGeneratorService;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Mockery;
 use Mockery\MockInterface;
@@ -28,14 +29,14 @@ final class UrlGeneratorServiceUnitTest extends AbstractUnitTest
     private $symfonyUrlGeneratorMock;
 
     /**
-     * @var \Acme\App\Presentation\Web\Infrastructure\Router\Symfony\UrlGeneratorService
+     * @var UrlGeneratorService
      */
     private $urlGenerator;
 
     protected function setUp(): void
     {
         $this->symfonyUrlGeneratorMock = Mockery::mock(SymfonyUrlGeneratorInterface::class);
-        $this->urlGenerator = new \Acme\App\Presentation\Web\Infrastructure\Router\Symfony\UrlGeneratorService($this->symfonyUrlGeneratorMock);
+        $this->urlGenerator = new UrlGeneratorService($this->symfonyUrlGeneratorMock);
     }
 
     /**

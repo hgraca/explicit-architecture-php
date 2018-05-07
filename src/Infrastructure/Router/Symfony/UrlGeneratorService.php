@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\Router\Symfony;
+namespace Acme\App\Infrastructure\Router\Symfony;
 
-use Acme\App\Presentation\Web\Core\Port\Router\UrlGeneratorInterface;
-use Acme\App\Presentation\Web\Core\Port\Router\UrlType;
+use Acme\App\Core\Port\Router\UrlGeneratorInterface;
+use Acme\App\Core\Port\Router\UrlType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as SymfonyUrlGeneratorInterface;
 
 final class UrlGeneratorService implements UrlGeneratorInterface
