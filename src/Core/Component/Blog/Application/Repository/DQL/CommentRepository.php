@@ -16,7 +16,10 @@ namespace Acme\App\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\CommentRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
+use Acme\App\Core\Component\Blog\Domain\Entity\CommentId;
+use Acme\App\Core\Port\Persistence\DQL\DQLQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
+use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 
 /**
  * @author Herberto Graca <herberto.graca@gmail.com>
@@ -24,13 +27,38 @@ use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 class CommentRepository implements CommentRepositoryInterface
 {
     /**
+     * @var DQLQueryBuilderInterface
+     */
+    private $dqlQueryBuilder;
+
+    /**
+     * @var QueryServiceRouterInterface
+     */
+    private $queryService;
+
+    /**
      * @var PersistenceServiceInterface
      */
     private $persistenceService;
 
-    public function __construct(PersistenceServiceInterface $persistenceService)
-    {
+    public function __construct(
+        DQLQueryBuilderInterface $dqlQueryBuilder,
+        QueryServiceRouterInterface $queryService,
+        PersistenceServiceInterface $persistenceService
+    ) {
+        $this->dqlQueryBuilder = $dqlQueryBuilder;
+        $this->queryService = $queryService;
         $this->persistenceService = $persistenceService;
+    }
+
+    public function find(CommentId $id): Comment
+    {
+        $dqlQuery = $this->dqlQueryBuilder->create(Comment::class)
+            ->where('Comment.id = :id')
+            ->setParameter('id', $id)
+            ->build();
+
+        return $this->queryService->query($dqlQuery)->getSingleResult();
     }
 
     public function upsert(Comment $entity): void

@@ -53,7 +53,7 @@ final class CommentService
         // to pass some PHP variables. For more complex applications, define your
         // own event object classes.
         // See https://symfony.com/doc/current/components/event_dispatcher/generic_event.html
-        $event = new CommentCreatedEvent($comment);
+        $event = new CommentCreatedEvent($comment->getId());
 
         // When an event is dispatched, Symfony notifies it to all the listeners
         // and subscribers registered to it. Listeners can modify the information
