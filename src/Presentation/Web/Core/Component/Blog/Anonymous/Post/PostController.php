@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

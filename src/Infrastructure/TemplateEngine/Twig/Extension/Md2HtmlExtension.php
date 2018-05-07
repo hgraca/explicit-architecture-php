@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\TemplateEngine\Twig\Extension;
+namespace Acme\App\Infrastructure\TemplateEngine\Twig\Extension;
 
 use Acme\PhpExtension\String\Markdown;
 use Symfony\Component\Intl\Intl;

@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Presentation\Web\Core\Port\TemplateEngine;
+namespace Acme\App\Test\TestCase\Core\Port\TemplateEngine;
 
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateEngineInterface;
+use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Symfony\Component\Finder\Finder;
 

@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 
+use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormInterface;
-use Acme\App\Presentation\Web\Core\Port\TemplateEngine\TemplateViewModelInterface;
 
 final class NewViewModel implements TemplateViewModelInterface
 {

@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\TemplateEngine\Twig\Extension\SourceCode;
+namespace Acme\App\Infrastructure\TemplateEngine\Twig\Extension\SourceCode;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
