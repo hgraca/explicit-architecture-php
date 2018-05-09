@@ -174,8 +174,6 @@ class PostController
             return $this->responseFactory->redirectToRoute('admin_post_edit', ['id' => (string) $post->getId()]);
         }
 
-        $this->postService->update($post);
-
         $this->flashMessageService->success('post.updated_successfully');
 
         return $this->responseFactory->redirectToRoute('admin_post_edit', ['id' => (string) $post->getId()]);

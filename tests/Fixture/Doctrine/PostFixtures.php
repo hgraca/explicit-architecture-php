@@ -51,7 +51,6 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
 
             $post->setTitle($title);
             $post->setSummary($this->getRandomPostSummary());
-            $post->regenerateSlug();
             $post->setContent($this->getPostContent());
             $post->setPublishedAt(DateTimeGenerator::generate('now - ' . $i . 'days'));
 
