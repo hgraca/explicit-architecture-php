@@ -87,7 +87,6 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $post->setContent($content = 'some new content');
         $post->setTitle($title = 'a title');
         $post->setSummary($summary = 'a summary');
-        $post->regenerateSlug();
 
         $this->persistenceService->startTransaction();
         $this->repository->upsert($post);
@@ -179,7 +178,6 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $post->setContent($content = 'some new content');
         $post->setTitle($title = 'a title');
         $post->setSummary($summary = 'a summary');
-        $post->regenerateSlug();
 
         $this->persistenceService->startTransaction();
         $this->repository->upsert($post);

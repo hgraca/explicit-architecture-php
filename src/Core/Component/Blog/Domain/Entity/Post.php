@@ -89,10 +89,16 @@ class Post
      */
     private $tags = [];
 
+    /**
+     * @var bool
+     */
+    private $isNewPost = false;
+
     public function __construct()
     {
         $this->publishedAt = DateTimeGenerator::generate();
         $this->id = new PostId();
+        $this->isNewPost = true;
     }
 
     public function getId(): PostId
@@ -108,6 +114,10 @@ class Post
     public function setTitle(string $title): void
     {
         $this->title = $title;
+
+        if ($this->isNewPost) {
+            $this->slug = Slugger::slugify($this->getTitle());
+        }
     }
 
     public function getSlug(): ?string
@@ -115,9 +125,15 @@ class Post
         return $this->slug;
     }
 
-    public function regenerateSlug(): void
+    public function postfixSlug(string $suffix): void
     {
-        $this->slug = Slugger::slugify($this->getTitle());
+        if (!$this->isNewPost) {
+            throw new SlugIsImmutableException();
+        }
+
+        $suffix = '-' . ltrim($suffix, '-');
+
+        $this->slug = $this->slug . $suffix;
     }
 
     public function getContent(): ?string

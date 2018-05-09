@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Service;
 
+use Acme\App\Core\Component\Blog\Application\Query\FindHighestPostSlugSuffixQueryInterface;
+use Acme\App\Core\Component\Blog\Application\Query\PostSlugExistsQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
@@ -25,22 +27,36 @@ final class PostService
      */
     private $postRepository;
 
-    public function __construct(PostRepositoryInterface $postRepository)
-    {
+    /**
+     * @var PostSlugExistsQueryInterface
+     */
+    private $postSlugExistsQuery;
+
+    /**
+     * @var FindHighestPostSlugSuffixQueryInterface
+     */
+    private $findHighestPostSlugSuffixQuery;
+
+    public function __construct(
+        PostRepositoryInterface $postRepository,
+        PostSlugExistsQueryInterface $postSlugExistsQuery,
+        FindHighestPostSlugSuffixQueryInterface $findHighestPostSlugSuffixQuery
+    ) {
         $this->postRepository = $postRepository;
+        $this->postSlugExistsQuery = $postSlugExistsQuery;
+        $this->findHighestPostSlugSuffixQuery = $findHighestPostSlugSuffixQuery;
     }
 
     public function create(Post $post, User $user): void
     {
         $post->setAuthor($user);
-        $post->regenerateSlug();
+
+        if ($this->postSlugExistsQuery->execute($post->getSlug())) {
+            $highestPostSlugSuffix = $this->findHighestPostSlugSuffixQuery->execute($post->getSlug());
+            $post->postfixSlug((string) ++$highestPostSlugSuffix);
+        }
 
         $this->postRepository->upsert($post);
-    }
-
-    public function update(Post $post): void
-    {
-        $post->regenerateSlug();
     }
 
     /**
