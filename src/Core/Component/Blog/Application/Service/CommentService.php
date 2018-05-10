@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Service;
 
-use Acme\App\Core\Component\Blog\Application\Repository\CommentRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
@@ -24,20 +23,12 @@ use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEv
 final class CommentService
 {
     /**
-     * @var CommentRepositoryInterface
-     */
-    private $commentRepository;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
-    public function __construct(
-        CommentRepositoryInterface $commentRepository,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->commentRepository = $commentRepository;
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -45,8 +36,6 @@ final class CommentService
     {
         $comment->setAuthor($author);
         $post->addComment($comment);
-
-        $this->commentRepository->upsert($comment);
 
         // When triggering an event, you can optionally pass some information.
         // For simple applications, use the GenericEvent object provided by Symfony

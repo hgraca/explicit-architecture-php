@@ -56,12 +56,16 @@ class Comment
      */
     private $author;
 
-    public function __construct()
+    public function __construct(string $content = '')
     {
         $this->publishedAt = DateTimeGenerator::generate();
         $this->id = new CommentId();
+        $this->content = $content;
     }
 
+    /**
+     * Used for validation, in config/validator/validation.yaml:14
+     */
     public function isLegitComment(): bool
     {
         $containsInvalidCharacters = mb_strpos($this->content, '@') !== false;
@@ -79,6 +83,11 @@ class Comment
         return $this->content;
     }
 
+    /**
+     * This is needed for the $form->handleRequest() in the CommentController.
+     * We shouldn't have this method here just because the framework needs it, but to remove it we need to change our
+     * strategy for creating entities from forms. We will do that when we integrate a command bus.
+     */
     public function setContent(string $content): void
     {
         $this->content = $content;
@@ -102,11 +111,6 @@ class Comment
     public function setAuthor(User $author): void
     {
         $this->author = $author;
-    }
-
-    public function getPost(): Post
-    {
-        return $this->post;
     }
 
     public function setPost(Post $post): void

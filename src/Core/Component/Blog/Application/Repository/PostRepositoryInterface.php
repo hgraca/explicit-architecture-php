@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Repository;
 
+use Acme\App\Core\Component\Blog\Domain\Entity\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Component\User\Domain\Entity\UserId;
@@ -24,6 +25,8 @@ interface PostRepositoryInterface
     public function find(PostId $id): Post;
 
     public function findBySlug(string $slug): Post;
+
+    public function findByCommentId(CommentId $commentId): Post;
 
     public function upsert(Post $entity): void;
 

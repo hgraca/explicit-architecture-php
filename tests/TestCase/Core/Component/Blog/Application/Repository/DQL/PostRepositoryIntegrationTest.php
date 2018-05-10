@@ -54,6 +54,18 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
 
     /**
      * @test
+     */
+    public function findByCommentId(): void
+    {
+        $post = $this->findAPost();
+        $commentId = $post->getComments()[0]->getId();
+        $this->clearDatabaseCache();
+
+        self::assertTrue($post->getId()->equals($this->repository->findByCommentId($commentId)->getId()));
+    }
+
+    /**
+     * @test
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
