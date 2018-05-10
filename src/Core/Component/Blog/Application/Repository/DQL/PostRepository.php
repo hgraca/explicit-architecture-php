@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
+use Acme\App\Core\Component\Blog\Domain\Entity\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
 use Acme\App\Core\Component\User\Domain\Entity\UserId;
@@ -77,6 +78,17 @@ class PostRepository implements PostRepositoryInterface
         $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
             ->where('Post.slug = :slug')
             ->setParameter('slug', $slug)
+            ->build();
+
+        return $this->queryService->query($dqlQuery)->getSingleResult();
+    }
+
+    public function findByCommentId(CommentId $commentId): Post
+    {
+        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
+            ->join('Post.comments', 'Comments')
+            ->where('Comments = :commentId')
+            ->setParameter('commentId', $commentId)
             ->build();
 
         return $this->queryService->query($dqlQuery)->getSingleResult();

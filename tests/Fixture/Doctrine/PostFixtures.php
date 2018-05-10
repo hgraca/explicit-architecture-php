@@ -68,13 +68,12 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
             }
 
             foreach (range(1, 5) as $j) {
-                $comment = new Comment();
+                $comment = new Comment($this->getRandomCommentContent());
 
                 /** @var User $commentAuthor */
                 $commentAuthor = $this->getReference('john-user');
                 $comment->setAuthor($commentAuthor);
                 $comment->setPublishedAt(DateTimeGenerator::generate('now + ' . ($i + $j) . 'seconds'));
-                $comment->setContent($this->getRandomCommentContent());
 
                 $post->addComment($comment);
 
