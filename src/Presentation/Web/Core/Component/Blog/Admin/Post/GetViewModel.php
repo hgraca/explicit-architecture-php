@@ -84,7 +84,7 @@ final class GetViewModel implements TemplateViewModelInterface
     {
         $postTagList = [];
         foreach ($post->getTags() as $tag) {
-            $postTagList[] = $tag->getName();
+            $postTagList[] = (string) $tag;
         }
 
         return new self(

@@ -39,8 +39,7 @@ class TagFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         foreach ($this->getTagNames() as $index => $name) {
-            $tag = new Tag();
-            $tag->setName($name);
+            $tag = new Tag($name);
 
             $manager->persist($tag);
             $this->addReference('tag-' . $index, $tag);

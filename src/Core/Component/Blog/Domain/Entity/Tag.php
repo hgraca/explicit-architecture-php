@@ -34,24 +34,10 @@ class Tag implements \JsonSerializable
      */
     private $name;
 
-    public function __construct()
+    public function __construct(string $name)
     {
         $this->id = new TagId();
-    }
-
-    public function getId(): TagId
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): void
-    {
         $this->name = $name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     /**
@@ -61,7 +47,7 @@ class Tag implements \JsonSerializable
     {
         // This entity implements JsonSerializable (http://php.net/manual/en/class.jsonserializable.php)
         // so this method is used to customize its JSON representation when json_encode()
-        // is called, for example in tags|json_encode (app/Resources/views/form/fields.html.twig)
+        // is called, for example in tags|json_encode (fields.html.twig)
 
         return $this->name;
     }

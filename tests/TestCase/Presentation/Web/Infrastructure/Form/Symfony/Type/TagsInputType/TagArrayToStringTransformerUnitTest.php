@@ -37,7 +37,7 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
         $tags = $this->getMockedTransformer()->reverseTransform('Hello, Demo, How');
 
         $this->assertCount(3, $tags);
-        $this->assertSame('Hello', $tags[0]->getName());
+        $this->assertSame('Hello', (string) $tags[0]);
     }
 
     /**
@@ -63,7 +63,7 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     {
         $tags = $this->getMockedTransformer()->reverseTransform('   Hello   ');
 
-        $this->assertSame('Hello', $tags[0]->getName());
+        $this->assertSame('Hello', (string) $tags[0]);
     }
 
     /**
@@ -86,8 +86,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     public function testUsesAlreadyDefinedTags(): void
     {
         $persistedTags = [
-            $this->createTag('Hello'),
-            $this->createTag('World'),
+            new Tag('Hello'),
+            new Tag('World'),
         ];
         $tags = $this->getMockedTransformer($persistedTags)->reverseTransform('Hello, World, How, Are, You');
 
@@ -105,8 +105,8 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     public function testTransform(): void
     {
         $persistedTags = [
-            $this->createTag('Hello'),
-            $this->createTag('World'),
+            new Tag('Hello'),
+            new Tag('World'),
         ];
         $transformed = $this->getMockedTransformer()->transform($persistedTags);
 
@@ -141,16 +141,5 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
             ->will($this->returnValue($tagRepository));
 
         return new TagArrayToStringTransformer($entityManager);
-    }
-
-    /**
-     * This helper method creates a Tag instance for the given tag name.
-     */
-    private function createTag(string $name): Tag
-    {
-        $tag = new Tag();
-        $tag->setName($name);
-
-        return $tag;
     }
 }

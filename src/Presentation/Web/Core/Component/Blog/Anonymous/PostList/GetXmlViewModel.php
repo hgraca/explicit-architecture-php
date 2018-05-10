@@ -45,7 +45,7 @@ final class GetXmlViewModel implements TemplateViewModelInterface
         foreach ($postList as $post) {
             $postTagList = [];
             foreach ($post->getTags() as $tag) {
-                $postTagList[] = $tag->getName();
+                $postTagList[] = (string) $tag;
             }
 
             $postDataList[] = [
