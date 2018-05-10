@@ -191,6 +191,9 @@ class Post
         }
     }
 
+    /**
+     * This method is not used, but I will leave it here as an example
+     */
     public function removeComment(Comment $comment): void
     {
         $comment->setPost(null);
@@ -219,6 +222,9 @@ class Post
         }
     }
 
+    /**
+     * This method is not used, but I will leave it here as an example
+     */
     public function removeTag(Tag $tag): void
     {
         if ($key = $this->getKey($tag, $this->tags)) {
