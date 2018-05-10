@@ -12,6 +12,7 @@ parameters:
         - 'Acme\App\Core\Component\Blog\Application\Repository\DQL\CommentRepository'
         - 'Acme\App\Core\Component\Blog\Application\Repository\DQL\PostRepository'
         - 'Acme\App\Core\Component\User\Application\Repository\DQL\UserRepository'
+        - 'Acme\App\Core\Port\Lock\LockManagerInterface'
         - 'Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface'
         - 'Acme\App\Core\Port\Persistence\QueryServiceInterface'
         - 'Acme\App\Core\Port\Persistence\QueryServiceRouterInterface'

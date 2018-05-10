@@ -359,6 +359,9 @@
     "symfony/intl": {
         "version": "v3.4.0-beta2"
     },
+    "symfony/lock": {
+        "version": "v4.0.9"
+    },
     "symfony/monolog-bridge": {
         "version": "v3.4.0-beta2"
     },

@@ -16,6 +16,7 @@ namespace Acme\App\Infrastructure\EventDispatcher;
 
 use Acme\App\Core\Port\EventDispatcher\BufferedEventDispatcherInterface;
 use Acme\App\Core\Port\EventDispatcher\EventInterface;
+use Acme\App\Core\Port\Lock\LockManagerInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\PhpExtension\ObjectDispatcher\AbstractDispatcher;
 use Psr\Log\LoggerInterface;
@@ -53,13 +54,22 @@ final class SyncEventDispatcher extends AbstractDispatcher implements BufferedEv
     private $transactionService;
 
     /**
+     * @var LockManagerInterface
+     */
+    private $lockManager;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
 
-    public function __construct(TransactionServiceInterface $transactionService, LoggerInterface $logger = null)
-    {
+    public function __construct(
+        TransactionServiceInterface $transactionService,
+        LockManagerInterface $lockManager,
+        LoggerInterface $logger = null
+    ) {
         $this->transactionService = $transactionService;
+        $this->lockManager = $lockManager;
         $this->logger = $logger ?? new NullLogger();
     }
 
@@ -95,6 +105,9 @@ final class SyncEventDispatcher extends AbstractDispatcher implements BufferedEv
                         . 'Exception trace: ' . $e->getTraceAsString() . "\n"
                     );
                     $this->transactionService->rollbackTransaction();
+                } finally {
+                    // We release all locks here, so that they can be reacquired when processing the next event
+                    $this->lockManager->releaseAll();
                 }
             }
         }

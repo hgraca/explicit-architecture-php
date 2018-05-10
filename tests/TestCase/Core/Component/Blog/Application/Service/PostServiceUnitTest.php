@@ -20,6 +20,7 @@ use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Port\Lock\LockManagerInterface;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Mockery;
 use Mockery\MockInterface;
@@ -42,6 +43,11 @@ class PostServiceUnitTest extends AbstractUnitTest
     private $findHighestPostSlugSuffixQuerySpy;
 
     /**
+     * @var MockInterface|LockManagerInterface
+     */
+    private $lockManagerMock;
+
+    /**
      * @var PostService
      */
     private $postService;
@@ -51,11 +57,13 @@ class PostServiceUnitTest extends AbstractUnitTest
         $this->postRepositorySpy = Mockery::spy(PostRepositoryInterface::class);
         $this->postSlugExistsQuerySpy = Mockery::spy(PostSlugExistsQueryInterface::class);
         $this->findHighestPostSlugSuffixQuerySpy = Mockery::spy(FindHighestPostSlugSuffixQueryInterface::class);
+        $this->lockManagerMock = Mockery::mock(LockManagerInterface::class);
 
         $this->postService = new PostService(
             $this->postRepositorySpy,
             $this->postSlugExistsQuerySpy,
-            $this->findHighestPostSlugSuffixQuerySpy
+            $this->findHighestPostSlugSuffixQuerySpy,
+            $this->lockManagerMock
         );
     }
 
@@ -78,6 +86,7 @@ class PostServiceUnitTest extends AbstractUnitTest
                 }
             )
         );
+        $this->lockManagerMock->shouldReceive('acquire')->once()->with(PostService::SLUG_LOCK_PREFIX . $slug);
 
         $this->postService->create($post, User::constructWithoutPassword('a', 'b', 'c', 'd'));
     }
@@ -103,6 +112,7 @@ class PostServiceUnitTest extends AbstractUnitTest
                 }
             )
         );
+        $this->lockManagerMock->shouldReceive('acquire')->once()->with(PostService::SLUG_LOCK_PREFIX . $slug);
 
         $this->postService->create($post, User::constructWithoutPassword('a', 'b', 'c', 'd'));
     }

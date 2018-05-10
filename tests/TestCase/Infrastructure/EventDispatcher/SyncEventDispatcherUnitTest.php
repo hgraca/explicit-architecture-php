@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Infrastructure\EventDispatcher;
 
+use Acme\App\Core\Port\Lock\LockManagerInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\App\Infrastructure\EventDispatcher\SyncEventDispatcher;
 use Acme\App\Test\Framework\AbstractUnitTest;
@@ -31,6 +32,11 @@ final class SyncEventDispatcherUnitTest extends AbstractUnitTest
     private $transactionServiceSpy;
 
     /**
+     * @var MockInterface|LockManagerInterface
+     */
+    private $lockManagerMock;
+
+    /**
      * @var MockInterface|LoggerInterface
      */
     private $loggerSpy;
@@ -44,7 +50,12 @@ final class SyncEventDispatcherUnitTest extends AbstractUnitTest
     {
         $this->transactionServiceSpy = Mockery::spy(TransactionServiceInterface::class);
         $this->loggerSpy = Mockery::spy(LoggerInterface::class);
-        $this->dispatcher = new SyncEventDispatcher($this->transactionServiceSpy, $this->loggerSpy);
+        $this->lockManagerMock = Mockery::mock(LockManagerInterface::class);
+        $this->dispatcher = new SyncEventDispatcher(
+            $this->transactionServiceSpy,
+            $this->lockManagerMock,
+            $this->loggerSpy
+        );
     }
 
     /**
@@ -96,6 +107,8 @@ final class SyncEventDispatcherUnitTest extends AbstractUnitTest
         $this->dispatcher->addDestination(DummyEvent::class, [$listener1, $secondListenerMethod]);
         $this->dispatcher->addDestination(DummyTwoEvent::class, [$listener2, $thirdListenerMethod]);
 
+        $this->lockManagerMock->shouldReceive('releaseAll')->times(2);
+
         $event = new DummyEvent();
         $this->dispatcher->dispatch($event);
         $this->dispatcher->flush();
@@ -132,6 +145,8 @@ final class SyncEventDispatcherUnitTest extends AbstractUnitTest
         $this->dispatcher->addDestination(DummyEvent::class, $listener1);
         $this->dispatcher->addDestination(DummyEvent::class, [$listener2, $secondListenerMethod]);
         $this->dispatcher->addDestination(DummyEvent::class, [$listener2, $thirdListenerMethod]);
+
+        $this->lockManagerMock->shouldReceive('releaseAll')->times(4);
 
         $event = new DummyEvent();
         $this->dispatcher->dispatch($event);

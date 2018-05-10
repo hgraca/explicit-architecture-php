@@ -21,6 +21,7 @@
         "symfony/flex": "^1.0",
         "symfony/form": "^4.0",
         "symfony/framework-bundle": "^4.0",
+        "symfony/lock": "^4.0",
         "symfony/monolog-bundle": "^3.1",
         "symfony/polyfill-apcu": "^1.5",
         "symfony/psr-http-message-bridge": "^1.0",
