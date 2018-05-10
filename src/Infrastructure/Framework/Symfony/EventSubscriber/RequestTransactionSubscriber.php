@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Infrastructure\Framework\Symfony\EventSubscriber;
 
+use Acme\App\Core\Port\Lock\LockManagerInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -32,9 +33,17 @@ final class RequestTransactionSubscriber implements EventSubscriberInterface
      */
     private $transactionService;
 
-    public function __construct(TransactionServiceInterface $transactionService)
-    {
+    /**
+     * @var LockManagerInterface
+     */
+    private $lockManager;
+
+    public function __construct(
+        TransactionServiceInterface $transactionService,
+        LockManagerInterface $lockManager
+    ) {
         $this->transactionService = $transactionService;
+        $this->lockManager = $lockManager;
     }
 
     /**
@@ -65,10 +74,15 @@ final class RequestTransactionSubscriber implements EventSubscriberInterface
         // and only if the use case was successful.
         // If we would use a command bus, we would do this in one of its middlewares.
         $this->transactionService->finishTransaction();
+
+        // We release all locks here, so that they can be reacquired when processing the events in the
+        // EventFlusherSubscriber, which runs after this subscriber.
+        $this->lockManager->releaseAll();
     }
 
     public function rollbackTransaction(): void
     {
         $this->transactionService->rollbackTransaction();
+        $this->lockManager->releaseAll();
     }
 }

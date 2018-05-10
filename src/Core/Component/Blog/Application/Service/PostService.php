@@ -19,9 +19,12 @@ use Acme\App\Core\Component\Blog\Application\Query\PostSlugExistsQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Entity\Post;
 use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Port\Lock\LockManagerInterface;
 
 final class PostService
 {
+    public const SLUG_LOCK_PREFIX = 'slug_creation-';
+
     /**
      * @var PostRepositoryInterface
      */
@@ -37,19 +40,32 @@ final class PostService
      */
     private $findHighestPostSlugSuffixQuery;
 
+    /**
+     * @var LockManagerInterface
+     */
+    private $lockManager;
+
     public function __construct(
         PostRepositoryInterface $postRepository,
         PostSlugExistsQueryInterface $postSlugExistsQuery,
-        FindHighestPostSlugSuffixQueryInterface $findHighestPostSlugSuffixQuery
+        FindHighestPostSlugSuffixQueryInterface $findHighestPostSlugSuffixQuery,
+        LockManagerInterface $lockManager
     ) {
         $this->postRepository = $postRepository;
         $this->postSlugExistsQuery = $postSlugExistsQuery;
         $this->findHighestPostSlugSuffixQuery = $findHighestPostSlugSuffixQuery;
+        $this->lockManager = $lockManager;
     }
 
     public function create(Post $post, User $user): void
     {
         $post->setAuthor($user);
+
+        // We acquire a lock on the creation of a slug here, to prevent race conditions while generating the sequential
+        //  ID used to make the slug unique.
+        // We use the slug as part of the lock name so that we only block the post creation requests that try to
+        //  create a post with the same slug.
+        $this->lockManager->acquire(self::SLUG_LOCK_PREFIX . $post->getSlug());
 
         if ($this->postSlugExistsQuery->execute($post->getSlug())) {
             $highestPostSlugSuffix = $this->findHighestPostSlugSuffixQuery->execute($post->getSlug());
