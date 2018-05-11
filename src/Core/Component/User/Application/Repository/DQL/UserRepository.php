@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\User\Application\Repository\DQL;
 
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
-use Acme\App\Core\Component\User\Domain\Entity\User;
-use Acme\App\Core\Component\User\Domain\Entity\UserId;
+use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;

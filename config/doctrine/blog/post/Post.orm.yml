@@ -1,4 +1,4 @@
-Acme\App\Core\Component\Blog\Domain\Entity\Post:
+Acme\App\Core\Component\Blog\Domain\Post\Post:
     type: entity
     table: symfony_demo_post
     id:
@@ -18,12 +18,12 @@ Acme\App\Core\Component\Blog\Domain\Entity\Post:
             type: datetime_immutable
     manyToOne:
         author:
-            targetEntity: Acme\App\Core\Component\User\Domain\Entity\User
+            targetEntity: Acme\App\Core\Component\User\Domain\User\User
             joinColumn:
                 nullable: false
     oneToMany:
         comments:
-            targetEntity: Comment
+            targetEntity: Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment
             mappedBy: post
             orphanRemoval: true
             cascade:
@@ -32,7 +32,7 @@ Acme\App\Core\Component\Blog\Domain\Entity\Post:
                 publishedAt: DESC
     manyToMany:
         tags:
-            targetEntity: Acme\App\Core\Component\Blog\Domain\Entity\Tag
+            targetEntity: Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag
             orderBy:
                 name: ASC
             cascade:

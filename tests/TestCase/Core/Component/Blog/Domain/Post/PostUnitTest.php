@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Core\Component\Blog\Domain\Entity;
+namespace Acme\App\Test\TestCase\Core\Component\Blog\Post;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Test\Framework\AbstractUnitTest;
 
 class PostUnitTest extends AbstractUnitTest

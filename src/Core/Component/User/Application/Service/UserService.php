@@ -16,7 +16,7 @@ namespace Acme\App\Core\Component\User\Application\Service;
 
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
-use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

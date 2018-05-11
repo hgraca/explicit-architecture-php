@@ -16,8 +16,8 @@ namespace Acme\App\Core\Component\Blog\Application\Query\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Query\FindPostsBySearchRequestQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Query\PostsBySearchRequestDto;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;

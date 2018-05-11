@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Core\Component\Blog\Domain\Entity;
+namespace Acme\App\Core\Component\Blog\Domain\Post;
 
 use Acme\PhpExtension\Identity\AbstractUuidId;
 
-final class TagId extends AbstractUuidId
+final class PostId extends AbstractUuidId
 {
 }

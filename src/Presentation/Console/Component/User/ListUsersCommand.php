@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Console\Component\User;
 
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
-use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\User\Domain\User\User;
 use Swift_Mailer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

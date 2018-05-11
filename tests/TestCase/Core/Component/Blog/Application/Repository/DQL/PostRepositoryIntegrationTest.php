@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\DQL\PostRepository;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Infrastructure\Persistence\Doctrine\Type;
 
-use Acme\App\Core\Component\User\Domain\Entity\UserId;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 
 final class UserIdType extends AbstractUuidType
 {

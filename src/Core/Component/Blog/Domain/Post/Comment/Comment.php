@@ -12,9 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Core\Component\Blog\Domain\Entity;
+namespace Acme\App\Core\Component\Blog\Domain\Post\Comment;
 
-use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use DateTimeImmutable;
 

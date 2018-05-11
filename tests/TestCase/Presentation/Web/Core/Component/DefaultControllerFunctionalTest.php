@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Test\Framework\AbstractFunctionalTest;

@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Query\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Query\FindHighestPostSlugSuffixQueryInterface;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
 use Acme\App\Core\Port\Persistence\QueryServiceInterface;

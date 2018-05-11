@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Infrastructure\Persistence\Doctrine\Type;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 
 final class PostIdType extends AbstractUuidType
 {

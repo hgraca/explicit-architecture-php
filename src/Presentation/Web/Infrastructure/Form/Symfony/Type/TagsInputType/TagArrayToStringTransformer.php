@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
+use Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -72,7 +72,7 @@ class TagArrayToStringTransformer implements DataTransformerInterface
         foreach ($newNames as $name) {
             $tags[] = new Tag($name);
             // There's no need to persist these new tags because Doctrine does that automatically
-            // thanks to the cascade={"persist"} option in the Acme\App\Core\Component\Blog\Domain\Entity\Post::$tags property.
+            // thanks to the cascade={"persist"} option in the Acme\App\Core\Component\Blog\Domain\Post\Post::$tags property.
         }
 
         // Return an array of tags to transform them back into a Doctrine Collection.
