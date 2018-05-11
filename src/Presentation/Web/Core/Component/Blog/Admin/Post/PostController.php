@@ -16,7 +16,7 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
-use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;

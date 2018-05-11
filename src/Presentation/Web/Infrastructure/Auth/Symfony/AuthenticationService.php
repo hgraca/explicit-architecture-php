@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony;
 
-use Acme\App\Core\Component\User\Domain\Entity\User;
-use Acme\App\Core\Component\User\Domain\Entity\UserId;
+use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationException;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\NoUserAuthenticatedException;

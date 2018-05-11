@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Infrastructure\Persistence\Doctrine\Type;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\TagId;
+use Acme\App\Core\Component\Blog\Domain\Post\Tag\TagId;
 
 /**
  * The TagId is a binary UUID, which has the advantage of being smaller and faster to search in the DB, but it has the

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
+use Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag;
 use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType\TagArrayToStringTransformer;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Doctrine\Common\Persistence\ObjectManager;

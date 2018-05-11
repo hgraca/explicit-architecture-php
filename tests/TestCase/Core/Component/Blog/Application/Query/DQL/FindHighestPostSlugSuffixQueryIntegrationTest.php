@@ -18,8 +18,8 @@ use Acme\App\Core\Component\Blog\Application\Query\DQL\FindHighestPostSlugSuffix
 use Acme\App\Core\Component\Blog\Application\Query\FindHighestPostSlugSuffixQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\DQL\PostRepository;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;

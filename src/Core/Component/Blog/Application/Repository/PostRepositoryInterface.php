@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Repository;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\CommentId;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
-use Acme\App\Core\Component\User\Domain\Entity\UserId;
+use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
 
 interface PostRepositoryInterface

@@ -1,4 +1,4 @@
-Acme\App\Core\Component\Blog\Domain\Entity\Comment:
+Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment:
     type: entity
     table: symfony_demo_comment
     id:
@@ -12,11 +12,11 @@ Acme\App\Core\Component\Blog\Domain\Entity\Comment:
             type: datetime_immutable
     manyToOne:
         post:
-            targetEntity: Acme\App\Core\Component\Blog\Domain\Entity\Post
+            targetEntity: Acme\App\Core\Component\Blog\Domain\Post\Post
             inversedBy: comments
             joinColumn:
                 nullable: false
         author:
-            targetEntity: Acme\App\Core\Component\User\Domain\Entity\User
+            targetEntity: Acme\App\Core\Component\User\Domain\User\User
             joinColumn:
                 nullable: false

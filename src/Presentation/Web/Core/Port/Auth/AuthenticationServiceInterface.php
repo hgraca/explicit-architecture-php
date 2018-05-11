@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Port\Auth;
 
-use Acme\App\Core\Component\User\Domain\Entity\User;
-use Acme\App\Core\Component\User\Domain\Entity\UserId;
+use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Psr\Http\Message\ServerRequestInterface;
 
 interface AuthenticationServiceInterface

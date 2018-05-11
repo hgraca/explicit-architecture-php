@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Service;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
-use Acme\App\Core\Component\User\Domain\Entity\User;
+use Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\EventDispatcher\EventDispatcherInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
 

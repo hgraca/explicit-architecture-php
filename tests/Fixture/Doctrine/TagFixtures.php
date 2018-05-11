@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\Fixture\Doctrine;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
+use Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag;
 use Acme\App\Test\Fixture\FixturesTrait;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;

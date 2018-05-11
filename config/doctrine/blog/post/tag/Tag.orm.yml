@@ -1,4 +1,4 @@
-Acme\App\Core\Component\Blog\Domain\Entity\Tag:
+Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag:
     type: entity
     table: symfony_demo_tag
     id:

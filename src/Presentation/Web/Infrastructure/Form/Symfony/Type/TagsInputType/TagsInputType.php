@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Tag;
+use Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;

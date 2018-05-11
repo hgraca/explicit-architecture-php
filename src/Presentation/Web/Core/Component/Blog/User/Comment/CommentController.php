@@ -16,8 +16,8 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\User\Comment;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\CommentService;
-use Acme\App\Core\Component\Blog\Domain\Entity\Comment;
-use Acme\App\Core\Component\Blog\Domain\Entity\PostId;
+use Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment;
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Form;
 
-use Acme\App\Core\Component\Blog\Domain\Entity\Post;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\DateTimePickerType;
 use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Type\TagsInputType\TagsInputType;
 use Symfony\Component\Form\AbstractType;

@@ -1,4 +1,4 @@
-Acme\App\Core\Component\User\Domain\Entity\User:
+Acme\App\Core\Component\User\Domain\User\User:
     type: entity
     table: symfony_demo_user
     id:

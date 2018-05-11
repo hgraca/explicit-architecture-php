@@ -26,15 +26,27 @@ doctrine:
         mappings:
             # Each mapping must have its own 'dir' directive.
             # If we put them all in the same dir, they will not be found.
-            Acme\App\Core\Component\Blog:
+            Acme\App\Core\Component\Blog\Domain\Post\Tag:
                 is_bundle: false
                 type: yml
-                dir: '%kernel.project_dir%/config/doctrine/blog'
-                prefix: 'Acme\App\Core\Component\Blog\Domain\Entity'
-                alias: Blog
-            Acme\App\Core\Component\User:
+                dir: '%kernel.project_dir%/config/doctrine/blog/post/tag'
+                prefix: 'Acme\App\Core\Component\Blog\Domain\Post\Tag'
+                alias: PostTag
+            Acme\App\Core\Component\Blog\Domain\Post\Comment:
+                is_bundle: false
+                type: yml
+                dir: '%kernel.project_dir%/config/doctrine/blog/post/comment'
+                prefix: 'Acme\App\Core\Component\Blog\Domain\Post\Comment'
+                alias: PostComment
+            Acme\App\Core\Component\Blog\Domain\Post:
+                is_bundle: false
+                type: yml
+                dir: '%kernel.project_dir%/config/doctrine/blog/post'
+                prefix: 'Acme\App\Core\Component\Blog\Domain\Post'
+                alias: Post
+            Acme\App\Core\Component\User\Domain\User:
                 is_bundle: false
                 type: yml
                 dir: '%kernel.project_dir%/config/doctrine/user'
-                prefix: 'Acme\App\Core\Component\User\Domain\Entity'
+                prefix: 'Acme\App\Core\Component\User\Domain\User'
                 alias: User
