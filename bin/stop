@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 include_once('lib/docker.php');
 
 $env = getenv('ENV') ?: 'dev';
