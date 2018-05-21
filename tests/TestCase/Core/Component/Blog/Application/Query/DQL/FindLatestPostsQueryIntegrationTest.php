@@ -75,7 +75,7 @@ class FindLatestPostsQueryIntegrationTest extends AbstractIntegrationTest
         $post->setSummary($summary = 'a summary');
 
         $this->persistenceService->startTransaction();
-        $this->repository->upsert($post);
+        $this->repository->add($post);
         $this->persistenceService->finishTransaction();
 
         $postList = $this->getFindLatestPostsQuery()->execute();

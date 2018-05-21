@@ -79,12 +79,12 @@ class PostRepository implements PostRepositoryInterface
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }
 
-    public function upsert(Post $entity): void
+    public function add(Post $entity): void
     {
         $this->persistenceService->upsert($entity);
     }
 
-    public function delete(Post $entity): void
+    public function remove(Post $entity): void
     {
         // Delete the tags associated with this blog post. This is done automatically
         // by Doctrine, except for SQLite (the database used in this application)

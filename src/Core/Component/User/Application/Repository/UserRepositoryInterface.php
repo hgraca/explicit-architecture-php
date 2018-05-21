@@ -20,9 +20,9 @@ use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 interface UserRepositoryInterface
 {
-    public function upsert(User $user): void;
+    public function add(User $user): void;
 
-    public function delete(User $user): void;
+    public function remove(User $user): void;
 
     /**
      * @return User[]

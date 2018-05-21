@@ -43,7 +43,7 @@ class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationT
         $post1->setTitle($titleStem);
         $post1->setSummary('some summary ...');
         $post1->setContent('some content ...');
-        $this->getPostRepository()->upsert($post1);
+        $this->getPostRepository()->add($post1);
 
         $post2 = new Post();
         $post2->setAuthorId($author->getId());
@@ -51,7 +51,7 @@ class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationT
         $post2->setSummary('some summary ...');
         $post2->setContent('some content ...');
         $post2->postfixSlug((string) $maxSuffix);
-        $this->getPostRepository()->upsert($post2);
+        $this->getPostRepository()->add($post2);
 
         $post3 = new Post();
         $post3->setAuthorId($author->getId());
@@ -59,7 +59,7 @@ class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationT
         $post3->setSummary('some summary ...');
         $post3->setContent('some content ...');
         $post3->postfixSlug((string) ($maxSuffix - 3));
-        $this->getPostRepository()->upsert($post3);
+        $this->getPostRepository()->add($post3);
 
         $this->getTransactionService()->finishTransaction();
 
@@ -81,7 +81,7 @@ class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationT
         $post->setTitle($titleStem);
         $post->setSummary('some summary ...');
         $post->setContent('some content ...');
-        $this->getPostRepository()->upsert($post);
+        $this->getPostRepository()->add($post);
 
         $this->getTransactionService()->finishTransaction();
 

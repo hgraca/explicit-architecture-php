@@ -79,7 +79,7 @@ class PostServiceUnitTest extends AbstractUnitTest
         $slug = $post->getSlug();
 
         $this->postSlugExistsQuerySpy->shouldReceive('execute')->once()->with($slug)->andReturn(false);
-        $this->postRepositorySpy->shouldReceive('upsert')->once()->with(
+        $this->postRepositorySpy->shouldReceive('add')->once()->with(
             Mockery::on(
                 function (Post $post) use ($slug) {
                     return $post->getSlug() === $slug;
@@ -105,7 +105,7 @@ class PostServiceUnitTest extends AbstractUnitTest
 
         $this->postSlugExistsQuerySpy->shouldReceive('execute')->once()->with($slug)->andReturn(true);
         $this->findHighestPostSlugSuffixQuerySpy->shouldReceive('execute')->once()->with($slug)->andReturn($maxSuffix);
-        $this->postRepositorySpy->shouldReceive('upsert')->once()->with(
+        $this->postRepositorySpy->shouldReceive('add')->once()->with(
             Mockery::on(
                 function (Post $post) use ($slug, $maxSuffix) {
                     return $post->getSlug() === $slug . '-' . ++$maxSuffix;
