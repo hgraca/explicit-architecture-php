@@ -38,12 +38,14 @@ use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 class CommentControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
+     * @test
+     *
      * This test changes the database contents by creating a new comment. However,
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
      */
-    public function testNewComment(): void
+    public function new_comment(): void
     {
         $this->overrideDateTimeGenerator();
 
@@ -99,12 +101,14 @@ class CommentControllerFunctionalTest extends AbstractFunctionalTest
     }
 
     /**
+     * @test
+     *
      * This test changes the database contents by creating a new comment. However,
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
      */
-    public function testNewComment_without_being_logged_in_redirects_to_login_page(): void
+    public function new_comment_without_being_logged_in_redirects_to_login_page(): void
     {
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $this->getService(UrlGeneratorInterface::class);
