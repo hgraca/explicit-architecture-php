@@ -18,8 +18,8 @@ use Acme\App\Core\Component\Blog\Application\Query\FindHighestPostSlugSuffixQuer
 use Acme\App\Core\Component\Blog\Application\Query\PostSlugExistsQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Lock\LockManagerInterface;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 final class PostService
 {

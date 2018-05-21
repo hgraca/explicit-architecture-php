@@ -16,11 +16,11 @@ namespace Acme\App\Core\Component\User\Application\Repository\DQL;
 
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\User\User;
-use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 /**
  * This custom Doctrine repository is empty because so far we don't need any custom

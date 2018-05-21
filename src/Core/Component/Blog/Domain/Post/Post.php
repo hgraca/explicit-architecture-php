@@ -16,7 +16,7 @@ namespace Acme\App\Core\Component\Blog\Domain\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment;
 use Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag;
-use Acme\App\Core\Component\User\Domain\User\UserId;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use Acme\PhpExtension\String\Slugger;
 use DateTime;

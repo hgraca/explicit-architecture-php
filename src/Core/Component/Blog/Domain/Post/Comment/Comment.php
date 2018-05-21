@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Domain\Post\Comment;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\UserId;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use DateTimeImmutable;
 

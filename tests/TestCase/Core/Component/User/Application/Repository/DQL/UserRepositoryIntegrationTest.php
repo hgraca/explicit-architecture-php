@@ -16,9 +16,9 @@ namespace Acme\App\Test\TestCase\Core\Component\User\Application\Repository\DQL;
 
 use Acme\App\Core\Component\User\Application\Repository\DQL\UserRepository;
 use Acme\App\Core\Component\User\Domain\User\User;
-use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 

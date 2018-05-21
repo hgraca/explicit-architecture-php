@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\User\Application\Repository;
 
 use Acme\App\Core\Component\User\Domain\User\User;
-use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 interface UserRepositoryInterface
 {
