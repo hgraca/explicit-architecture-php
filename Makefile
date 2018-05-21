@@ -111,7 +111,7 @@ test:
 	- ENV='tst' ./bin/stop # Just in case some container is left over stopped, as is the case after PHPStorm runs tests
 	ENV='tst' ./bin/run
 	ENV='tst' ./bin/run make db-setup-guest
-	$(MAKE) cs-fix
+	- $(MAKE) cs-fix
 	ENV='tst' ./bin/run php vendor/bin/phpunit
 	ENV='tst' ./bin/stop
 	$(MAKE) test-acc
