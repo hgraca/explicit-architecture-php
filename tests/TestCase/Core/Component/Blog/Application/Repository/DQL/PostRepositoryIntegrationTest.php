@@ -144,25 +144,6 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         self::assertSame(0, $this->getTagListCountByPostId($postId));
     }
 
-    /**
-     * @test
-     */
-    public function findByAuthorOrderedByPublishDate(): void
-    {
-        $authorId = $this->findAPost()->getAuthorId();
-        $postList = $this->repository->findByAuthorOrderedByPublishDate($authorId);
-
-        /** @var Post $previousPost */
-        $previousPost = null;
-        foreach ($postList as $post) {
-            self::assertTrue($authorId->equals($post->getAuthorId()));
-            if ($previousPost) {
-                self::assertLessThanOrEqual($previousPost->getPublishedAt(), $post->getPublishedAt());
-            }
-            $previousPost = $post;
-        }
-    }
-
     private function findById(PostId $id): Post
     {
         $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
