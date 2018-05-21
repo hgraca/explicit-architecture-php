@@ -20,8 +20,6 @@ use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
-use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
-use Acme\App\Core\SharedKernel\User\Domain\User\UserId;
 
 /**
  * This custom Doctrine repository contains some methods which are useful when
@@ -94,19 +92,5 @@ class PostRepository implements PostRepositoryInterface
         $entity->clearTags();
 
         $this->persistenceService->delete($entity);
-    }
-
-    /**
-     * @return Post[]
-     */
-    public function findByAuthorOrderedByPublishDate(UserId $userId): ResultCollectionInterface
-    {
-        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
-            ->where('Post.authorId = :userId')
-            ->orderBy('Post.publishedAt', 'DESC')
-            ->setParameter('userId', $userId)
-            ->build();
-
-        return $this->queryService->query($dqlQuery);
     }
 }

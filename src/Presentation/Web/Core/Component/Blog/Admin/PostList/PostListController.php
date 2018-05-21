@@ -14,7 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 
-use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
+use Acme\App\Core\Component\Blog\Application\Query\PostDto;
+use Acme\App\Core\Component\Blog\Application\Query\PostListQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
@@ -106,15 +107,14 @@ class PostListController
      *     could move this annotation to any other controller while maintaining
      *     the route name and therefore, without breaking any existing link.
      */
-    public function get(PostRepositoryInterface $postRepository): ResponseInterface
+    public function get(PostListQueryInterface $postListQuery): ResponseInterface
     {
-        $postList = $postRepository->findByAuthorOrderedByPublishDate(
-            $this->authenticationService->getLoggedInUserId()
-        );
+        $postDtoList = $postListQuery->execute($this->authenticationService->getLoggedInUserId())
+            ->hydrateResultItemsAs(PostDto::class);
 
         return $this->templateEngine->renderResponse(
             '@Blog/Admin/PostList/get.html.twig',
-            GetViewModel::fromPostList(...$postList)
+            GetViewModel::fromPostDtoList(...$postDtoList)
         );
     }
 

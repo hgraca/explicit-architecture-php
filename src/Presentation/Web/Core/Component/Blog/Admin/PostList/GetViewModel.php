@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\Blog\Application\Query\PostDto;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use DateTimeInterface;
@@ -38,11 +38,11 @@ final class GetViewModel implements TemplateViewModelInterface
     /**
      * We create named constructors for the cases where we need to extract the raw data from complex data structures.
      */
-    public static function fromPostList(Post ...$postList): self
+    public static function fromPostDtoList(PostDto ...$postDtoList): self
     {
         $viewModel = new self();
-        foreach ($postList as $post) {
-            $viewModel->addPostData($post->getId(), $post->getTitle(), $post->getPublishedAt());
+        foreach ($postDtoList as $postDto) {
+            $viewModel->addPostData($postDto->getId(), $postDto->getTitle(), $postDto->getPublishedAt());
         }
 
         return $viewModel;
