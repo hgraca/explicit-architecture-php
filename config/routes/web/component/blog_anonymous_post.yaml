@@ -1,6 +1,6 @@
 post:
     path: /{slug}
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post\PostController::getAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post\PostController::get
     methods: [GET]
     requirements:
         _locale: '%app_locales%'

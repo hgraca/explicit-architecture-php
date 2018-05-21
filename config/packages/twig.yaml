@@ -1,7 +1,7 @@
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    exception_controller: Acme\App\Presentation\Web\Core\Exception\ExceptionController::showAction
+    exception_controller: Acme\App\Presentation\Web\Core\Exception\ExceptionController::show
     form_themes:
         - '@Web/Core/Port/Form/layout.html.twig'
         - '@Web/Core/Port/Form/fields.html.twig'

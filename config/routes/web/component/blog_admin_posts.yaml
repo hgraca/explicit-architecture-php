@@ -1,6 +1,6 @@
 admin_post_show:
     path: /posts/{id}
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::getAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::get
     methods: [GET]
     requirements:
         _locale: '%app_locales%'
@@ -10,7 +10,7 @@ admin_post_show:
 
 admin_post_edit:
     path: /posts/{id}/edit
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::editAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::edit
     methods: [GET]
     requirements:
         _locale: '%app_locales%'
@@ -20,7 +20,7 @@ admin_post_edit:
 
 admin_post_post:
     path: /posts/{id}
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::postAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::post
     methods: [POST]
     requirements:
         _locale: '%app_locales%'
@@ -30,7 +30,7 @@ admin_post_post:
 
 admin_post_delete:
     path: /posts/{id}/delete
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::deleteAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post\PostController::delete
     methods: [POST]
     requirements:
         _locale: '%app_locales%'
@@ -40,7 +40,7 @@ admin_post_delete:
 
 admin_index:
     path: /posts
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::getAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::get
     methods: [GET]
     requirements:
         _locale: '%app_locales%'
@@ -49,7 +49,7 @@ admin_index:
 
 admin_post_list:
     path: /posts
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::getAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::get
     methods: [GET]
     requirements:
         _locale: '%app_locales%'
@@ -58,7 +58,7 @@ admin_post_list:
 
 admin_post_new:
     path: /posts/new
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::newAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::new
     methods: [GET]
     requirements:
         _locale: '%app_locales%'
@@ -67,7 +67,7 @@ admin_post_new:
 
 admin_post_new_post:
     path: /posts
-    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::postAction
+    controller: Acme\App\Presentation\Web\Core\Component\Blog\Admin\PostList\PostListController::post
     methods: [POST]
     requirements:
         _locale: '%app_locales%'

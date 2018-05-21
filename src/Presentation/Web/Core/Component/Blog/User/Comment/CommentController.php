@@ -88,7 +88,7 @@ class CommentController
         $this->authenticationService = $authenticationService;
     }
 
-    public function postAction(ServerRequestInterface $request): ResponseInterface
+    public function post(ServerRequestInterface $request): ResponseInterface
     {
         $this->authorizationService->denyAccessUnlessGranted([AuthorizationServiceInterface::ROLE_AUTHENTICATED]);
 
@@ -115,7 +115,7 @@ class CommentController
      * Blog/Anonymous/Post/get.html.twig template. That's why it's not needed to define
      * a route name for it.
      */
-    public function editAction(PostId $postId): ResponseInterface
+    public function edit(PostId $postId): ResponseInterface
     {
         return $this->templateEngine->renderResponse(
             '@Blog/User/Comment/edit.html.twig',
