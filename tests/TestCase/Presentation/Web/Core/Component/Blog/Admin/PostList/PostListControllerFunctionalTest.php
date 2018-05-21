@@ -39,9 +39,11 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
     use FixturesTrait;
 
     /**
+     * @test
+     *
      * @dataProvider getUrlsForRegularUsers
      */
-    public function testAccessDeniedForRegularUsers(string $httpMethod, string $url): void
+    public function access_denied_for_regular_users(string $httpMethod, string $url): void
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'john_user',
@@ -57,7 +59,10 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
         yield ['GET', '/en/admin/posts'];
     }
 
-    public function testAdminBackendHomePage(): void
+    /**
+     * @test
+     */
+    public function admin_backend_home_page(): void
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'jane_admin',
@@ -75,12 +80,14 @@ class PostListControllerFunctionalTest extends AbstractFunctionalTest
     }
 
     /**
+     * @test
+     *
      * This test changes the database contents by creating a new blog post. However,
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
      */
-    public function testAdminNewPost(): void
+    public function admin_new_post(): void
     {
         $postTitle = 'Blog Post Title ' . mt_rand();
         $postSummary = $this->generateRandomString(255);

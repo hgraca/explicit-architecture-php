@@ -33,13 +33,15 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
+     * @test
+     *
      * PHPUnit's data providers allow to execute the same tests repeated times
      * using a different set of data each time.
      * See https://symfony.com/doc/current/cookbook/form/unit_testing.html#testing-against-different-sets-of-data.
      *
      * @dataProvider getPublicUrls
      */
-    public function testPublicUrls(string $url): void
+    public function public_urls(string $url): void
     {
         $this->getClient()->request('GET', $url);
 
@@ -51,13 +53,15 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
     }
 
     /**
+     * @test
+     *
      * A good practice for tests is to not use the service container, to make
      * them more robust. However, in this example we must access to the container
      * to get the entity manager and make a database query. The reason is that
      * blog post fixtures are randomly generated and there's no guarantee that
      * a given blog post slug will be available.
      */
-    public function testPublicBlogPost(): void
+    public function public_blog_post(): void
     {
         $blogPost = $this->findAPost();
         $this->getClient()->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
@@ -66,13 +70,15 @@ class DefaultControllerFunctionalTest extends AbstractFunctionalTest
     }
 
     /**
+     * @test
+     *
      * The application contains a lot of secure URLs which shouldn't be
      * publicly accessible. This tests ensures that whenever a user tries to
      * access one of those pages, a redirection to the login form is performed.
      *
      * @dataProvider getSecureUrls
      */
-    public function testSecureUrls(string $url): void
+    public function secure_urls(string $url): void
     {
         $post = $this->findAPost();
         $postId = $post->getId();

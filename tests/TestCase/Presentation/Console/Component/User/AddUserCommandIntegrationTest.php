@@ -45,12 +45,14 @@ class AddUserCommandIntegrationTest extends AbstractIntegrationTest
     }
 
     /**
+     * @test
+     *
      * @dataProvider isAdminDataProvider
      *
      * This test provides all the arguments required by the command, so the
      * command runs non-interactively and it won't ask for any argument.
      */
-    public function testCreateUserNonInteractive(bool $isAdmin): void
+    public function create_user_non_interactive(bool $isAdmin): void
     {
         $input = $this->userData;
         if ($isAdmin) {
@@ -62,6 +64,8 @@ class AddUserCommandIntegrationTest extends AbstractIntegrationTest
     }
 
     /**
+     * @test
+     *
      * @dataProvider isAdminDataProvider
      *
      * This test doesn't provide all the arguments required by the command, so
@@ -69,7 +73,7 @@ class AddUserCommandIntegrationTest extends AbstractIntegrationTest
      * arguments.
      * See https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
      */
-    public function testCreateUserInteractive(bool $isAdmin): void
+    public function create_user_interactive(bool $isAdmin): void
     {
         $this->executeCommand(
         // these are the arguments (only 1 is passed, the rest are missing)

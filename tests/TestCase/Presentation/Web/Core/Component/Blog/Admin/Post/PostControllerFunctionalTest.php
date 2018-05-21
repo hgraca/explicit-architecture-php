@@ -59,9 +59,10 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
     }
 
     /**
+     * @test
      * @dataProvider getUrlsForRegularUsers
      */
-    public function testAccessDeniedForRegularUsers($httpMethod, $url): void
+    public function access_denied_for_regular_users($httpMethod, $url): void
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'john_user',
@@ -82,7 +83,10 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         yield ['POST', '/en/admin/posts/%s/delete'];
     }
 
-    public function testAdminGetPost(): void
+    /**
+     * @test
+     */
+    public function admin_get_post(): void
     {
         $post = $this->findAPost();
         $postId = $post->getId();
@@ -96,12 +100,14 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
     }
 
     /**
+     * @test
+     *
      * This test changes the database contents by editing a blog post. However,
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
      */
-    public function testAdminEditPost(): void
+    public function admin_edit_post(): void
     {
         $post = $this->findAPost();
         $postId = $post->getId();
@@ -125,6 +131,8 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
     }
 
     /**
+     * @test
+     *
      * This test changes the database contents by deleting a blog post. However,
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
      * to the database are rolled back when this test completes. This means that
@@ -132,7 +140,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
      *
      * @expectedException \Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException
      */
-    public function testAdminDeletePost(): void
+    public function admin_delete_post(): void
     {
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $this->getService(UrlGeneratorInterface::class);
@@ -158,7 +166,10 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         $this->findById($postId);
     }
 
-    public function testAdminDeletePost_with_invalid_token_does_not_delete(): void
+    /**
+     * @test
+     */
+    public function admin_delete_post_with_invalid_token_does_not_delete(): void
     {
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $this->getService(UrlGeneratorInterface::class);

@@ -28,11 +28,13 @@ use Doctrine\ORM\EntityRepository;
 class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 {
     /**
+     * @test
+     *
      * Ensures that tags are created correctly.
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function testCreateTheRightAmountOfTags(): void
+    public function create_the_right_amount_of_tags(): void
     {
         $tags = $this->getMockedTransformer()->reverseTransform('Hello, Demo, How');
 
@@ -41,12 +43,13 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     }
 
     /**
-     * Ensures that empty tags and errors in the number of commas are
-     * dealt correctly.
+     * @test
+     *
+     * Ensures that empty tags and errors in the number of commas are dealt correctly.
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function testCreateTheRightAmountOfTagsWithTooManyCommas(): void
+    public function create_the_right_amount_of_tags_with_too_many_commas(): void
     {
         $transformer = $this->getMockedTransformer();
 
@@ -55,11 +58,13 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     }
 
     /**
+     * @test
+     *
      * Ensures that leading/trailing spaces are ignored for tag names.
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function testTrimNames(): void
+    public function trim_names(): void
     {
         $tags = $this->getMockedTransformer()->reverseTransform('   Hello   ');
 
@@ -67,11 +72,13 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     }
 
     /**
+     * @test
+     *
      * Ensures that duplicated tag names are ignored.
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function testDuplicateNames(): void
+    public function duplicate_names(): void
     {
         $tags = $this->getMockedTransformer()->reverseTransform('Hello, Hello, Hello');
 
@@ -79,11 +86,13 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     }
 
     /**
+     * @test
+     *
      * Ensures that the transformer uses tags already persisted in the database.
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function testUsesAlreadyDefinedTags(): void
+    public function uses_already_defined_tags(): void
     {
         $persistedTags = [
             new Tag('Hello'),
@@ -97,12 +106,14 @@ class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     }
 
     /**
+     * @test
+     *
      * Ensures that the transformation from Tag instances to a simple string
      * works as expected.
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    public function testTransform(): void
+    public function transform(): void
     {
         $persistedTags = [
             new Tag('Hello'),
