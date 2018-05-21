@@ -15,12 +15,20 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Exception;
 
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController as TwigExceptionController;
+use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 
 final class ExceptionController extends TwigExceptionController
 {
     private const TEMPLATE_NAMESPACE_TWIG = 'Twig';
     private const TEMPLATE_NAMESPACE_WEB = 'Web';
+
+    public function show(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null): Response
+    {
+        return parent::showAction($request, $exception, $logger);
+    }
 
     /**
      * @param Request $request

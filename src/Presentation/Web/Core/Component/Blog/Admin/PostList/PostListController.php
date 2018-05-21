@@ -106,7 +106,7 @@ class PostListController
      *     could move this annotation to any other controller while maintaining
      *     the route name and therefore, without breaking any existing link.
      */
-    public function getAction(PostRepositoryInterface $postRepository): ResponseInterface
+    public function get(PostRepositoryInterface $postRepository): ResponseInterface
     {
         $postList = $postRepository->findByAuthorOrderedByPublishDate(
             $this->authenticationService->getLoggedInUserId()
@@ -125,7 +125,7 @@ class PostListController
      * to constraint the HTTP methods each controller responds to (by default
      * it responds to all methods).
      */
-    public function newAction(): ResponseInterface
+    public function new(): ResponseInterface
     {
         $form = $this->createCreatePostForm(new Post());
 
@@ -139,7 +139,7 @@ class PostListController
      * to constraint the HTTP methods each controller responds to (by default
      * it responds to all methods).
      */
-    public function postAction(ServerRequestInterface $request): ResponseInterface
+    public function post(ServerRequestInterface $request): ResponseInterface
     {
         $post = new Post();
 

@@ -121,7 +121,7 @@ class PostController
     /**
      * Finds and displays a Post entity.
      */
-    public function getAction(ServerRequestInterface $request): ResponseInterface
+    public function get(ServerRequestInterface $request): ResponseInterface
     {
         $this->authorizationService->denyAccessUnlessGranted(
             [],
@@ -143,7 +143,7 @@ class PostController
     /**
      * Displays a form to edit an existing Post entity.
      */
-    public function editAction(ServerRequestInterface $request): ResponseInterface
+    public function edit(ServerRequestInterface $request): ResponseInterface
     {
         $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
 
@@ -168,7 +168,7 @@ class PostController
     /**
      * Receives data from the form to edit an existing Post entity.
      */
-    public function postAction(ServerRequestInterface $request): ResponseInterface
+    public function post(ServerRequestInterface $request): ResponseInterface
     {
         $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
 
@@ -197,7 +197,7 @@ class PostController
      * The Security annotation value is an expression (if it evaluates to false,
      * the authorization mechanism will prevent the user accessing this resource).
      */
-    public function deleteAction(ServerRequestInterface $request): ResponseInterface
+    public function delete(ServerRequestInterface $request): ResponseInterface
     {
         $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
 

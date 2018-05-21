@@ -82,7 +82,7 @@ class PostListController
      *
      * @see https://symfony.com/doc/current/quick_tour/the_controller.html#using-formats
      */
-    public function getAction(int $page, string $_format): ResponseInterface
+    public function get(int $page, string $_format): ResponseInterface
     {
         $latestPosts = $this->findLatestPostsQuery->execute();
 
@@ -100,7 +100,7 @@ class PostListController
         return $response->withAddedHeader('Cache-Control', 's-maxage=10');
     }
 
-    public function searchAction(ServerRequestInterface $request): ResponseInterface
+    public function search(ServerRequestInterface $request): ResponseInterface
     {
         if (!$this->isXmlHttpRequest($request)) {
             return $this->templateEngine->renderResponse('@Blog/Anonymous/PostList/search.html.twig');
