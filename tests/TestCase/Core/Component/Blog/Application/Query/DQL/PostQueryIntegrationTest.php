@@ -22,9 +22,9 @@ use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag;
 use Acme\App\Core\Component\User\Domain\User\User;
-use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
 class PostQueryIntegrationTest extends AbstractIntegrationTest

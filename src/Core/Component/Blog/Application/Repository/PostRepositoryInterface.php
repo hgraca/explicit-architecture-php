@@ -16,8 +16,8 @@ namespace Acme\App\Core\Component\Blog\Application\Repository;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
-use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
+use Acme\App\Core\SharedKernel\User\Domain\User\UserId;
 
 interface PostRepositoryInterface
 {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\User\Domain\User;
 
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
