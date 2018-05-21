@@ -39,14 +39,14 @@ class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationT
         $this->getTransactionService()->startTransaction();
 
         $post1 = new Post();
-        $post1->setAuthor($author);
+        $post1->setAuthorId($author->getId());
         $post1->setTitle($titleStem);
         $post1->setSummary('some summary ...');
         $post1->setContent('some content ...');
         $this->getPostRepository()->upsert($post1);
 
         $post2 = new Post();
-        $post2->setAuthor($author);
+        $post2->setAuthorId($author->getId());
         $post2->setTitle($titleStem);
         $post2->setSummary('some summary ...');
         $post2->setContent('some content ...');
@@ -54,7 +54,7 @@ class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationT
         $this->getPostRepository()->upsert($post2);
 
         $post3 = new Post();
-        $post3->setAuthor($author);
+        $post3->setAuthorId($author->getId());
         $post3->setTitle($titleStem);
         $post3->setSummary('some summary ...');
         $post3->setContent('some content ...');
@@ -77,7 +77,7 @@ class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationT
         $this->getTransactionService()->startTransaction();
 
         $post = new Post();
-        $post->setAuthor($author);
+        $post->setAuthorId($author->getId());
         $post->setTitle($titleStem);
         $post->setSummary('some summary ...');
         $post->setContent('some content ...');

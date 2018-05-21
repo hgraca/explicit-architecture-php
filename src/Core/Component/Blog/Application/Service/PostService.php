@@ -18,7 +18,7 @@ use Acme\App\Core\Component\Blog\Application\Query\FindHighestPostSlugSuffixQuer
 use Acme\App\Core\Component\Blog\Application\Query\PostSlugExistsQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\Lock\LockManagerInterface;
 
 final class PostService
@@ -57,9 +57,9 @@ final class PostService
         $this->lockManager = $lockManager;
     }
 
-    public function create(Post $post, User $user): void
+    public function create(Post $post, UserId $authorId): void
     {
-        $post->setAuthor($user);
+        $post->setAuthorId($authorId);
 
         // We acquire a lock on the creation of a slug here, to prevent race conditions while generating the sequential
         //  ID used to make the slug unique.

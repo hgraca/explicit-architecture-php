@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
+use Acme\App\Core\Component\Blog\Application\Query\PostQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
+use Acme\App\Core\Component\Blog\Application\Security\PostVoter;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
@@ -87,6 +89,11 @@ class PostController
      */
     private $authenticationService;
 
+    /**
+     * @var PostQueryInterface
+     */
+    private $postQuery;
+
     public function __construct(
         PostService $postService,
         PostRepositoryInterface $postRepository,
@@ -96,7 +103,8 @@ class PostController
         ResponseFactoryInterface $responseFactory,
         FormFactoryInterface $formFactory,
         AuthorizationServiceInterface $authorizationService,
-        AuthenticationServiceInterface $authenticationService
+        AuthenticationServiceInterface $authenticationService,
+        PostQueryInterface $postQuery
     ) {
         $this->postService = $postService;
         $this->flashMessageService = $flashMessageService;
@@ -107,6 +115,7 @@ class PostController
         $this->postRepository = $postRepository;
         $this->authorizationService = $authorizationService;
         $this->authenticationService = $authenticationService;
+        $this->postQuery = $postQuery;
     }
 
     /**
@@ -114,17 +123,20 @@ class PostController
      */
     public function getAction(ServerRequestInterface $request): ResponseInterface
     {
-        $post = $this->postRepository->find(new PostId($request->getAttribute('id')));
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            'show',
-            'Posts can only be shown to their authors.',
-            $post
+            PostVoter::SHOW,
+            'When the user is authenticated, posts can only be shown to their authors.',
+            $this->postRepository->find(new PostId($request->getAttribute('id')))
         );
 
         return $this->templateEngine->renderResponse(
             '@Blog/Admin/Post/get.html.twig',
-            GetViewModel::fromPost($post)
+            $this->postQuery
+                ->includeAuthor()
+                ->includeTags()
+                ->execute(new PostId($request->getAttribute('id')))
+                ->hydrateSingleResultAs(GetViewModel::class)
         );
     }
 
@@ -137,7 +149,7 @@ class PostController
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            'edit',
+            PostVoter::EDIT,
             'Posts can only be edited by their authors.',
             $post
         );
@@ -162,7 +174,7 @@ class PostController
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            'edit',
+            PostVoter::EDIT,
             'Posts can only be edited by their authors.',
             $post
         );
@@ -191,7 +203,7 @@ class PostController
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            'delete',
+            PostVoter::DELETE,
             'Posts can only be deleted by an admin or the author.',
             $post
         );

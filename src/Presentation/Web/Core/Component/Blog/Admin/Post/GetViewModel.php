@@ -14,13 +14,16 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
+use Acme\PhpExtension\ConstructableFromArrayInterface;
+use Acme\PhpExtension\ConstructableFromArrayTrait;
 use DateTimeInterface;
 
-final class GetViewModel implements TemplateViewModelInterface
+final class GetViewModel implements TemplateViewModelInterface, ConstructableFromArrayInterface
 {
+    use ConstructableFromArrayTrait;
+
     /**
      * @var PostId
      */
@@ -66,7 +69,7 @@ final class GetViewModel implements TemplateViewModelInterface
         string $authorFullName,
         string $summary,
         string $content,
-        string ...$postTagList
+        string ...$tagList
     ) {
         $this->postId = $id;
         $this->postTitle = $title;
@@ -74,28 +77,7 @@ final class GetViewModel implements TemplateViewModelInterface
         $this->postAuthorFullName = $authorFullName;
         $this->postSummary = $summary;
         $this->postContent = $content;
-        $this->postTagList = $postTagList;
-    }
-
-    /**
-     * We create named constructors for the cases where we need to extract the raw data from complex data structures.
-     */
-    public static function fromPost(Post $post): self
-    {
-        $postTagList = [];
-        foreach ($post->getTags() as $tag) {
-            $postTagList[] = (string) $tag;
-        }
-
-        return new self(
-            $post->getId(),
-            $post->getTitle(),
-            $post->getPublishedAt(),
-            $post->getAuthor()->getFullName(),
-            $post->getSummary(),
-            $post->getContent(),
-            ...$postTagList
-        );
+        $this->postTagList = $tagList;
     }
 
     public function getPostId(): PostId

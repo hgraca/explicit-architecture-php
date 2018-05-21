@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Event;
 
-use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
+use Acme\App\Core\Component\Blog\Application\Query\PostQueryInterface;
+use Acme\App\Core\Component\Blog\Application\Query\PostWithAuthorDto;
+use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Core\Port\Translation\TranslatorInterface;
@@ -32,9 +34,9 @@ class CommentCreatedListener
     public const EMAIL_SUBJECT_KEY = 'notification.comment_created';
 
     /**
-     * @var PostRepositoryInterface
+     * @var PostQueryInterface
      */
-    private $postRepository;
+    private $postQuery;
 
     /**
      * @var Swift_Mailer
@@ -57,13 +59,13 @@ class CommentCreatedListener
     private $senderEmail;
 
     public function __construct(
-        PostRepositoryInterface $postRepository,
+        PostQueryInterface $postQuery,
         Swift_Mailer $mailer,
         UrlGeneratorInterface $urlGenerator,
         TranslatorInterface $translator,
         string $senderEmail
     ) {
-        $this->postRepository = $postRepository;
+        $this->postQuery = $postQuery;
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->translator = $translator;
@@ -73,12 +75,12 @@ class CommentCreatedListener
     public function notifyPostAuthorAboutNewComment(CommentCreatedEvent $event): void
     {
         $commentId = $event->getCommentId();
-        $post = $this->postRepository->findByCommentId($commentId);
+        $postDto = $this->getPostDto($commentId);
 
         $linkToPost = $this->urlGenerator->generateUrl(
             'post',
             [
-                'slug' => $post->getSlug(),
+                'slug' => $postDto->getSlug(),
                 '_fragment' => 'comment_' . $commentId,
             ],
             UrlType::absoluteUrl()
@@ -88,7 +90,7 @@ class CommentCreatedListener
         $body = $this->translator->translate(
             'notification.comment_created.description',
             [
-                '%title%' => $post->getTitle(),
+                '%title%' => $postDto->getTitle(),
                 '%link%' => $linkToPost,
             ]
         );
@@ -98,7 +100,7 @@ class CommentCreatedListener
         // See https://symfony.com/doc/current/email.html#sending-emails
         $message = (new \Swift_Message())
             ->setSubject($subject)
-            ->setTo($post->getAuthor()->getEmail())
+            ->setTo($postDto->getAuthorEmail())
             ->setFrom($this->senderEmail)
             ->setBody($body, 'text/html');
 
@@ -107,5 +109,13 @@ class CommentCreatedListener
         // However, you can inspect the contents of those unsent emails using the debug toolbar.
         // See https://symfony.com/doc/current/email/dev_environment.html#viewing-from-the-web-debug-toolbar
         $this->mailer->send($message);
+    }
+
+    private function getPostDto(CommentId $commentId): PostWithAuthorDto
+    {
+        return $this->postQuery
+            ->includeAuthor()
+            ->execute($commentId)
+            ->hydrateSingleResultAs(PostWithAuthorDto::class);
     }
 }

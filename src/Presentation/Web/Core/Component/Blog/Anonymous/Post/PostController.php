@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post;
 
-use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
+use Acme\App\Core\Component\Blog\Application\Query\PostQueryInterface;
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -34,16 +34,16 @@ class PostController
     private $templateEngine;
 
     /**
-     * @var PostRepositoryInterface
+     * @var PostQueryInterface
      */
-    private $postRepository;
+    private $postQuery;
 
     public function __construct(
         TemplateEngineInterface $templateEngine,
-        PostRepositoryInterface $postRepository
+        PostQueryInterface $postQuery
     ) {
         $this->templateEngine = $templateEngine;
-        $this->postRepository = $postRepository;
+        $this->postQuery = $postQuery;
     }
 
     /**
@@ -54,8 +54,6 @@ class PostController
      */
     public function getAction(ServerRequestInterface $request): ResponseInterface
     {
-        $post = $this->postRepository->findBySlug($request->getAttribute('slug'));
-
         // Symfony's 'dump()' function is an improved version of PHP's 'var_dump()' but
         // it's not available in the 'prod' environment to prevent leaking sensitive information.
         // It can be used both in PHP files and Twig templates, but it requires to
@@ -65,7 +63,13 @@ class PostController
 
         return $this->templateEngine->renderResponse(
             '@Blog/Anonymous/Post/get.html.twig',
-            GetViewModel::fromPostAndCommentList($post, ...$post->getComments())
+            $this->postQuery
+                ->includeAuthor()
+                ->includeTags()
+                ->includeComments()
+                ->includeCommentsAuthor()
+                ->execute($request->getAttribute('slug'))
+                ->hydrateSingleResultAs(GetViewModel::class)
         );
     }
 }

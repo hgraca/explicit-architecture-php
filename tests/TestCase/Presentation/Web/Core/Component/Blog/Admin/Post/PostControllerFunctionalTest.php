@@ -40,6 +40,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PostControllerFunctionalTest extends AbstractFunctionalTest
 {
+    const JANE_ADMIN = 'jane_admin';
+
     /**
      * @var DqlQueryBuilderInterface
      */
@@ -85,7 +87,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         $post = $this->findAPost();
         $postId = $post->getId();
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'jane_admin',
+            'PHP_AUTH_USER' => self::JANE_ADMIN,
             'PHP_AUTH_PW' => 'kitten',
         ]);
         $client->request('GET', '/en/admin/posts/' . $postId);
@@ -106,7 +108,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         $newBlogPostTitle = 'Blog Post Title ' . mt_rand();
 
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'jane_admin',
+            'PHP_AUTH_USER' => self::JANE_ADMIN,
             'PHP_AUTH_PW' => 'kitten',
         ]);
         $crawler = $client->request('GET', "/en/admin/posts/$postId/edit");
@@ -138,7 +140,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         $post = $this->findAPost();
         $postId = $post->getId();
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'jane_admin',
+            'PHP_AUTH_USER' => self::JANE_ADMIN,
             'PHP_AUTH_PW' => 'kitten',
         ]);
         $client->followRedirects();
@@ -164,7 +166,7 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
         $client = static::createClient(
             [],
             [
-                'PHP_AUTH_USER' => 'jane_admin',
+                'PHP_AUTH_USER' => self::JANE_ADMIN,
                 'PHP_AUTH_PW' => 'kitten',
             ]
         );
@@ -197,7 +199,12 @@ class PostControllerFunctionalTest extends AbstractFunctionalTest
 
     private function findAPost(): Post
     {
-        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)->setMaxResults(1)->build();
+        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
+            ->join('User:User', 'Author', 'WITH', 'Author.id = Post.authorId')
+            ->where('Author.username = :username')
+            ->setParameter('username', self::JANE_ADMIN)
+            ->setMaxResults(1)
+            ->build();
 
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }

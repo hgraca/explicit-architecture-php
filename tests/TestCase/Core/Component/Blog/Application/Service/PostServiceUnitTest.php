@@ -88,7 +88,7 @@ class PostServiceUnitTest extends AbstractUnitTest
         );
         $this->lockManagerMock->shouldReceive('acquire')->once()->with(PostService::SLUG_LOCK_PREFIX . $slug);
 
-        $this->postService->create($post, User::constructWithoutPassword('a', 'b', 'c', 'd'));
+        $this->postService->create($post, User::constructWithoutPassword('a', 'b', 'c', 'd')->getId());
     }
 
     /**
@@ -114,6 +114,6 @@ class PostServiceUnitTest extends AbstractUnitTest
         );
         $this->lockManagerMock->shouldReceive('acquire')->once()->with(PostService::SLUG_LOCK_PREFIX . $slug);
 
-        $this->postService->create($post, User::constructWithoutPassword('a', 'b', 'c', 'd'));
+        $this->postService->create($post, User::constructWithoutPassword('a', 'b', 'c', 'd')->getId());
     }
 }

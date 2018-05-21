@@ -54,18 +54,6 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
 
     /**
      * @test
-     */
-    public function findByCommentId(): void
-    {
-        $post = $this->findAPost();
-        $commentId = $post->getComments()[0]->getId();
-        $this->clearDatabaseCache();
-
-        self::assertTrue($post->getId()->equals($this->repository->findByCommentId($commentId)->getId()));
-    }
-
-    /**
-     * @test
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
@@ -95,7 +83,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $auxiliaryPost = $this->findAPost();
 
         $post = new Post();
-        $post->setAuthor($auxiliaryPost->getAuthor());
+        $post->setAuthorId($auxiliaryPost->getAuthorId());
         $post->setContent($content = 'some new content');
         $post->setTitle($title = 'a title');
         $post->setSummary($summary = 'a summary');
@@ -111,7 +99,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         self::assertSame($content, $post->getContent());
         self::assertSame($title, $post->getTitle());
         self::assertSame($summary, $post->getSummary());
-        self::assertTrue($auxiliaryPost->getAuthor()->getId()->equals($post->getAuthor()->getId()));
+        self::assertTrue($auxiliaryPost->getAuthorId()->equals($post->getAuthorId()));
     }
 
     /**
@@ -161,52 +149,17 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     public function findByAuthorOrderedByPublishDate(): void
     {
-        $author = $this->findAPost()->getAuthor();
-        $userId = $author->getId();
-        $postList = $this->repository->findByAuthorOrderedByPublishDate($userId);
+        $authorId = $this->findAPost()->getAuthorId();
+        $postList = $this->repository->findByAuthorOrderedByPublishDate($authorId);
 
         /** @var Post $previousPost */
         $previousPost = null;
         foreach ($postList as $post) {
-            self::assertSame($author, $post->getAuthor());
+            self::assertTrue($authorId->equals($post->getAuthorId()));
             if ($previousPost) {
                 self::assertLessThanOrEqual($previousPost->getPublishedAt(), $post->getPublishedAt());
             }
             $previousPost = $post;
-        }
-    }
-
-    /**
-     * @test
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
-     */
-    public function findLatest(): void
-    {
-        $auxiliaryPost = $this->findAPost();
-
-        $post = new Post();
-        $post->setAuthor($auxiliaryPost->getAuthor());
-        $post->setContent($content = 'some new content');
-        $post->setTitle($title = 'a title');
-        $post->setSummary($summary = 'a summary');
-
-        $this->persistenceService->startTransaction();
-        $this->repository->upsert($post);
-        $this->persistenceService->finishTransaction();
-
-        $postList = $this->repository->findLatest();
-
-        /** @var Post $previousPost */
-        $previousPost = null;
-        foreach ($postList as $key => $aPost) {
-            if ($key === 0) {
-                self::assertSame($post, $aPost);
-            }
-            if ($previousPost) {
-                self::assertLessThanOrEqual($previousPost->getPublishedAt(), $aPost->getPublishedAt());
-            }
-            $previousPost = $aPost;
         }
     }
 
