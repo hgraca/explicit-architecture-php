@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\Blog\Application\Query\LatestPostWithAuthorAndTagsDto;
 use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorInterface;
@@ -39,23 +39,21 @@ final class GetXmlViewModel implements TemplateViewModelInterface
     /**
      * We create named constructors for the cases where we need to extract the raw data from complex data structures.
      */
-    public static function fromPostList(PaginatorFactoryInterface $paginatorFactory, int $page, Post ...$postList): self
-    {
+    public static function fromPostDtoList(
+        PaginatorFactoryInterface $paginatorFactory,
+        int $page,
+        LatestPostWithAuthorAndTagsDto ...$postList
+    ): self {
         $postDataList = [];
         foreach ($postList as $post) {
-            $postTagList = [];
-            foreach ($post->getTags() as $tag) {
-                $postTagList[] = (string) $tag;
-            }
-
             $postDataList[] = [
                 'title' => $post->getTitle(),
                 'summary' => $post->getSummary(),
                 'slug' => $post->getSlug(),
                 'publishedAt' => $post->getPublishedAt(),
-                'authorFullName' => $post->getAuthor()->getFullName(),
-                'authorEmail' => $post->getAuthor()->getEmail(),
-                'tagList' => $postTagList,
+                'authorFullName' => $post->getAuthorFullName(),
+                'authorEmail' => $post->getAuthorEmail(),
+                'tagList' => $post->getTagList(),
             ];
         }
 

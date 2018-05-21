@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Domain\Post\Comment;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use DateTimeImmutable;
 
@@ -53,9 +53,9 @@ class Comment
     private $publishedAt;
 
     /**
-     * @var User
+     * @var UserId
      */
-    private $author;
+    private $authorId;
 
     public function __construct(string $content = '')
     {
@@ -104,14 +104,14 @@ class Comment
         $this->publishedAt = $publishedAt;
     }
 
-    public function getAuthor(): User
+    public function getAuthorId(): UserId
     {
-        return $this->author;
+        return $this->authorId;
     }
 
-    public function setAuthor(User $author): void
+    public function setAuthorId(UserId $authorId): void
     {
-        $this->author = $author;
+        $this->authorId = $authorId;
     }
 
     public function setPost(Post $post): void

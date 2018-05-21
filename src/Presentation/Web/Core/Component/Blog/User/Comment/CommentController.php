@@ -105,7 +105,7 @@ class CommentController
             );
         }
 
-        $this->commentService->create($post, $comment, $this->authenticationService->getLoggedInUser());
+        $this->commentService->create($post, $comment, $this->authenticationService->getLoggedInUserId());
 
         return $this->responseFactory->redirectToRoute('post', ['slug' => $post->getSlug()]);
     }

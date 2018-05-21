@@ -16,11 +16,9 @@ Acme\App\Core\Component\Blog\Domain\Post\Post:
             type: text
         publishedAt:
             type: datetime_immutable
-    manyToOne:
-        author:
-            targetEntity: Acme\App\Core\Component\User\Domain\User\User
-            joinColumn:
-                nullable: false
+        authorId:
+            type: user_id
+            nullable: false
     oneToMany:
         comments:
             targetEntity: Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment

@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Repository\DQL;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Component\User\Domain\User\UserId;
@@ -23,7 +22,6 @@ use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
-use Acme\StdLib\DateTime\DateTimeGenerator;
 
 /**
  * This custom Doctrine repository contains some methods which are useful when
@@ -83,17 +81,6 @@ class PostRepository implements PostRepositoryInterface
         return $this->queryService->query($dqlQuery)->getSingleResult();
     }
 
-    public function findByCommentId(CommentId $commentId): Post
-    {
-        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
-            ->join('Post.comments', 'Comments')
-            ->where('Comments = :commentId')
-            ->setParameter('commentId', $commentId)
-            ->build();
-
-        return $this->queryService->query($dqlQuery)->getSingleResult();
-    }
-
     public function upsert(Post $entity): void
     {
         $this->persistenceService->upsert($entity);
@@ -115,26 +102,9 @@ class PostRepository implements PostRepositoryInterface
     public function findByAuthorOrderedByPublishDate(UserId $userId): ResultCollectionInterface
     {
         $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
-            ->where('Post.author = :user')
+            ->where('Post.authorId = :userId')
             ->orderBy('Post.publishedAt', 'DESC')
-            ->setParameter('user', $userId)
-            ->build();
-
-        return $this->queryService->query($dqlQuery);
-    }
-
-    /**
-     * @return Post[]
-     */
-    public function findLatest(): ResultCollectionInterface
-    {
-        $dqlQuery = $this->dqlQueryBuilder->create(Post::class)
-            ->addSelect('author', 'tags')
-            ->join('Post.author', 'author')
-            ->leftJoin('Post.tags', 'tags')
-            ->where('Post.publishedAt <= :now')
-            ->orderBy('Post.publishedAt', 'DESC')
-            ->setParameter('now', DateTimeGenerator::generate())
+            ->setParameter('userId', $userId)
             ->build();
 
         return $this->queryService->query($dqlQuery);

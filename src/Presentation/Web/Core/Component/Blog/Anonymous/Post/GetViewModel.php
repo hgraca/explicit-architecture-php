@@ -14,14 +14,16 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\Post;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment;
-use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
+use Acme\PhpExtension\ConstructableFromArrayInterface;
+use Acme\PhpExtension\ConstructableFromArrayTrait;
 use DateTimeInterface;
 
-final class GetViewModel implements TemplateViewModelInterface
+final class GetViewModel implements TemplateViewModelInterface, ConstructableFromArrayInterface
 {
+    use ConstructableFromArrayTrait;
+
     /**
      * @var PostId
      */
@@ -66,47 +68,16 @@ final class GetViewModel implements TemplateViewModelInterface
         DateTimeInterface $publishedAt,
         string $authorFullName,
         string $content,
-        array $postTagList,
-        array $postCommentList
+        array $tagList,
+        array $commentList
     ) {
         $this->postId = $id;
         $this->postTitle = $title;
         $this->postPublishedAt = $publishedAt;
         $this->postAuthorFullName = $authorFullName;
         $this->postContent = $content;
-        $this->postTagList = $postTagList;
-        $this->postCommentList = $postCommentList;
-    }
-
-    /**
-     * We create named constructors for the cases where we need to extract the raw data from complex data structures.
-     */
-    public static function fromPostAndCommentList(Post $post, Comment ...$commentList): self
-    {
-        $postTagList = [];
-        foreach ($post->getTags() as $tag) {
-            $postTagList[] = (string) $tag;
-        }
-
-        $postCommentList = [];
-        foreach ($commentList as $comment) {
-            $postCommentList[] = [
-                'id' => $comment->getId(),
-                'publishedAt' => $comment->getPublishedAt(),
-                'content' => $comment->getContent(),
-                'authorFullName' => $comment->getAuthor()->getFullName(),
-            ];
-        }
-
-        return new self(
-            $post->getId(),
-            $post->getTitle(),
-            $post->getPublishedAt(),
-            $post->getAuthor()->getFullName(),
-            $post->getContent(),
-            $postTagList,
-            $postCommentList
-        );
+        $this->postTagList = $tagList;
+        $this->postCommentList = $commentList;
     }
 
     public function getPostId(): PostId

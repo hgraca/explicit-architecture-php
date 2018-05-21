@@ -16,7 +16,7 @@ namespace Acme\App\Core\Component\Blog\Domain\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment;
 use Acme\App\Core\Component\Blog\Domain\Post\Tag\Tag;
-use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use Acme\PhpExtension\String\Slugger;
 use DateTime;
@@ -77,9 +77,9 @@ class Post
     private $publishedAt;
 
     /**
-     * @var User
+     * @var UserId
      */
-    private $author;
+    private $authorId;
 
     /**
      * @var Comment[]
@@ -163,14 +163,14 @@ class Post
             : $publishedAt;
     }
 
-    public function getAuthor(): User
+    public function getAuthorId(): UserId
     {
-        return $this->author;
+        return $this->authorId;
     }
 
-    public function setAuthor(User $author): void
+    public function setAuthorId(UserId $authorId): void
     {
-        $this->author = $author;
+        $this->authorId = $authorId;
     }
 
     /**

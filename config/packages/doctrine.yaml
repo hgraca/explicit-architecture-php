@@ -3,7 +3,6 @@ parameters:
     # to run cache:warmup even if your environment variables are not available
     # yet. You should not need to change this value.
     env(DATABASE_URL): ''
-
 doctrine:
     dbal:
         driver: 'pdo_sqlite'
@@ -21,6 +20,9 @@ doctrine:
             user_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\UserIdType
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
+        dql:
+            string_functions:
+                group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: false
         mappings:

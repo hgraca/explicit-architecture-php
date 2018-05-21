@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Repository;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Component\User\Domain\User\UserId;
@@ -26,8 +25,6 @@ interface PostRepositoryInterface
 
     public function findBySlug(string $slug): Post;
 
-    public function findByCommentId(CommentId $commentId): Post;
-
     public function upsert(Post $entity): void;
 
     public function delete(Post $entity): void;
@@ -36,9 +33,4 @@ interface PostRepositoryInterface
      * @return Post[]
      */
     public function findByAuthorOrderedByPublishDate(UserId $userId): ResultCollectionInterface;
-
-    /**
-     * @return Post[]
-     */
-    public function findLatest(): ResultCollectionInterface;
 }

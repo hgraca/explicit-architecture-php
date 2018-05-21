@@ -10,13 +10,12 @@ Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment:
             type: text
         publishedAt:
             type: datetime_immutable
+        authorId:
+            type: user_id
+            nullable: false
     manyToOne:
         post:
             targetEntity: Acme\App\Core\Component\Blog\Domain\Post\Post
             inversedBy: comments
-            joinColumn:
-                nullable: false
-        author:
-            targetEntity: Acme\App\Core\Component\User\Domain\User\User
             joinColumn:
                 nullable: false

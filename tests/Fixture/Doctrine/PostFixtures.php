@@ -19,6 +19,7 @@ use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Test\Fixture\FixturesTrait;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
+use DateInterval;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -43,24 +44,31 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception
      */
     public function load(ObjectManager $manager): void
     {
-        foreach ($this->getRandomPostTitles() as $i => $title) {
+        $postTitleList = $this->getRandomPostTitles();
+        $numberOfPosts = \count($postTitleList);
+        foreach ($postTitleList as $i => $title) {
             $post = new Post();
 
             $post->setTitle($title);
             $post->setSummary($this->getRandomPostSummary());
             $post->setContent($this->getPostContent());
-            $post->setPublishedAt(DateTimeGenerator::generate('now - ' . $i . 'days'));
+            $postMinutes = $i + 1;
+            $post->setPublishedAt(DateTimeGenerator::generate("now - 1 year + $postMinutes minute"));
 
             // Ensure that the first post is written by Jane Doe to simplify tests
             // "References" are the way to share objects between fixtures defined
             // in different files. This reference has been added in the UserFixtures
             // file and it contains an instance of the User entity.
             /** @var User $author */
-            $author = $this->getReference($i < self::JANE_ADMIN_NUM_POSTS ? 'jane-admin' : 'tom-admin');
-            $post->setAuthor($author);
+            $author = $this->getReference(
+                $i < $numberOfPosts - self::JANE_ADMIN_NUM_POSTS ? 'tom-admin' : 'jane-admin'
+            );
+            $post->setAuthorId($author->getId());
 
             // for aesthetic reasons, the first blog post always has 2 tags
             foreach ($this->getRandomTags($i > 0 ? random_int(0, 3) : 2) as $tag) {
@@ -72,8 +80,9 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
 
                 /** @var User $commentAuthor */
                 $commentAuthor = $this->getReference('john-user');
-                $comment->setAuthor($commentAuthor);
-                $comment->setPublishedAt(DateTimeGenerator::generate('now + ' . ($i + $j) . 'seconds'));
+                $comment->setAuthorId($commentAuthor->getId());
+                $commentMinutes = $j + 1;
+                $comment->setPublishedAt($post->getPublishedAt()->add(new DateInterval("PT{$commentMinutes}M")));
 
                 $post->addComment($comment);
 

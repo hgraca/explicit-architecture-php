@@ -155,7 +155,7 @@ class PostListController
             return $this->renderCreatePost($form);
         }
 
-        $this->postService->create($post, $this->authenticationService->getLoggedInUser());
+        $this->postService->create($post, $this->authenticationService->getLoggedInUserId());
 
         // Flash messages are used to notify the user about the result of the
         // actions. They are deleted automatically from the session as soon

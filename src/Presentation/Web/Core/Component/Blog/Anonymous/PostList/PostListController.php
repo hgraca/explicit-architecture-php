@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Blog\Anonymous\PostList;
 
+use Acme\App\Core\Component\Blog\Application\Query\FindLatestPostsQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Query\FindPostsBySearchRequestQueryInterface;
-use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorFactoryInterface;
@@ -51,29 +51,29 @@ class PostListController
     private $responseFactory;
 
     /**
-     * @var PostRepositoryInterface
-     */
-    private $postRepository;
-
-    /**
      * @var FindPostsBySearchRequestQueryInterface
      */
     private $findPostsBySearchRequestQuery;
+
+    /**
+     * @var FindLatestPostsQueryInterface
+     */
+    private $findLatestPostsQuery;
 
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
         UrlGeneratorInterface $urlGenerator,
         TemplateEngineInterface $templateEngine,
         ResponseFactoryInterface $responseFactory,
-        PostRepositoryInterface $postRepository,
-        FindPostsBySearchRequestQueryInterface $findPostsBySearchRequestQuery
+        FindPostsBySearchRequestQueryInterface $findPostsBySearchRequestQuery,
+        FindLatestPostsQueryInterface $findLatestPostsQuery
     ) {
         $this->paginatorFactory = $paginatorFactory;
         $this->urlGenerator = $urlGenerator;
         $this->templateEngine = $templateEngine;
         $this->responseFactory = $responseFactory;
-        $this->postRepository = $postRepository;
         $this->findPostsBySearchRequestQuery = $findPostsBySearchRequestQuery;
+        $this->findLatestPostsQuery = $findLatestPostsQuery;
     }
 
     /**
@@ -84,7 +84,7 @@ class PostListController
      */
     public function getAction(int $page, string $_format): ResponseInterface
     {
-        $latestPosts = $this->postRepository->findLatest();
+        $latestPosts = $this->findLatestPostsQuery->execute();
 
         // Every template name also has two extensions that specify the format and
         // engine for that template.
@@ -93,8 +93,8 @@ class PostListController
         $response = $this->templateEngine->renderResponse(
             '@Blog/Anonymous/PostList/get.' . $_format . '.twig',
             $_format === 'xml'
-                ? GetXmlViewModel::fromPostList($this->paginatorFactory, $page, ...$latestPosts)
-                : GetHtmlViewModel::fromPostList($this->paginatorFactory, $page, ...$latestPosts)
+                ? GetXmlViewModel::fromPostDtoList($this->paginatorFactory, $page, ...$latestPosts)
+                : GetHtmlViewModel::fromPostDtoList($this->paginatorFactory, $page, ...$latestPosts)
         );
 
         return $response->withAddedHeader('Cache-Control', 's-maxage=10');

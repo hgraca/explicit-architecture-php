@@ -17,7 +17,6 @@ namespace Acme\App\Core\Component\Blog\Application\Query\DQL;
 use Acme\App\Core\Component\Blog\Application\Query\FindPostsBySearchRequestQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Query\PostsBySearchRequestDto;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
@@ -66,7 +65,12 @@ final class FindPostsBySearchRequestQuery implements FindPostsBySearchRequestQue
                 'Post.slug',
                 'Author.fullName'
             )
-            ->join(User::class, 'Author', 'WITH', 'Author.id = Post.author');
+            // This join with 'User:User' is the same as a join with User::class. The main difference is that this way
+            // we are not depending directly on the User entity, but on a configurable alias. The advantage is that we
+            // can change where the user data is stored and this query will remain the same. For example we could move
+            // this component into a microservice, with its own curated user data, and we wouldn't need to change this
+            // query, only the doctrine configuration.
+            ->join('User:User', 'Author', 'WITH', 'Author.id = Post.authorId');
 
         foreach ($searchTerms as $key => $term) {
             $this->dqlQueryBuilder->orWhere('Post.title LIKE :t_' . $key)

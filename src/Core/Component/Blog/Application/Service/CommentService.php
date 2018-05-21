@@ -16,7 +16,7 @@ namespace Acme\App\Core\Component\Blog\Application\Service;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Component\User\Domain\User\UserId;
 use Acme\App\Core\Port\EventDispatcher\EventDispatcherInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
 
@@ -32,9 +32,9 @@ final class CommentService
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function create(Post $post, Comment $comment, User $author): void
+    public function create(Post $post, Comment $comment, UserId $authorId): void
     {
-        $comment->setAuthor($author);
+        $comment->setAuthorId($authorId);
         $post->addComment($comment);
 
         // When triggering an event, you can optionally pass some information.
