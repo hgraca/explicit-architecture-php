@@ -72,7 +72,7 @@ final class PostService
             $post->postfixSlug((string) ++$highestPostSlugSuffix);
         }
 
-        $this->postRepository->upsert($post);
+        $this->postRepository->add($post);
     }
 
     /**
@@ -90,6 +90,6 @@ final class PostService
      */
     public function delete(Post $post): void
     {
-        $this->postRepository->delete($post);
+        $this->postRepository->remove($post);
     }
 }

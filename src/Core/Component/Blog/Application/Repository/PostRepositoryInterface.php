@@ -23,7 +23,7 @@ interface PostRepositoryInterface
 
     public function findBySlug(string $slug): Post;
 
-    public function upsert(Post $entity): void;
+    public function add(Post $entity): void;
 
-    public function delete(Post $entity): void;
+    public function remove(Post $entity): void;
 }

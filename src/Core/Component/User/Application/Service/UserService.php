@@ -67,7 +67,7 @@ final class UserService
             $isAdmin ? User::ROLE_ADMIN : User::ROLE_USER
         );
         $user->setPassword($this->encoder->encodePassword($user, $plainPassword));
-        $this->userRepository->upsert($user);
+        $this->userRepository->add($user);
 
         return $user;
     }
@@ -83,7 +83,7 @@ final class UserService
             throw new RuntimeException(sprintf('User with username "%s" not found.', $username));
         }
 
-        $this->userRepository->delete($user);
+        $this->userRepository->remove($user);
     }
 
     private function validateUserData($username, $plainPassword, $email, $fullName): void

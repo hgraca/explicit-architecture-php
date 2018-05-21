@@ -60,12 +60,12 @@ class UserRepository implements UserRepositoryInterface
         $this->persistenceService = $persistenceService;
     }
 
-    public function upsert(User $user): void
+    public function add(User $user): void
     {
         $this->persistenceService->upsert($user);
     }
 
-    public function delete(User $user): void
+    public function remove(User $user): void
     {
         $this->persistenceService->delete($user);
     }

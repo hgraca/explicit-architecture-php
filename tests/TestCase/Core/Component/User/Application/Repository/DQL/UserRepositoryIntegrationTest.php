@@ -65,7 +65,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         $user = $this->findById($userId);
         $user->setFullName($newName);
         $this->persistenceService->startTransaction();
-        $this->repository->upsert($user);
+        $this->repository->add($user);
         $this->persistenceService->finishTransaction();
         $this->clearDatabaseCache();
 
@@ -90,7 +90,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         $user->setPassword('plainpassword');
 
         $this->persistenceService->startTransaction();
-        $this->repository->upsert($user);
+        $this->repository->add($user);
         $this->persistenceService->finishTransaction();
         $userId = $user->getId();
         $this->clearDatabaseCache();
@@ -116,7 +116,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         $user = $this->findById($userId);
 
         $this->persistenceService->startTransaction();
-        $this->repository->delete($user);
+        $this->repository->remove($user);
         $this->persistenceService->finishTransaction();
 
         $this->clearDatabaseCache();

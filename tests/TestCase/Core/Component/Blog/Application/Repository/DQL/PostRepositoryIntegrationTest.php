@@ -64,7 +64,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $postId = $post->getId();
         $post->setContent($newContent);
         $this->persistenceService->startTransaction();
-        $this->repository->upsert($post);
+        $this->repository->add($post);
         $this->persistenceService->finishTransaction();
         $this->clearDatabaseCache();
 
@@ -89,7 +89,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $post->setSummary($summary = 'a summary');
 
         $this->persistenceService->startTransaction();
-        $this->repository->upsert($post);
+        $this->repository->add($post);
         $this->persistenceService->finishTransaction();
         $postId = $post->getId();
         $this->clearDatabaseCache();
@@ -114,7 +114,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $postId = $post->getId();
 
         $this->persistenceService->startTransaction();
-        $this->repository->delete($post);
+        $this->repository->remove($post);
         $this->persistenceService->finishTransaction();
 
         $this->clearDatabaseCache();
@@ -135,7 +135,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
         $postId = $post->getId();
 
         $this->persistenceService->startTransaction();
-        $this->repository->delete($post);
+        $this->repository->remove($post);
         $post = null;
         $this->persistenceService->finishTransaction();
 
