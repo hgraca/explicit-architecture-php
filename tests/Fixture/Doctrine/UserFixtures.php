@@ -33,6 +33,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserFixtures extends Fixture
 {
+    public const JANE = 'jane-admin';
     public const JANE_EMAIL = 'jane_admin@symfony.com';
     public const JOHN_EMAIL = 'john_user@symfony.com';
 
