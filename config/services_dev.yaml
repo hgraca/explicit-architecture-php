@@ -4,6 +4,10 @@ parameters:
     notification.sms.twilio.client.sid: 'some-dummy-DEV-id'
     notification.sms.twilio.client.token: 'some-dummy-DEV-token'
 
+    # Push settings
+    notification.push.one_signal.app_id: 'some-dummy-DEV-id'
+    notification.push.one_signal.rest_api_key: 'some-dummy-DEV-key'
+
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -16,6 +16,10 @@ parameters:
     notification.sms.twilio.client.token: 'some-dummy-token'
     notification.sms.message_bird.client.access_key: 'some-dummy-access_key'
 
+    # Push settings
+    notification.push.one_signal.app_id: 'some-dummy-id'
+    notification.push.one_signal.rest_api_key: 'some-dummy-key'
+
 services:
     # default configuration for services in *this* file
     _defaults:
