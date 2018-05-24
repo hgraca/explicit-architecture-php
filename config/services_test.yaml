@@ -8,6 +8,10 @@ parameters:
     notification.sms.twilio.client.sid: 'some-dummy-TST-id'
     notification.sms.twilio.client.token: 'some-dummy-TST-token'
 
+    # Push settings
+    notification.push.one_signal.app_id: 'some-dummy-TST-id'
+    notification.push.one_signal.rest_api_key: 'some-dummy-TST-key'
+
     # All services in this list will be added to the container used in tests
     # This is specially useful for the services provided by 3rd party bundles
     test.container.service_list:
