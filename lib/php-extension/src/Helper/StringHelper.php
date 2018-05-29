@@ -26,4 +26,60 @@ final class StringHelper extends AbstractStaticClass
     {
         return $needle === '' || mb_strpos($haystack, $needle) !== false;
     }
+
+    public static function toStudlyCase(string $sentence): string
+    {
+        return self::removeAllSpaces(
+            self::makeAllWordsUpperCaseFirst(
+                self::makeLowCase(
+                    self::separateCapitalizedWordsWithSpace(
+                        self::separateWordsWithSpace($sentence)
+                    )
+                )
+            )
+        );
+    }
+
+    public static function toCamelCase(string $sentence): string
+    {
+        return lcfirst(self::toStudlyCase($sentence));
+    }
+
+    public static function toSnakeCase(string $sentence): string
+    {
+        $sentence = static::toStudlyCase($sentence);
+
+        $replace = '$1' . '_' . '$2';
+
+        return ctype_lower($sentence) ? $sentence : mb_strtolower(preg_replace('/(.)([A-Z])/', $replace, $sentence));
+    }
+
+    private static function separateWordsWithSpace(
+        string $sentence,
+        array $wordSeparatorList = ['-', '_', '.', ' ']
+    ): string {
+        return str_replace($wordSeparatorList, ' ', $sentence);
+    }
+
+    private static function makeAllWordsUpperCaseFirst(
+        string $sentence,
+        array $wordSeparatorList = ['-', '_', '.', ' ']
+    ): string {
+        return ucwords($sentence, implode('', $wordSeparatorList));
+    }
+
+    private static function makeLowCase(string $sentence): string
+    {
+        return mb_strtolower($sentence);
+    }
+
+    private static function removeAllSpaces(string $sentence): string
+    {
+        return str_replace([' '], '', $sentence);
+    }
+
+    private static function separateCapitalizedWordsWithSpace(string $sentence): string
+    {
+        return preg_replace('/([a-z])([A-Z])/', '$1 $2', $sentence);
+    }
 }

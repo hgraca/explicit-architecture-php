@@ -38,4 +38,67 @@ final class StringHelperUnitTest extends AbstractUnitTest
             ['unexistent', 'beginning to ending', false],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider provideStudlyTests
+     */
+    public function toStudlyCase(string $input, string $expectedOutput): void
+    {
+        self::assertSame($expectedOutput, StringHelper::toStudlyCase($input));
+    }
+
+    public function provideStudlyTests(): array
+    {
+        return [
+            ['TABLE_NAME', 'TableName'],
+            ['Table_NaMe', 'TableNaMe'],
+            ['table_name', 'TableName'],
+            ['TableName', 'TableName'],
+            ['tableName', 'TableName'],
+            ['table-Name', 'TableName'],
+            ['table.Name', 'TableName'],
+            ['table Name', 'TableName'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideCamelCaseTests
+     */
+    public function toCamelCase(string $input, string $expectedOutput): void
+    {
+        self::assertSame($expectedOutput, StringHelper::toCamelCase($input));
+    }
+
+    public function provideCamelCaseTests(): array
+    {
+        return [
+            ['TABLE_NAME', 'tableName'],
+            ['Table_NaMe', 'tableNaMe'],
+            ['table_name', 'tableName'],
+            ['TableName', 'tableName'],
+            ['tableName', 'tableName'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideSnakeCaseTests
+     */
+    public function toSnakeCase(string $input, string $expectedOutput): void
+    {
+        self::assertSame($expectedOutput, StringHelper::toSnakeCase($input));
+    }
+
+    public function provideSnakeCaseTests(): array
+    {
+        return [
+            ['TABLE_NAME', 'table_name'],
+            ['Table_NaMe', 'table_na_me'],
+            ['TableName', 'table_name'],
+            ['table_Name', 'table_name'],
+            ['tableName', 'table_name'],
+        ];
+    }
 }

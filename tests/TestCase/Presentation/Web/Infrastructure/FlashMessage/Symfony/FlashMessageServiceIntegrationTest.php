@@ -17,7 +17,7 @@ namespace Acme\App\Test\TestCase\Presentation\Web\Infrastructure\FlashMessage\Sy
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Acme\App\Presentation\Web\Infrastructure\FlashMessage\Symfony\FlashMessageService;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
-use Acme\PhpExtension\Helper\ClassHelper;
+use Acme\PhpExtension\Helper\StringHelper;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -45,7 +45,7 @@ final class FlashMessageServiceIntegrationTest extends AbstractIntegrationTest
 
         $methodNameList = array_map(
             function ($constant) {
-                return [ClassHelper::toCamelCase($constant)];
+                return [StringHelper::toCamelCase($constant)];
             },
             $constantList
         );
