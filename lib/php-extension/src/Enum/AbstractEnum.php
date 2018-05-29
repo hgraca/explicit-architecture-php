@@ -16,6 +16,7 @@ namespace Acme\PhpExtension\Enum;
 
 use Acme\PhpExtension\Exception\AcmeRuntimeException;
 use Acme\PhpExtension\Helper\ClassHelper;
+use Acme\PhpExtension\Helper\StringHelper;
 use BadMethodCallException;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -55,7 +56,7 @@ abstract class AbstractEnum
     public static function __callStatic(string $methodName, array $arguments): self
     {
         foreach (self::getConstants() as $option => $value) {
-            $expectedMethodName = ClassHelper::toCamelCase($option);
+            $expectedMethodName = StringHelper::toCamelCase($option);
             if ($expectedMethodName === $methodName) {
                 return new static($value);
             }
@@ -67,7 +68,7 @@ abstract class AbstractEnum
     public function __call(string $methodName, array $arguments)
     {
         foreach (self::getConstants() as $option => $value) {
-            $isaMethodName = 'is' . ClassHelper::toStudlyCase($option);
+            $isaMethodName = 'is' . StringHelper::toStudlyCase($option);
             if ($isaMethodName === $methodName) {
                 return $this->equals(static::get($value));
             }

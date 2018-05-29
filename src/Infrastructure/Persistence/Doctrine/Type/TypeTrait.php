@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Infrastructure\Persistence\Doctrine\Type;
 
 use Acme\PhpExtension\Helper\ClassHelper;
+use Acme\PhpExtension\Helper\StringHelper;
 use Acme\PhpExtension\ScalarObjectInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
@@ -35,6 +36,8 @@ trait TypeTrait
 
     /**
      * @param AbstractPlatform $platform This needs to be here in order to comply to the Type class method signature
+     *
+     * @return mixed
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -60,10 +63,13 @@ trait TypeTrait
      * we can override this method in the collision type mapper.
      *
      * @return string
+     *
+     * NOTE: We can not have return type type hinted because it needs to be compatible with
+     * Doctrine\DBAL\Types\Type::getName()
      */
     public function getName()
     {
-        return ClassHelper::toSnakeCase(
+        return StringHelper::toSnakeCase(
             ClassHelper::extractCanonicalClassName($this->getMappedClass())
         );
     }

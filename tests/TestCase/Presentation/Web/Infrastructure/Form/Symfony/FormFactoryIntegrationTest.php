@@ -21,6 +21,7 @@ use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\Form\EditPostForm;
 use Acme\App\Presentation\Web\Infrastructure\Form\Symfony\FormFactory;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Acme\PhpExtension\Helper\ClassHelper;
+use Acme\PhpExtension\Helper\StringHelper;
 
 final class FormFactoryIntegrationTest extends AbstractIntegrationTest
 {
@@ -40,7 +41,7 @@ final class FormFactoryIntegrationTest extends AbstractIntegrationTest
     public function createEditPostForm(): void
     {
         self::assertSame(
-            ClassHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(EditPostForm::class)),
+            StringHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(EditPostForm::class)),
             $this->formFactory->createEditPostForm()->getFormName()
         );
     }
@@ -51,7 +52,7 @@ final class FormFactoryIntegrationTest extends AbstractIntegrationTest
     public function createCreatePostForm(): void
     {
         self::assertSame(
-            ClassHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(CreatePostForm::class)),
+            StringHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(CreatePostForm::class)),
             $this->formFactory->createCreatePostForm()->getFormName()
         );
     }
@@ -62,7 +63,7 @@ final class FormFactoryIntegrationTest extends AbstractIntegrationTest
     public function createCommentForm(): void
     {
         self::assertSame(
-            ClassHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(CommentForm::class)),
+            StringHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(CommentForm::class)),
             $this->formFactory->createCommentForm()->getFormName()
         );
     }
