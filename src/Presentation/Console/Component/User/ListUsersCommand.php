@@ -63,12 +63,15 @@ class ListUsersCommand extends Command
      */
     private $userRepository;
 
-    public function __construct(Swift_Mailer $mailer, string $emailSender, UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        Swift_Mailer $mailer,
+        string $defaultFromEmailAddress,
+        UserRepositoryInterface $userRepository
+    ) {
         parent::__construct();
 
         $this->mailer = $mailer;
-        $this->emailSender = $emailSender;
+        $this->emailSender = $defaultFromEmailAddress;
         $this->userRepository = $userRepository;
     }
 

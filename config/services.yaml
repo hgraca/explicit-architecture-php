@@ -7,7 +7,10 @@ parameters:
 
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
-    app.notifications.email_sender: anonymous@example.com
+
+    # Email settings
+    notification.email.sender_address: anonymous@example.com
+    notification.email.sender_name: anonymous@example.com
 
     # SMS settings
     notification.sms.default_destination: ~
@@ -34,7 +37,8 @@ services:
         bind:
             $locales: '%app_locales%'
             $defaultLocale: '%locale%'
-            $emailSender: '%app.notifications.email_sender%'
+            $defaultFromEmailAddress: '%notification.email.sender_address%'
+            $defaultFromEmailName: '%notification.email.sender_name%'
             $countryCode: '%country%'
             $smsSender: '%notification.sms.sender%'
 
@@ -77,7 +81,7 @@ services:
     Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener:
         lazy:  true
         arguments:
-            $senderEmail: '%app.notifications.email_sender%'
+            $senderEmail: '%notification.email.sender_address%'
         tags:
             - name: 'sync_event_dispatcher'
               event: 'Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent'
@@ -98,6 +102,14 @@ services:
         class: Acme\App\Infrastructure\Validation\PhoneNumber\LibPhoneNumber\PhoneNumberValidator
         arguments:
             - '@libphonenumber\PhoneNumberUtil'
+
+    # There are several implementations of this interface, so we need to choose one of them
+    Acme\App\Infrastructure\Notification\Client\Email\SwiftMailer\Mapper\EmailMapper:
+        class: Acme\App\Infrastructure\Notification\Client\Email\SwiftMailer\Mapper\SwiftEmailMapper
+
+    Acme\App\Infrastructure\Notification\Client\Push\OneSignal\OneSignalClient:
+        $appIDKey: '%notification.push.one_signal.app_id%'
+        $restAPIKey: '%notification.push.one_signal.rest_api_key%'
 
     Acme\App\Infrastructure\Notification\Client\Sms\Twilio\TwilioClient:
         $countryCode: '%country%'
