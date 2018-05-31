@@ -91,6 +91,13 @@ services:
     Acme\App\Core\Port\Notification\Client\Sms\SmsNotifierInterface:
         class: Acme\App\Infrastructure\Notification\Client\Sms\MessageBird\MessageBirdClient
 
+    Acme\App\Core\Port\Notification\NotificationServiceInterface:
+        class: Acme\App\Infrastructure\Notification\NotificationService
+        arguments:
+            - '@Acme\App\Infrastructure\Notification\Strategy\Email\EmailNotificationStrategy'
+            - '@Acme\App\Infrastructure\Notification\Strategy\Push\PushNotificationStrategy'
+            - '@Acme\App\Infrastructure\Notification\Strategy\Sms\SmsNotificationStrategy'
+
     # There are several implementations of this interface, so we need to choose one of them
     Acme\App\Core\Port\Persistence\KeyValueStorageInterface:
         class: Acme\App\Infrastructure\Persistence\Doctrine\KeyValueStorage
@@ -115,6 +122,24 @@ services:
         $countryCode: '%country%'
         $sender: '%notification.sms.sender%'
         $defaultDestination: '%notification.sms.default_destination%'
+
+    Acme\App\Infrastructure\Notification\Strategy\Email\EmailNotificationStrategy:
+        tags:
+            - name: notification_strategy
+
+    Acme\App\Infrastructure\Notification\Strategy\Push\PushNotificationStrategy:
+        arguments:
+            # There are several implementations of this interface, so we need to choose one of them
+            $pushNotificationSettingsService: '@Acme\App\Infrastructure\Notification\Settings\PushNotificationSettingsService'
+        tags:
+            - name: notification_strategy
+
+    Acme\App\Infrastructure\Notification\Strategy\Sms\SmsNotificationStrategy:
+        arguments:
+            # There are several implementations of this interface, so we need to choose one of them
+            $smsNotificationSettingsService: '@Acme\App\Infrastructure\Notification\Settings\SmsNotificationSettingsService'
+        tags:
+            - name: notification_strategy
 
     Acme\App\Presentation\Web\Core\Exception\ExceptionController:
         public: true
