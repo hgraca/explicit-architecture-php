@@ -60,6 +60,20 @@ final class ReflectionHelper extends AbstractStaticClass
 
     /**
      * @throws ReflectionException
+     *
+     * @return mixed
+     */
+    public static function invokeProtectedMethod($object, string $methodName, array $arguments = [])
+    {
+        $class = new ReflectionClass(\get_class($object));
+        $method = $class->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $arguments);
+    }
+
+    /**
+     * @throws ReflectionException
      */
     private static function getReflectionProperty(ReflectionClass $class, string $propertyName): ReflectionProperty
     {

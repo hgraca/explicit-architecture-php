@@ -48,4 +48,14 @@ final class DummyClass extends DummyClassParent
     {
         return $this->anotherVar;
     }
+
+    protected function getVarProtected(): int
+    {
+        return $this->var;
+    }
+
+    private function getVarPrivate(): ?int
+    {
+        return $this->var;
+    }
 }

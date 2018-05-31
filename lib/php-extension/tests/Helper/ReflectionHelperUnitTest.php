@@ -111,4 +111,30 @@ final class ReflectionHelperUnitTest extends AbstractUnitTest
         $object = ReflectionHelper::instantiateWithoutConstructor(DummyClass::class);
         $this->assertNull($object->getAnotherVar());
     }
+
+    /**
+     * @test
+     *
+     * @throws \ReflectionException
+     */
+    public static function invokeProtectedMethod_works_with_protected_methods(): void
+    {
+        $var = 100;
+        $dummyObject = new DummyClass($var);
+
+        self::assertEquals($var, ReflectionHelper::invokeProtectedMethod($dummyObject, 'getVarProtected'));
+    }
+
+    /**
+     * @test
+     *
+     * @throws \ReflectionException
+     */
+    public static function invokeProtectedMethod_works_with_private_methods(): void
+    {
+        $var = 120;
+        $dummyObject = new DummyClass($var);
+
+        self::assertEquals($var, ReflectionHelper::invokeProtectedMethod($dummyObject, 'getVarPrivate'));
+    }
 }
