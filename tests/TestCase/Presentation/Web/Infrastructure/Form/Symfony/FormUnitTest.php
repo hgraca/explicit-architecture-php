@@ -28,17 +28,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * THIS IS HERE AS AN EXAMPLE OF A BAD TEST.
+ * DON'T MOCK WHAT YOU DON'T OWN (from the book "Growing Object Oriented Software, Guided by Tests")
  * The unit under test is an adapter, which is by definition purely for integration so this should be tested with an
  *  integration test.
  * Regardless of my previous "decree", it is more important that we take a look at the test and understand why it's
  *  not a good test:
  *      It is mocking the integration target, it is assuming (mocking) the behaviour of the underlying symfony form,
  *  and if that behaviour is not correct because of a bug, or simply because it changes, this test should break but
- *  it won't.
+ *  it won't (because we are mocking the integration target).
  * So it is not a reliable test.
  * It is testing the implementation and not the actual functionality: We should be able to test another implementation
  *  of the same functionality with fundamentally the same test but we can't, we would need to mock all different
  *  method calls in every test.
+ *
+ * @small
  */
 final class FormUnitTest extends AbstractUnitTest
 {

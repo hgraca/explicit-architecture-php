@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\PhpExtension\Test;
 
+/**
+ * @small
+ */
 final class ConstructableFromArrayTraitUnitTest extends AbstractUnitTest
 {
     /**

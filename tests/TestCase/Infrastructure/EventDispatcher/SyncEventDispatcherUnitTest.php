@@ -24,6 +24,9 @@ use Mockery;
 use Mockery\MockInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @small
+ */
 final class SyncEventDispatcherUnitTest extends AbstractUnitTest
 {
     /**

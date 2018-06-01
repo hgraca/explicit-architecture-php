@@ -23,6 +23,9 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
+/**
+ * @small
+ */
 final class CreateTestContainerCompilerPassUnitTest extends AbstractUnitTest
 {
     /**

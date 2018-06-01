@@ -19,6 +19,9 @@ use Acme\PhpExtension\Exception\AcmeExceptionTrait;
 use Acme\PhpExtension\Test\AbstractUnitTest;
 use Exception;
 
+/**
+ * @small
+ */
 final class AcmeExceptionTraitUnitTest extends AbstractUnitTest
 {
     /**

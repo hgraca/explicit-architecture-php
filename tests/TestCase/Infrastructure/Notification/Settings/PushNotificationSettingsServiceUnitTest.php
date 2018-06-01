@@ -21,6 +21,9 @@ use Acme\App\Test\Framework\AbstractUnitTest;
 use Mockery;
 use Mockery\MockInterface;
 
+/**
+ * @small
+ */
 final class PushNotificationSettingsServiceUnitTest extends AbstractUnitTest
 {
     private const NAMESPACE = 'push';

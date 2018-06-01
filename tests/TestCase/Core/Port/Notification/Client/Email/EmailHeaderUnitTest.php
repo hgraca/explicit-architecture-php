@@ -23,6 +23,8 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Herberto Graca <herberto.graca@gmail.com>
  * @author Jeroen Van Den Heuvel
  * @author Marijn Koesen
+ *
+ * @small
  */
 final class EmailHeaderUnitTest extends AbstractUnitTest
 {

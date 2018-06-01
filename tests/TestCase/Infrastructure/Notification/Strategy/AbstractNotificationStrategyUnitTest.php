@@ -21,6 +21,9 @@ use Acme\PhpExtension\Helper\ReflectionHelper;
 use Mockery;
 use Mockery\MockInterface;
 
+/**
+ * @small
+ */
 final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
 {
     private const GENERATOR_METHOD_NAME = 'generate';

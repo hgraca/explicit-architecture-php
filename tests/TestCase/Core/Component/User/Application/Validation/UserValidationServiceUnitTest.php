@@ -19,6 +19,9 @@ use Acme\App\Infrastructure\Validation\PhoneNumber\LibPhoneNumber\PhoneNumberVal
 use Acme\App\Test\Framework\AbstractUnitTest;
 use libphonenumber\PhoneNumberUtil;
 
+/**
+ * @small
+ */
 final class UserValidationServiceUnitTest extends AbstractUnitTest
 {
     /**

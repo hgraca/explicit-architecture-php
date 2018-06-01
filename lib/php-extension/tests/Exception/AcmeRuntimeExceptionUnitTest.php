@@ -17,6 +17,9 @@ namespace Acme\PhpExtension\Test\Exception;
 use Acme\PhpExtension\Exception\AcmeRuntimeException;
 use Acme\PhpExtension\Test\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class AcmeRuntimeExceptionUnitTest extends AbstractUnitTest
 {
     /**

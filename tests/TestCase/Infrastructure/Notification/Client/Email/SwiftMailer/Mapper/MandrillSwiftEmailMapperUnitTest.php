@@ -20,6 +20,8 @@ use Acme\App\Infrastructure\Notification\Client\Email\SwiftMailer\Mapper\SwiftEm
 /**
  * @author Herberto Graca <herberto.graca@gmail.com>
  * @author Marijn Koesen
+ *
+ * @small
  */
 final class MandrillSwiftEmailMapperUnitTest extends SwiftEmailMapperUnitTest
 {

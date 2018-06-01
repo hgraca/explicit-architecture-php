@@ -16,6 +16,9 @@ namespace Acme\PhpExtension\Test\Enum;
 
 use Acme\PhpExtension\Test\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class AbstractEnumUnitTest extends AbstractUnitTest
 {
     /**

@@ -17,6 +17,9 @@ namespace Acme\PhpExtension\Test\Uuid;
 use Acme\PhpExtension\Test\AbstractUnitTest;
 use Acme\PhpExtension\Uuid\Uuid;
 
+/**
+ * @small
+ */
 final class UuidUnitTest extends AbstractUnitTest
 {
     /**

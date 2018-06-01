@@ -23,6 +23,9 @@ use Mockery;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * @small
+ */
 final class OneSignalClientUnitTest extends AbstractUnitTest
 {
     /**

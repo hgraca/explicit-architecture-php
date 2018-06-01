@@ -21,6 +21,9 @@ use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
 
+/**
+ * @small
+ */
 final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
 {
     const PAGE = 2;

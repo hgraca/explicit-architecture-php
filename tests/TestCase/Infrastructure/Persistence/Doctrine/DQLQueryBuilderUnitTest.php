@@ -20,6 +20,9 @@ use Acme\App\Test\Framework\AbstractUnitTest;
 use Acme\PhpExtension\Helper\ReflectionHelper;
 use Doctrine\ORM\AbstractQuery;
 
+/**
+ * @small
+ */
 final class DQLQueryBuilderUnitTest extends AbstractUnitTest
 {
     /**

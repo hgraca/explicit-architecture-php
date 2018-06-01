@@ -26,6 +26,8 @@ use Exception;
  * @author Marijn Koesen
  * @author Rodrigo Prestes
  * @author Ruud Van Der Weiijde
+ *
+ * @small
  */
 final class EmailUnitTest extends AbstractUnitTest
 {

@@ -28,6 +28,8 @@ use Swift_Mime_SimpleMessage;
  * @author Herberto Graca <herberto.graca@gmail.com>
  * @author Kasper Agg
  * @author Marijn Koesen
+ *
+ * @small
  */
 final class SwiftMailerUnitTest extends AbstractUnitTest
 {
