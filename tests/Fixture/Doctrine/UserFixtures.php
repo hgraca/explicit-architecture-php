@@ -36,6 +36,8 @@ class UserFixtures extends Fixture
     public const JANE = 'jane-admin';
     public const JANE_EMAIL = 'jane_admin@symfony.com';
     public const JOHN_EMAIL = 'john_user@symfony.com';
+    public const JANE_MOBILE = '+31631769212';
+    public const JOHN_MOBILE = '+31631769213';
 
     /**
      * @var UserPasswordEncoderInterface
@@ -52,7 +54,13 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        $janeAdmin = User::constructWithoutPassword('jane_admin', self::JANE_EMAIL, 'Jane Doe', User::ROLE_ADMIN);
+        $janeAdmin = User::constructWithoutPassword(
+            'jane_admin',
+            self::JANE_EMAIL,
+            self::JANE_MOBILE,
+            'Jane Doe',
+            User::ROLE_ADMIN
+        );
         $encodedPassword = $this->passwordEncoder->encodePassword($janeAdmin, 'kitten');
         $janeAdmin->setPassword($encodedPassword);
         $manager->persist($janeAdmin);
@@ -61,7 +69,13 @@ class UserFixtures extends Fixture
         // See https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html#sharing-objects-between-fixtures
         $this->addReference('jane-admin', $janeAdmin);
 
-        $johnUser = User::constructWithoutPassword('john_user', self::JOHN_EMAIL, 'John Doe', User::ROLE_USER);
+        $johnUser = User::constructWithoutPassword(
+            'john_user',
+            self::JOHN_EMAIL,
+            self::JOHN_MOBILE,
+            'John Doe',
+            User::ROLE_USER
+        );
         $encodedPassword = $this->passwordEncoder->encodePassword($johnUser, 'kitten');
         $johnUser->setPassword($encodedPassword);
         $manager->persist($johnUser);

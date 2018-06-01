@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\User\Application\Validation;
 
+use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberException;
+use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberValidatorInterface;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
@@ -25,6 +27,16 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  */
 class UserValidationService
 {
+    /**
+     * @var PhoneNumberValidatorInterface
+     */
+    private $phoneNumberValidator;
+
+    public function __construct(PhoneNumberValidatorInterface $phoneNumberValidator)
+    {
+        $this->phoneNumberValidator = $phoneNumberValidator;
+    }
+
     public function validateUsername(?string $username): string
     {
         if (empty($username)) {
@@ -62,6 +74,16 @@ class UserValidationService
         }
 
         return $email;
+    }
+
+    /**
+     * @throws PhoneNumberException
+     */
+    public function validateMobile(?string $mobile): string
+    {
+        $this->phoneNumberValidator->validate($mobile);
+
+        return $mobile;
     }
 
     public function validateFullName(?string $fullName): string

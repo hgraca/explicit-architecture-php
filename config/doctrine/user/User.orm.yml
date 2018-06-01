@@ -14,6 +14,9 @@ Acme\App\Core\Component\User\Domain\User\User:
         email:
             type: string
             unique: true
+        mobile:
+            type: string
+            unique: true
         password:
             type: string
         roles:

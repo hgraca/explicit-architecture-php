@@ -56,6 +56,11 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      */
+    private $mobile;
+
+    /**
+     * @var string
+     */
     private $password;
 
     /**
@@ -71,6 +76,7 @@ class User implements UserInterface, \Serializable
     public static function constructWithoutPassword(
         string $username,
         string $email,
+        string $mobile,
         string $fullName,
         string $role
     ): self {
@@ -78,6 +84,7 @@ class User implements UserInterface, \Serializable
         $user->setFullName($fullName);
         $user->setUsername($username);
         $user->setEmail($email);
+        $user->setMobile($mobile);
         $user->setRoles([$role]);
 
         return $user;
@@ -116,6 +123,21 @@ class User implements UserInterface, \Serializable
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    public function getMobile(): string
+    {
+        return $this->mobile;
+    }
+
+    public function hasMobile(): bool
+    {
+        return !empty($this->mobile);
+    }
+
+    public function setMobile(string $mobile): void
+    {
+        $this->mobile = $mobile;
     }
 
     public function getPassword(): string

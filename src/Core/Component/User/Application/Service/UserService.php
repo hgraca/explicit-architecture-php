@@ -18,6 +18,7 @@ use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
+use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberException;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -48,21 +49,26 @@ final class UserService
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @throws PhoneNumberException
+     */
     public function createUser(
         string $username,
         string $plainPassword,
         string $email,
+        string $mobile,
         string $fullName,
         bool $isAdmin
     ): User {
         // make sure to validate the user data is correct
-        $this->validateUserData($username, $plainPassword, $email, $fullName);
+        $this->validateUserData($username, $plainPassword, $email, $mobile, $fullName);
 
         // See https://symfony.com/doc/current/book/security.html#security-encoding-password
         // create the user and encode its password
         $user = User::constructWithoutPassword(
             $username,
             $email,
+            $mobile,
             $fullName,
             $isAdmin ? User::ROLE_ADMIN : User::ROLE_USER
         );
@@ -86,7 +92,10 @@ final class UserService
         $this->userRepository->remove($user);
     }
 
-    private function validateUserData($username, $plainPassword, $email, $fullName): void
+    /**
+     * @throws PhoneNumberException
+     */
+    private function validateUserData($username, $plainPassword, $email, $mobile, $fullName): void
     {
         // first check if a user with the same username already exists.
         if ($this->usernameExists($username)) {
@@ -96,6 +105,7 @@ final class UserService
         // validate password and email if is not this input means interactive.
         $this->validator->validatePassword($plainPassword);
         $this->validator->validateEmail($email);
+        $this->validator->validateMobile($mobile);
         $this->validator->validateFullName($fullName);
 
         // check if a user with the same email already exists.

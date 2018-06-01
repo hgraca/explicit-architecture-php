@@ -31,6 +31,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserFixtures extends Fixture
 {
+    public const TOM_MOBILE = '+31631769211';
+
     /**
      * @var UserPasswordEncoderInterface
      */
@@ -49,6 +51,7 @@ class UserFixtures extends Fixture
         $tomAdmin = User::constructWithoutPassword(
             'tom_admin',
             'tom_admin@symfony.com',
+            self::TOM_MOBILE,
             'Tom Doe',
             User::ROLE_ADMIN
         );

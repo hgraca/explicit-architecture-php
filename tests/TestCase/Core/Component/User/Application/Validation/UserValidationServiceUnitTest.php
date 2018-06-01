@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Core\Component\User\Application\Validation;
 
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
+use Acme\App\Infrastructure\Validation\PhoneNumber\LibPhoneNumber\PhoneNumberValidator;
 use Acme\App\Test\Framework\AbstractUnitTest;
+use libphonenumber\PhoneNumberUtil;
 
 class UserValidationServiceUnitTest extends AbstractUnitTest
 {
@@ -28,7 +30,7 @@ class UserValidationServiceUnitTest extends AbstractUnitTest
     {
         parent::__construct();
 
-        $this->object = new UserValidationService();
+        $this->object = new UserValidationService(new PhoneNumberValidator(PhoneNumberUtil::getInstance(), 'NL'));
     }
 
     /**

@@ -84,6 +84,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         $user = User::constructWithoutPassword(
             $username = 'username',
             $email = 'username@email.com',
+            '+31631769214',
             $fullName = 'User Name',
             User::ROLE_USER
         );

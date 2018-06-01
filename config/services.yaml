@@ -92,6 +92,9 @@ services:
         arguments:
             $flashBag: "@=service('session').getFlashBag()"
 
+    libphonenumber\PhoneNumberUtil:
+        factory: ['libphonenumber\PhoneNumberUtil', getInstance]
+
     Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface:
         class: Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
 
