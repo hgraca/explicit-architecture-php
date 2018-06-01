@@ -12,6 +12,7 @@
         "doctrine/orm": "^2.5.11",
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "^4.9",
+        "giggsey/libphonenumber-for-php": "^8.9",
         "ramsey/uuid": "^3.7",
         "ramsey/uuid-doctrine": "^1.4",
         "sensio/framework-extra-bundle": "^5.0",

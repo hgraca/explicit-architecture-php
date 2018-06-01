@@ -2,6 +2,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    country: 'NL'
+
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
     app.notifications.email_sender: anonymous@example.com
@@ -21,6 +23,7 @@ services:
             $locales: '%app_locales%'
             $defaultLocale: '%locale%'
             $emailSender: '%app.notifications.email_sender%'
+            $countryCode: '%country%'
 
     ####################################################################################################################
     # BATCH AUTO-WIRING
@@ -73,6 +76,11 @@ services:
 
     Acme\App\Core\Port\Persistence\QueryServiceRouter:
         - '@Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService'
+
+    Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberValidatorInterface:
+        class: Acme\App\Infrastructure\Validation\PhoneNumber\LibPhoneNumber\PhoneNumberValidator
+        arguments:
+            - '@libphonenumber\PhoneNumberUtil'
 
     Acme\App\Presentation\Web\Core\Exception\ExceptionController:
         public: true
