@@ -2,7 +2,7 @@
 
 <!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.1/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/7.0/phpunit.xsd"
          colors="true"
          bootstrap="vendor/autoload.php"
 >
@@ -60,6 +60,14 @@
         <listener class="\Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DbRegenerationPHPUnitEventSubscriber">
             <arguments>
                 <integer>0</integer> <!-- disable $shouldRegenerateOnEveryTest -->
+                <integer>1</integer> <!-- enable $shouldRegenerateDbOnEveryTest -->
+                <integer>0</integer> <!-- disable $shouldReuseExistingDbBkp -->
+                <array>
+                    <!-- Pass the migrations versions to run.
+                         These are only related to tables that have no entities, and therefore not created by the
+                         Doctrine schema manager. -->
+                    <element key="0"><string>20180118095302</string></element>
+                </array>
             </arguments>
         </listener>
 
