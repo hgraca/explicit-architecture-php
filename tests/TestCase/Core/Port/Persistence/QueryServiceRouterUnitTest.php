@@ -18,6 +18,9 @@ use Acme\App\Core\Port\Persistence\QueryServiceRouter;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Acme\PhpExtension\Helper\ReflectionHelper;
 
+/**
+ * @small
+ */
 final class QueryServiceRouterUnitTest extends AbstractUnitTest
 {
     /**

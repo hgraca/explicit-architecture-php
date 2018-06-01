@@ -17,6 +17,9 @@ namespace Acme\App\Test\TestCase\Infrastructure\Persistence\Doctrine;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlQuery;
 use Acme\App\Test\Framework\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class DQLQueryUnitTest extends AbstractUnitTest
 {
     /**

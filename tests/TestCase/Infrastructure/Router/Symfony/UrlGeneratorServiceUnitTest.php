@@ -21,6 +21,9 @@ use Mockery;
 use Mockery\MockInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as SymfonyUrlGeneratorInterface;
 
+/**
+ * @small
+ */
 final class UrlGeneratorServiceUnitTest extends AbstractUnitTest
 {
     /**

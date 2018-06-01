@@ -18,6 +18,9 @@ use Acme\PhpExtension\Helper\ReflectionHelper;
 use Acme\PhpExtension\ObjectDispatcher\Destination;
 use Acme\PhpExtension\Test\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class AbstractDispatcherUnitTest extends AbstractUnitTest
 {
     /**

@@ -22,6 +22,9 @@ use Acme\App\Test\TestCase\Infrastructure\Notification\Strategy\DummyNotificatio
 use Mockery;
 use Mockery\MockInterface;
 
+/**
+ * @small
+ */
 final class EmailNotificationStrategyUnitTest extends AbstractUnitTest
 {
     private const GENERATOR_METHOD = 'generate';

@@ -33,6 +33,8 @@ use Swift_RfcComplianceException;
 /**
  * @author Herberto Graca <herberto.graca@gmail.com>
  * @author Marijn Koesen
+ *
+ * @small
  */
 class SwiftEmailMapperUnitTest extends AbstractUnitTest
 {

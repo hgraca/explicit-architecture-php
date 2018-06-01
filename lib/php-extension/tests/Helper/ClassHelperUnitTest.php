@@ -17,6 +17,9 @@ namespace Acme\PhpExtension\Test\Helper;
 use Acme\PhpExtension\Helper\ClassHelper;
 use Acme\PhpExtension\Test\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class ClassHelperUnitTest extends AbstractUnitTest
 {
     /**

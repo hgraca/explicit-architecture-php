@@ -17,6 +17,9 @@ namespace Acme\PhpExtension\Test\Helper;
 use Acme\PhpExtension\Helper\StringHelper;
 use Acme\PhpExtension\Test\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class StringHelperUnitTest extends AbstractUnitTest
 {
     /**

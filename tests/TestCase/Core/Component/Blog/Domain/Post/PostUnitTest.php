@@ -17,6 +17,9 @@ namespace Acme\App\Test\TestCase\Core\Component\Blog\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Test\Framework\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class PostUnitTest extends AbstractUnitTest
 {
     /**

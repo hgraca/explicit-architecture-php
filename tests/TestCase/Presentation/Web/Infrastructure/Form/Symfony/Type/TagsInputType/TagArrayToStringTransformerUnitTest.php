@@ -24,6 +24,8 @@ use Doctrine\ORM\EntityRepository;
  * Tests that tags are transformed correctly using the data transformer.
  *
  * See https://symfony.com/doc/current/testing/database.html
+ *
+ * @small
  */
 final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 {

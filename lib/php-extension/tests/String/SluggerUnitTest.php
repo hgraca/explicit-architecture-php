@@ -26,6 +26,8 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
  *
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
+ *
+ * @small
  */
 final class SluggerUnitTest extends AbstractUnitTest
 {

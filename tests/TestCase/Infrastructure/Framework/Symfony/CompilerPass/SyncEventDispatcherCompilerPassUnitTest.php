@@ -23,6 +23,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * @small
+ */
 final class SyncEventDispatcherCompilerPassUnitTest extends AbstractUnitTest
 {
     private const DUMMY_LISTENER_CLASS_01 = OneDummyListener::class;

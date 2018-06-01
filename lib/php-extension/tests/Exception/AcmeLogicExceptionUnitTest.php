@@ -17,6 +17,9 @@ namespace Acme\PhpExtension\Test\Exception;
 use Acme\PhpExtension\Exception\AcmeLogicException;
 use Acme\PhpExtension\Test\AbstractUnitTest;
 
+/**
+ * @small
+ */
 final class AcmeLogicExceptionUnitTest extends AbstractUnitTest
 {
     /**
