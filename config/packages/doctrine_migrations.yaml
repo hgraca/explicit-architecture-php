@@ -1,5 +1,4 @@
 doctrine_migrations:
-    dir_name: '%kernel.project_dir%/build/Migration'
-    # namespace is arbitrary but should be different from Acme\App\Migrations
-    # as migrations classes should NOT be autoloaded
-    namespace: DoctrineMigrations
+    dir_name: '%kernel.project_dir%/build/Migration/Version'
+    # namespace is arbitrary but should NOT be autoloaded in production
+    namespace: Acme\App\Build\Migration\Version
