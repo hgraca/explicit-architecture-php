@@ -3,6 +3,11 @@ twig:
         '%kernel.project_dir%/tests/TestCase': TestCase
 
 parameters:
+    # SMS settings
+    notification.sms.default_destination: '+19009990005' # So that we don't accidentally send out SMSs
+    notification.sms.twilio.client.sid: 'some-dummy-TST-id'
+    notification.sms.twilio.client.token: 'some-dummy-TST-token'
+
     # All services in this list will be added to the container used in tests
     # This is specially useful for the services provided by 3rd party bundles
     test.container.service_list:

@@ -1,12 +1,20 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # Localization
     locale: 'en'
     country: 'NL'
 
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
     app.notifications.email_sender: anonymous@example.com
+
+    # SMS settings
+    notification.sms.default_destination: ~
+    notification.sms.sender: 'The Symfony Demo blog'
+    notification.sms.twilio.client.sid: 'some-dummy-id'
+    notification.sms.twilio.client.token: 'some-dummy-token'
+    notification.sms.message_bird.client.access_key: 'some-dummy-access_key'
 
 services:
     # default configuration for services in *this* file
@@ -24,6 +32,7 @@ services:
             $defaultLocale: '%locale%'
             $emailSender: '%app.notifications.email_sender%'
             $countryCode: '%country%'
+            $smsSender: '%notification.sms.sender%'
 
     ####################################################################################################################
     # BATCH AUTO-WIRING
@@ -71,6 +80,10 @@ services:
               method: notifyPostAuthorAboutNewComment
 
     # There are several implementations of this interface, so we need to choose one of them
+    Acme\App\Core\Port\Notification\Client\Sms\SmsNotifierInterface:
+        class: Acme\App\Infrastructure\Notification\Client\Sms\MessageBird\MessageBirdClient
+
+    # There are several implementations of this interface, so we need to choose one of them
     Acme\App\Core\Port\Persistence\KeyValueStorageInterface:
         class: Acme\App\Infrastructure\Persistence\Doctrine\KeyValueStorage
 
@@ -81,6 +94,11 @@ services:
         class: Acme\App\Infrastructure\Validation\PhoneNumber\LibPhoneNumber\PhoneNumberValidator
         arguments:
             - '@libphonenumber\PhoneNumberUtil'
+
+    Acme\App\Infrastructure\Notification\Client\Sms\Twilio\TwilioClient:
+        $countryCode: '%country%'
+        $sender: '%notification.sms.sender%'
+        $defaultDestination: '%notification.sms.default_destination%'
 
     Acme\App\Presentation\Web\Core\Exception\ExceptionController:
         public: true
@@ -95,8 +113,15 @@ services:
     libphonenumber\PhoneNumberUtil:
         factory: ['libphonenumber\PhoneNumberUtil', getInstance]
 
+    MessageBird\Client:
+        - '%notification.sms.message_bird.client.access_key%'
+
     Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface:
         class: Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
 
     Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface:
         class: Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory
+
+    Twilio\Rest\Client:
+        - '%notification.sms.twilio.client.sid%'
+        - '%notification.sms.twilio.client.token%'

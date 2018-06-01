@@ -13,6 +13,7 @@
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "^4.9",
         "giggsey/libphonenumber-for-php": "^8.9",
+        "messagebird/php-rest-api": "^1.9",
         "ramsey/uuid": "^3.7",
         "ramsey/uuid-doctrine": "^1.4",
         "sensio/framework-extra-bundle": "^5.0",
@@ -35,6 +36,7 @@
         "symfony/web-server-bundle": "^4.0",
         "symfony/yaml": "^4.0",
         "twig/extensions": "^1.5",
+        "twilio/sdk": "^5.16.3",
         "white-october/pagerfanta-bundle": "^1.1",
         "zendframework/zend-diactoros": "^1.7"
     },

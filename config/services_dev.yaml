@@ -1,3 +1,9 @@
+parameters:
+    # SMS settings
+    notification.sms.default_destination: '+19009990006' # Can be a developer phone number, but usually shouldn't
+    notification.sms.twilio.client.sid: 'some-dummy-DEV-id'
+    notification.sms.twilio.client.token: 'some-dummy-DEV-token'
+
 services:
     # default configuration for services in *this* file
     _defaults:
