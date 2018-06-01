@@ -34,6 +34,8 @@ use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
  *
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
+ *
+ * @large
  */
 final class CommentControllerFunctionalTest extends AbstractFunctionalTest
 {

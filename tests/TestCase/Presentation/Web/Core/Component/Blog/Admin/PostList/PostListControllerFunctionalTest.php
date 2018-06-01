@@ -33,6 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
+ *
+ * @large
  */
 final class PostListControllerFunctionalTest extends AbstractFunctionalTest
 {

@@ -16,6 +16,9 @@ namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component;
 
 use Acme\App\Test\Framework\AbstractFunctionalTest;
 
+/**
+ * @large
+ */
 final class BackslashRedirectControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**

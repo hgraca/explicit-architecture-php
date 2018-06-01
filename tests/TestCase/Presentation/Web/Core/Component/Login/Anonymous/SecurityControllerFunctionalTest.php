@@ -21,6 +21,9 @@ use Acme\App\Test\Framework\Data\RouteData;
 use Acme\App\Test\Framework\Data\UserData;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @large
+ */
 final class SecurityControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
