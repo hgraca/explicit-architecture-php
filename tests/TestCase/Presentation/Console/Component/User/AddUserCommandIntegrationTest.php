@@ -20,6 +20,9 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @medium
+ */
 final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
 {
     /**

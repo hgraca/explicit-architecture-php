@@ -22,6 +22,9 @@ use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
+/**
+ * @medium
+ */
 final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
 {
     /**

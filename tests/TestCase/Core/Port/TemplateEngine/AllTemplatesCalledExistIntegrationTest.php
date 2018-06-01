@@ -18,6 +18,9 @@ use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * @medium
+ */
 final class AllTemplatesCalledExistIntegrationTest extends AbstractIntegrationTest
 {
     private const EXCLUDE_IF_CONTAINS_CHARS = ['\'', '"', '~', '%'];

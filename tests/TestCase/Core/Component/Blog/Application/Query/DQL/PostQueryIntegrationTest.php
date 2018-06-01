@@ -27,6 +27,9 @@ use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
+/**
+ * @medium
+ */
 final class PostQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**

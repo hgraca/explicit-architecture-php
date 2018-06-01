@@ -20,6 +20,9 @@ use Acme\App\Presentation\Web\Infrastructure\Response\ZendDiactoros\ResponseFact
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use stdClass;
 
+/**
+ * @medium
+ */
 final class ResponseFactoryIntegrationTest extends AbstractIntegrationTest
 {
     /**

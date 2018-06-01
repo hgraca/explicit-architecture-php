@@ -23,6 +23,9 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Acme\PhpExtension\Helper\ClassHelper;
 use Acme\PhpExtension\Helper\StringHelper;
 
+/**
+ * @medium
+ */
 final class FormFactoryIntegrationTest extends AbstractIntegrationTest
 {
     /**
