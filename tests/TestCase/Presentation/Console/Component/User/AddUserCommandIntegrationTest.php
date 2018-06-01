@@ -29,6 +29,7 @@ class AddUserCommandIntegrationTest extends AbstractIntegrationTest
         'username' => 'chuck_norris',
         'password' => 'foobar',
         'email' => 'chuck@norris.com',
+        'mobile' => '+31631769219',
         'full-name' => 'Chuck Norris',
     ];
 
@@ -110,6 +111,8 @@ class AddUserCommandIntegrationTest extends AbstractIntegrationTest
 
         $this->assertSame($this->userData['full-name'], $user->getFullName());
         $this->assertSame($this->userData['username'], $user->getUsername());
+        $this->assertSame($this->userData['email'], $user->getEmail());
+        $this->assertSame($this->userData['mobile'], $user->getMobile());
         $this->assertTrue($container->get('security.password_encoder')->isPasswordValid($user, $this->userData['password']));
         $this->assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER'], $user->getRoles());
     }

@@ -16,6 +16,7 @@ namespace Acme\App\Presentation\Console\Component\User;
 
 use Acme\App\Core\Component\User\Application\Service\UserService;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
+use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -99,6 +100,7 @@ class AddUserCommand extends Command
             ->addArgument('username', InputArgument::OPTIONAL, 'The username of the new user')
             ->addArgument('password', InputArgument::OPTIONAL, 'The plain password of the new user')
             ->addArgument('email', InputArgument::OPTIONAL, 'The email of the new user')
+            ->addArgument('mobile', InputArgument::OPTIONAL, 'The mobile number of the new user')
             ->addArgument('full-name', InputArgument::OPTIONAL, 'The full name of the new user')
             ->addOption('admin', null, InputOption::VALUE_NONE, 'If set, the user is created as an administrator');
     }
@@ -127,7 +129,13 @@ class AddUserCommand extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        if ($input->getArgument('username') !== null && $input->getArgument('password') !== null && $input->getArgument('email') !== null && $input->getArgument('full-name') !== null) {
+        if (
+            $input->getArgument('username') !== null
+            && $input->getArgument('password') !== null
+            && $input->getArgument('email') !== null
+            && $input->getArgument('mobile') !== null
+            && $input->getArgument('full-name') !== null
+        ) {
             return;
         }
 
@@ -168,6 +176,15 @@ class AddUserCommand extends Command
             $input->setArgument('email', $email);
         }
 
+        // Ask for the mobile if it's not defined
+        $mobile = $input->getArgument('mobile');
+        if ($mobile !== null) {
+            $this->io->text(' > <info>Mobile</info>: ' . $mobile);
+        } else {
+            $mobile = $this->io->ask('Mobile', null, [$this->validator, 'validateMobile']);
+            $input->setArgument('mobile', $mobile);
+        }
+
         // Ask for the full name if it's not defined
         $fullName = $input->getArgument('full-name');
         if ($fullName !== null) {
@@ -181,6 +198,8 @@ class AddUserCommand extends Command
     /**
      * This method is executed after interact() and initialize(). It usually
      * contains the logic to execute to complete this command task.
+     *
+     * @throws PhoneNumberException
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
@@ -191,6 +210,7 @@ class AddUserCommand extends Command
             (string) $input->getArgument('username'),
             (string) $input->getArgument('password'),
             (string) $input->getArgument('email'),
+            (string) $input->getArgument('mobile'),
             (string) $input->getArgument('full-name'),
             (bool) $input->getOption('admin')
         );
@@ -225,7 +245,7 @@ The <info>%command.name%</info> command creates new users and saves them in the 
 By default the command creates regular users. To create administrator users,
 add the <comment>--admin</comment> option:
 
-  <info>php %command.full_name%</info> username password email <comment>--admin</comment>
+  <info>php %command.full_name%</info> username password email mobile <comment>--admin</comment>
 
 If you omit any of the three required arguments, the command will ask you to
 provide the missing values:
