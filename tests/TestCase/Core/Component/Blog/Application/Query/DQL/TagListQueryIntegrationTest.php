@@ -21,6 +21,9 @@ use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
+/**
+ * @medium
+ */
 final class TagListQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**

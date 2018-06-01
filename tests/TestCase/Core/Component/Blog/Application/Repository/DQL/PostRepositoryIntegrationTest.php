@@ -22,6 +22,9 @@ use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
+/**
+ * @medium
+ */
 final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
 {
     /**

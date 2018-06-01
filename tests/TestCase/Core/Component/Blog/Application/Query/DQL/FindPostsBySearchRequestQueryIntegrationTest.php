@@ -20,6 +20,9 @@ use Acme\App\Core\Port\Persistence\QueryServiceInterface;
 use Acme\App\Infrastructure\Persistence\Doctrine\DqlPersistenceService;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
+/**
+ * @medium
+ */
 final class FindPostsBySearchRequestQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**

@@ -22,6 +22,9 @@ use DateTime;
 use ReflectionException;
 use Zend\Diactoros\Response;
 
+/**
+ * @medium
+ */
 final class TemplateEngineIntegrationTest extends AbstractIntegrationTest
 {
     private const TEMPLATE_1 = '@TestCase/Infrastructure/TemplateEngine/Twig/test1.html.twig';

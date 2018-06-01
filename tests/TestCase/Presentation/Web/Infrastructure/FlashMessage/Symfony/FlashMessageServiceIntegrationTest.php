@@ -22,6 +22,9 @@ use ReflectionClass;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * @medium
+ */
 final class FlashMessageServiceIntegrationTest extends AbstractIntegrationTest
 {
     /**
