@@ -104,6 +104,12 @@
     "gecko-packages/gecko-php-unit": {
         "version": "v2.2"
     },
+    "giggsey/libphonenumber-for-php": {
+        "version": "8.9.6"
+    },
+    "giggsey/locale": {
+        "version": "1.5"
+    },
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
     },
@@ -112,6 +118,9 @@
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "messagebird/php-rest-api": {
+        "version": "v1.9.4"
     },
     "mockery/mockery": {
         "version": "1.0.0-alpha1"
@@ -392,6 +401,9 @@
     "symfony/polyfill-apcu": {
         "version": "v1.6.0"
     },
+    "symfony/polyfill-ctype": {
+        "version": "v1.8.0"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
     },
@@ -514,6 +526,9 @@
     },
     "twig/twig": {
         "version": "v2.4.4"
+    },
+    "twilio/sdk": {
+        "version": "5.19.1"
     },
     "webmozart/assert": {
         "version": "1.3.0"
