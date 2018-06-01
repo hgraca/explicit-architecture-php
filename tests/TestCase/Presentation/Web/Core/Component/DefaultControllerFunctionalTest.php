@@ -29,6 +29,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  *     $ cd your-symfony-project/
  *     $ make test
+ *
+ * @large
  */
 final class DefaultControllerFunctionalTest extends AbstractFunctionalTest
 {
