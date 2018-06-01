@@ -25,7 +25,7 @@ use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
-class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationTest
+final class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @test

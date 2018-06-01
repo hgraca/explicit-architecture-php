@@ -26,7 +26,7 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use DateTimeImmutable;
 
-class FindLatestPostsQueryIntegrationTest extends AbstractIntegrationTest
+final class FindLatestPostsQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @var PostRepository

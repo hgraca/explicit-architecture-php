@@ -21,7 +21,7 @@ use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
-class CommentListQueryIntegrationTest extends AbstractIntegrationTest
+final class CommentListQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @var DqlQueryBuilderInterface

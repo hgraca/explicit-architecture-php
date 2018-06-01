@@ -17,7 +17,7 @@ use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorInterface;
 /**
  * @group acceptance
  */
-class AnonymousVisitCest
+final class AnonymousVisitCest
 {
     public function anyoneCanBrowseTheApplication(AcceptanceTester $I): void
     {

@@ -21,7 +21,7 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Herberto Graca <herberto.graca@gmail.com>
  * @author Marijn Koesen
  */
-class MimeTypeUnitTest extends AbstractUnitTest
+final class MimeTypeUnitTest extends AbstractUnitTest
 {
     /**
      * @test

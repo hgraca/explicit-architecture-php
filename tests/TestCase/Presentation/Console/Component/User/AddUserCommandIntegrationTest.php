@@ -20,7 +20,7 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class AddUserCommandIntegrationTest extends AbstractIntegrationTest
+final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @var array

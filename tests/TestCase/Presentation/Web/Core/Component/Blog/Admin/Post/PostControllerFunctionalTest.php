@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class PostControllerFunctionalTest extends AbstractFunctionalTest
+final class PostControllerFunctionalTest extends AbstractFunctionalTest
 {
     const JANE_ADMIN = 'jane_admin';
 

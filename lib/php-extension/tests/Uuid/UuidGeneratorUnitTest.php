@@ -19,7 +19,7 @@ use Acme\PhpExtension\Uuid\Uuid;
 use Acme\PhpExtension\Uuid\UuidGenerator;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
-class UuidGeneratorUnitTest extends AbstractUnitTest
+final class UuidGeneratorUnitTest extends AbstractUnitTest
 {
     /**
      * @test

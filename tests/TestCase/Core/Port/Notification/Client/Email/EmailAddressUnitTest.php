@@ -21,7 +21,7 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Herberto Graca <herberto.graca@gmail.com>
  * @author Marijn Koesen
  */
-class EmailAddressUnitTest extends AbstractUnitTest
+final class EmailAddressUnitTest extends AbstractUnitTest
 {
     /**
      * @test

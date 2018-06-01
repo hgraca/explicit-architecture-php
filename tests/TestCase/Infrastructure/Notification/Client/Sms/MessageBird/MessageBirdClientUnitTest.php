@@ -34,7 +34,7 @@ use Mockery\MockInterface;
  *
  * @small
  */
-class MessageBirdClientUnitTest extends AbstractUnitTest
+final class MessageBirdClientUnitTest extends AbstractUnitTest
 {
     private const FROM_PHONE_NUMBER = '+390656470420';
     private const TO_PHONE_NUMBER = '+393396007250';

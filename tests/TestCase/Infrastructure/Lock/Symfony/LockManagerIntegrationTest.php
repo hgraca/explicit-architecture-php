@@ -19,7 +19,7 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Acme\PhpExtension\Helper\ReflectionHelper;
 use Symfony\Component\Lock\Lock;
 
-class LockManagerIntegrationTest extends AbstractIntegrationTest
+final class LockManagerIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @test

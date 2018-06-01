@@ -17,7 +17,7 @@ use Acme\App\Test\Fixture\Doctrine\PostFixtures;
 /**
  * @group acceptance
  */
-class AdminVisitCest
+final class AdminVisitCest
 {
     /**
      * @depends UserVisitCest:userCanLoginCommentLogout

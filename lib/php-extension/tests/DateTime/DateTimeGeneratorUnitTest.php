@@ -19,7 +19,7 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 use DateTimeImmutable;
 use DateTimeZone;
 
-class DateTimeGeneratorUnitTest extends AbstractUnitTest
+final class DateTimeGeneratorUnitTest extends AbstractUnitTest
 {
     const TOLERATED_SECONDS_DIFF = 5;
 

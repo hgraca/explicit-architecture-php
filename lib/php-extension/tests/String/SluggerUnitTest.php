@@ -27,7 +27,7 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class SluggerUnitTest extends AbstractUnitTest
+final class SluggerUnitTest extends AbstractUnitTest
 {
     /**
      * @dataProvider getSlugs

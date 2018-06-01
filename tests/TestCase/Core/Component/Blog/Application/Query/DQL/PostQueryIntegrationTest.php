@@ -27,7 +27,7 @@ use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
-class PostQueryIntegrationTest extends AbstractIntegrationTest
+final class PostQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @var DqlQueryBuilderInterface

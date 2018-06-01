@@ -27,7 +27,7 @@ use Exception;
  * @author Rodrigo Prestes
  * @author Ruud Van Der Weiijde
  */
-class EmailUnitTest extends AbstractUnitTest
+final class EmailUnitTest extends AbstractUnitTest
 {
     /**
      * @test
