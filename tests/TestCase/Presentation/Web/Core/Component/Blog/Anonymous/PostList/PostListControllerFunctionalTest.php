@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ cd your-symfony-project/
  *     $ make test
  */
-class PostListControllerFunctionalTest extends AbstractFunctionalTest
+final class PostListControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
      * @test

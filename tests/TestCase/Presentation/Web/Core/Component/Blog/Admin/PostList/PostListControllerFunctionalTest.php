@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ cd your-symfony-project/
  *     $ ./vendor/bin/phpunit
  */
-class PostListControllerFunctionalTest extends AbstractFunctionalTest
+final class PostListControllerFunctionalTest extends AbstractFunctionalTest
 {
     use FixturesTrait;
 

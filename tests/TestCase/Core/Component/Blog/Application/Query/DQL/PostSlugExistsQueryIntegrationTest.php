@@ -25,7 +25,7 @@ use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
-class PostSlugExistsQueryIntegrationTest extends AbstractIntegrationTest
+final class PostSlugExistsQueryIntegrationTest extends AbstractIntegrationTest
 {
     /**
      * @test

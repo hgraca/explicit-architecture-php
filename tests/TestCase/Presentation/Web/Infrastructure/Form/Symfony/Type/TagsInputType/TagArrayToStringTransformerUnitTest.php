@@ -25,7 +25,7 @@ use Doctrine\ORM\EntityRepository;
  *
  * See https://symfony.com/doc/current/testing/database.html
  */
-class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
+final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 {
     /**
      * @test

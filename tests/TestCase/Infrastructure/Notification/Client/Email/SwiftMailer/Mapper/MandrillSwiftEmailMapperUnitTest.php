@@ -21,7 +21,7 @@ use Acme\App\Infrastructure\Notification\Client\Email\SwiftMailer\Mapper\SwiftEm
  * @author Herberto Graca <herberto.graca@gmail.com>
  * @author Marijn Koesen
  */
-class MandrillSwiftEmailMapperUnitTest extends SwiftEmailMapperUnitTest
+final class MandrillSwiftEmailMapperUnitTest extends SwiftEmailMapperUnitTest
 {
     public function getMapData(): array
     {

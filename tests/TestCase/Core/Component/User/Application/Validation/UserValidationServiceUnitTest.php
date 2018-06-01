@@ -19,7 +19,7 @@ use Acme\App\Infrastructure\Validation\PhoneNumber\LibPhoneNumber\PhoneNumberVal
 use Acme\App\Test\Framework\AbstractUnitTest;
 use libphonenumber\PhoneNumberUtil;
 
-class UserValidationServiceUnitTest extends AbstractUnitTest
+final class UserValidationServiceUnitTest extends AbstractUnitTest
 {
     /**
      * @var UserValidationService

@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ cd your-symfony-project/
  *     $ make test
  */
-class DefaultControllerFunctionalTest extends AbstractFunctionalTest
+final class DefaultControllerFunctionalTest extends AbstractFunctionalTest
 {
     /**
      * @test

@@ -25,7 +25,7 @@ use Acme\App\Test\Framework\AbstractUnitTest;
 use Mockery;
 use Mockery\MockInterface;
 
-class PostServiceUnitTest extends AbstractUnitTest
+final class PostServiceUnitTest extends AbstractUnitTest
 {
     /**
      * @var MockInterface|PostRepositoryInterface

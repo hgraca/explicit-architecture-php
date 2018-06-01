@@ -17,7 +17,7 @@ namespace Acme\App\Test\TestCase\Core\Port\Persistence;
 use Acme\App\Core\Port\Persistence\ResultCollection;
 use Acme\App\Test\Framework\AbstractUnitTest;
 
-class ResultCollectionUnitTest extends AbstractUnitTest
+final class ResultCollectionUnitTest extends AbstractUnitTest
 {
     const ITEM_LIST = [['a' => 1, 'b' => 'a'], ['a' => 2, 'b' => 'b']];
 

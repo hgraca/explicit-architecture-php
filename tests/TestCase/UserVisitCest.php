@@ -17,7 +17,7 @@ use Acme\App\Presentation\Web\Core\Port\Paginator\PaginatorInterface;
 /**
  * @group acceptance
  */
-class UserVisitCest
+final class UserVisitCest
 {
     /**
      * @depends AnonymousVisitCest:anyoneCanBrowseTheApplication
