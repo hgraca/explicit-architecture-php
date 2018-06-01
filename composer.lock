@@ -5777,16 +5777,16 @@
         },
         {
             "name": "hgraca/doctrine-test-db-regeneration-bundle",
-            "version": "v1.0.2",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hgraca/doctrine-test-db-regeneration-bundle.git",
-                "reference": "d7812f8318974ce6589480182ed3cdbc02784f0e"
+                "reference": "377bbbbb3416aeaf0bc25d80a16ba588761d00e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hgraca/doctrine-test-db-regeneration-bundle/zipball/d7812f8318974ce6589480182ed3cdbc02784f0e",
-                "reference": "d7812f8318974ce6589480182ed3cdbc02784f0e",
+                "url": "https://api.github.com/repos/hgraca/doctrine-test-db-regeneration-bundle/zipball/377bbbbb3416aeaf0bc25d80a16ba588761d00e6",
+                "reference": "377bbbbb3416aeaf0bc25d80a16ba588761d00e6",
                 "shasum": ""
             },
             "require": {
@@ -5794,6 +5794,7 @@
                 "doctrine/dbal": "^2",
                 "doctrine/doctrine-bundle": "^1",
                 "doctrine/doctrine-fixtures-bundle": "^3",
+                "doctrine/doctrine-migrations-bundle": "^1.3",
                 "doctrine/orm": "^2",
                 "php": "^7.1",
                 "roave/security-advisories": "dev-master",
@@ -5827,7 +5828,7 @@
                 }
             ],
             "description": "Symfony 2/3/4 bundle to generate the test DB (if needed) for every test suite run or test method run.",
-            "time": "2018-04-02T13:44:28+00:00"
+            "time": "2018-06-01T15:35:18+00:00"
         },
         {
             "name": "mockery/mockery",

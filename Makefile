@@ -72,6 +72,12 @@ box-push-prd:
 cs-fix:
 	ENV='tst' ./bin/run php vendor/bin/php-cs-fixer fix --verbose
 
+db-migrate:
+	ENV='dev' ./bin/run make db-migrate-guest
+
+db-migrate-guest:
+	php bin/console doctrine:migrations:migrate --no-interaction
+
 db-setup:
 	ENV='dev' ./bin/run make db-setup-guest
 
@@ -80,6 +86,7 @@ db-setup-guest:
 	php bin/console doctrine:database:drop -n --force
 	php bin/console doctrine:database:create -n
 	php bin/console doctrine:schema:create -n
+	$(MAKE) db-migrate-guest
 	php bin/console doctrine:fixtures:load -n
 
 dep-clearcache-guest:

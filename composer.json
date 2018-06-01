@@ -64,13 +64,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Acme\\App\\Build\\": "build/",
             "Acme\\App\\": "src/",
             "Acme\\PhpExtension\\": "lib/php-extension/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "Acme\\App\\Build\\": "build/",
             "Acme\\App\\Test\\": "tests/",
             "Acme\\PhpExtension\\Test\\": "lib/php-extension/tests/"
         }
