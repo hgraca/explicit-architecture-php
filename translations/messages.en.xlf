@@ -359,6 +359,35 @@
                 <source>rss.description</source>
                 <target>Most recent posts published on the Symfony Demo blog</target>
             </trans-unit>
+
+            <trans-unit id="default.siteName">
+                <source>default.siteName</source>
+                <target>The Symfony Demo blog</target>
+            </trans-unit>
+            <trans-unit id="default.email.salutation">
+                <source>default.email.salutation</source>
+                <target>Hi</target>
+            </trans-unit>
+            <trans-unit id="default.email.signature.best_regards">
+                <source>default.email.signature.best_regards</source>
+                <target>Best Regards</target>
+            </trans-unit>
+            <trans-unit id="default.email.signature.sender">
+                <source>default.email.signature.sender</source>
+                <target>The Symfony Demo blog</target>
+            </trans-unit>
+            <trans-unit id="default.email.footer.contact_us">
+                <source>default.email.footer.contact_us</source>
+                <target>Contact us</target>
+            </trans-unit>
+            <trans-unit id="default.email.footer.terms_and_conditions">
+                <source>default.email.footer.terms_and_conditions</source>
+                <target>Terms &amp; Conditions</target>
+            </trans-unit>
+            <trans-unit id="default.email.unsubscribe">
+                <source>default.email.unsubscribe</source>
+                <target>Unsubscribe</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

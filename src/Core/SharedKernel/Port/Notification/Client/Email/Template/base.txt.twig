@@ -1,0 +1,17 @@
+
+{% include "@SharedKernel/salutation.txt.twig" %}
+
+{% block content %}{% endblock %}
+
+{% include "@SharedKernel/signature.txt.twig" %}
+
+{% set footerContent = block('footerContent') %}
+{% if footerContent is not empty %}{% block footerContent %}{% endblock %}{% endif %}
+
+{% block signOff %}
+---
+{{ 'default.siteName'|trans }} (c)
+{{ 'default.email.footer.contact_us'|trans }} (http://www.url-for-contact.com)
+{{ 'default.email.footer.terms_and_conditions'|trans }} (http://www.url-with-terms-and-conditions.com)
+{{ 'default.email.unsubscribe'|trans }} (http://www.url-for-unsubscribing.com)
+{% endblock signOff %}
