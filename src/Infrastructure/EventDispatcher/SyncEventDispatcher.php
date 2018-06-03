@@ -18,6 +18,7 @@ use Acme\App\Core\Port\EventDispatcher\BufferedEventDispatcherInterface;
 use Acme\App\Core\Port\EventDispatcher\EventInterface;
 use Acme\App\Core\Port\Lock\LockManagerInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
+use Acme\PhpExtension\Helper\TypeHelper;
 use Acme\PhpExtension\ObjectDispatcher\AbstractDispatcher;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -99,8 +100,8 @@ final class SyncEventDispatcher extends AbstractDispatcher implements BufferedEv
                      * event listeners will not be triggered.
                      */
                     $this->logger->error(
-                        'Error occurred while handling event \'' . \get_class($event)
-                        . "' with listener '" . \get_class($listener) . "'.\n"
+                        'Error occurred while handling event \'' . TypeHelper::getType($event)
+                        . "' with listener '" . TypeHelper::getType($listener) . "'.\n"
                         . 'Exception message: ' . $e->getMessage() . "\n"
                         . 'Exception trace: ' . $e->getTraceAsString() . "\n"
                     );
