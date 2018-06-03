@@ -15,6 +15,7 @@ parameters:
     # All services in this list will be added to the container used in tests
     # This is specially useful for the services provided by 3rd party bundles
     test.container.service_list:
+        - 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailGenerator'
         - 'Acme\App\Core\Component\Blog\Application\Query\DQL\PostSlugExistsQuery'
         - 'Acme\App\Core\Component\Blog\Application\Query\DQL\FindHighestPostSlugSuffixQuery'
         - 'Acme\App\Core\Component\Blog\Application\Query\DQL\FindLatestPostsQuery'

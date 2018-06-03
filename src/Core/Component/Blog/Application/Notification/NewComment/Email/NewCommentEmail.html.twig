@@ -1,0 +1,5 @@
+{% extends '@SharedKernel/base.html.twig' %}
+
+{% block content %}
+    <p>{{ 'blog.email.new_comment.body.p1.html'|trans({'%title%': title, '%link%': link})|raw }}</p>
+{% endblock content %}

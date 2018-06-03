@@ -336,12 +336,12 @@
                 <source>http_error_500.suggestion</source>
                 <target><![CDATA[Versuche diese Seite in einigen Minuten erneut zu laden oder <a href="%url%">gehe zurück zur Homepage</a>.]]></target>
             </trans-unit>
-            <trans-unit id="notification.comment_created">
-                <source>notification.comment_created</source>
+            <trans-unit id="blog.email.new_comment.subject">
+                <source>blog.email.new_comment.subject</source>
                 <target>Dein Beitrag hat einen Kommentar erhalten!</target>
             </trans-unit>
-            <trans-unit id="notification.comment_created.description">
-                <source>notification.comment_created.description</source>
+            <trans-unit id="blog.email.new_comment.body.p1">
+                <source>blog.email.new_comment.body.p1</source>
                 <target><![CDATA[Dein Beitrag "%title%" hat einen Kommentar erhalten. Du kannst den Kommentar lesen, wenn du <a href="%link%">diesem Link</a> folgst.]]></target>
             </trans-unit>
         </body>

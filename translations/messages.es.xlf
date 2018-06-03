@@ -341,12 +341,12 @@
                 <source>post.search_no_results</source>
                 <target>No se encontraron resultados</target>
             </trans-unit>
-            <trans-unit id="notification.comment_created">
-                <source>notification.comment_created</source>
+            <trans-unit id="blog.email.new_comment.subject">
+                <source>blog.email.new_comment.subject</source>
                 <target>¡Su artículo recibió un comentario!</target>
             </trans-unit>
-            <trans-unit id="notification.comment_created.description">
-                <source>notification.comment_created.description</source>
+            <trans-unit id="blog.email.new_comment.body.p1">
+                <source>blog.email.new_comment.body.p1</source>
                 <target><![CDATA[Su artículo "%title%" recibió un comentario nuevo. Puede leer el comentario siguiendo <a href="%link%">este enlace</a>]]></target>
             </trans-unit>
             <trans-unit id="rss.title">

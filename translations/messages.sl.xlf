@@ -301,12 +301,12 @@
                 <target>Ni najdenih rezultatov</target>
             </trans-unit>
 
-            <trans-unit id="notification.comment_created">
-                <source>notification.comment_created</source>
+            <trans-unit id="blog.email.new_comment.subject">
+                <source>blog.email.new_comment.subject</source>
                 <target>Vaša objava je prejela komentar!</target>
             </trans-unit>
-            <trans-unit id="notification.comment_created.description">
-                <source>notification.comment_created.description</source>
+            <trans-unit id="blog.email.new_comment.body.p1">
+                <source>blog.email.new_comment.body.p1</source>
                 <target><![CDATA[Vaša objava "%title%" je prejela nov komentar. Preberete ga lahko na <a href="%link%">tej povezavi</a>]]></target>
             </trans-unit>
 

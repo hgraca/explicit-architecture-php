@@ -301,13 +301,17 @@
                 <target>No results found</target>
             </trans-unit>
 
-            <trans-unit id="notification.comment_created">
-                <source>notification.comment_created</source>
+            <trans-unit id="blog.email.new_comment.subject">
+                <source>blog.email.new_comment.subject</source>
                 <target>Your post received a comment!</target>
             </trans-unit>
-            <trans-unit id="notification.comment_created.description">
-                <source>notification.comment_created.description</source>
-                <target><![CDATA[Your post "%title%" has received a new comment. You can read the comment by following <a href="%link%">this link</a>]]></target>
+            <trans-unit id="blog.email.new_comment.body.p1.html">
+                <source>blog.email.new_comment.body.p1.html</source>
+                <target><![CDATA[Your post "%title%" has received a new comment. You can read the comment by following <a href="%link%">this link</a>.]]></target>
+            </trans-unit>
+            <trans-unit id="blog.email.new_comment.body.p1.txt">
+                <source>blog.email.new_comment.body.p1.txt</source>
+                <target><![CDATA[Your post "%title%" has received a new comment. You can read the comment by following this link (%link%).]]></target>
             </trans-unit>
 
             <trans-unit id="help.app_description">

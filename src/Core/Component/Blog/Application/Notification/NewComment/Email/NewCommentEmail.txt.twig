@@ -1,0 +1,5 @@
+{% extends '@SharedKernel/base.txt.twig' %}
+
+{% block content %}
+{{ 'blog.email.new_comment.body.p1.txt'|trans({'%title%': title, '%link%': link}) }}
+{% endblock content %}
