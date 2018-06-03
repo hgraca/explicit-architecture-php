@@ -301,12 +301,12 @@
                 <target>Aucun résultat</target>
             </trans-unit>
 
-            <trans-unit id="notification.comment_created">
-                <source>notification.comment_created</source>
+            <trans-unit id="blog.email.new_comment.subject">
+                <source>blog.email.new_comment.subject</source>
                 <target>Votre article a reçu un commentaire !</target>
             </trans-unit>
-            <trans-unit id="notification.comment_created.description">
-                <source>notification.comment_created.description</source>
+            <trans-unit id="blog.email.new_comment.body.p1">
+                <source>blog.email.new_comment.body.p1</source>
                 <target><![CDATA[Votre article "%title%" a reçu un nouveau commentaire. Vous pouvez lire le commentaire en suivant <a href="%link%">ce lien</a>]]></target>
             </trans-unit>
 

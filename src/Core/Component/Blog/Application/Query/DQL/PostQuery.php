@@ -235,6 +235,7 @@ final class PostQuery implements PostQueryInterface
     private function joinAuthor(DqlQueryBuilderInterface $queryBuilder): void
     {
         $queryBuilder->addSelect(
+            'Author.id AS authorId',
             'Author.fullName AS authorFullName',
             'Author.email AS authorEmail'
         )

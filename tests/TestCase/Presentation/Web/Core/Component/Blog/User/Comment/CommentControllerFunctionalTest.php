@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Presentation\Web\Core\Component\Blog\User\Comment;
 
-use Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener;
+use Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailGenerator;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Core\Port\Translation\TranslatorInterface;
@@ -78,7 +78,7 @@ final class CommentControllerFunctionalTest extends AbstractFunctionalTest
             $mailCollector,
             'anonymous@example.com',
             UserFixtures::JANE_EMAIL,
-            $this->getTranslator()->translate(CommentCreatedListener::EMAIL_SUBJECT_KEY)
+            $this->getTranslator()->translate(NewCommentEmailGenerator::SUBJECT_TRANSLATION_KEY)
         );
 
         $crawler = $client->followRedirect();

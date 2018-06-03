@@ -80,12 +80,19 @@ services:
     # without it being instantiated
     Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener:
         lazy:  true
-        arguments:
-            $senderEmail: '%notification.email.sender_address%'
         tags:
             - name: 'sync_event_dispatcher'
               event: 'Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent'
               method: notifyPostAuthorAboutNewComment
+
+    Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailGenerator:
+        tags:
+            - name: 'Acme\App\Infrastructure\Notification\Strategy\Email\EmailNotificationStrategy'
+              notification: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\NewCommentNotification'
+              method: 'generate'
+              # The voter is here just as an example of a notification voter, voters are not mandatory
+              voterId: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailVoter'
+              voterMethod: 'shouldDispatchEmail'
 
     # There are several implementations of this interface, so we need to choose one of them
     Acme\App\Core\Port\Notification\Client\Sms\SmsNotifierInterface:
