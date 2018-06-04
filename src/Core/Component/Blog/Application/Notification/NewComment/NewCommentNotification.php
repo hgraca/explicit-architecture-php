@@ -28,6 +28,11 @@ final class NewCommentNotification implements NotificationInterface
     private $postAuthorId;
 
     /**
+     * @var string
+     */
+    private $postAuthorMobile;
+
+    /**
      * @var CommentId
      */
     private $commentId;
@@ -54,6 +59,7 @@ final class NewCommentNotification implements NotificationInterface
 
     public function __construct(
         UserId $postAuthorId,
+        string $postAuthorMobile,
         CommentId $commentId,
         EmailAddress $emailAddress,
         PostId $postId,
@@ -61,6 +67,7 @@ final class NewCommentNotification implements NotificationInterface
         string $postSlug
     ) {
         $this->postAuthorId = $postAuthorId;
+        $this->postAuthorMobile = $postAuthorMobile;
         $this->commentId = $commentId;
         $this->emailAddress = $emailAddress;
         $this->postId = $postId;
@@ -71,6 +78,11 @@ final class NewCommentNotification implements NotificationInterface
     public function getDestinationUserId(): UserId
     {
         return $this->postAuthorId;
+    }
+
+    public function getPostAuthorMobile(): string
+    {
+        return $this->postAuthorMobile;
     }
 
     public function getCommentId(): CommentId

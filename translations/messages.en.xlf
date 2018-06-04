@@ -401,6 +401,11 @@
                 <source>blog.push.new_comment.message</source>
                 <target><![CDATA[Your post "%title%" has received a new comment. You can read the comment by following this link (%link%).]]></target>
             </trans-unit>
+
+            <trans-unit id="blog.sms.new_comment.message">
+                <source>blog.sms.new_comment.message</source>
+                <target><![CDATA[Your post "%title%" has received a new comment. You can read the comment by following this link (%link%).]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
