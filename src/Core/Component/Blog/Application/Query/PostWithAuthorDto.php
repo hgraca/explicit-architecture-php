@@ -46,6 +46,11 @@ final class PostWithAuthorDto implements ConstructableFromArrayInterface
     /**
      * @var string
      */
+    private $authorMobile;
+
+    /**
+     * @var string
+     */
     private $authorFullName;
 
     /**
@@ -66,6 +71,7 @@ final class PostWithAuthorDto implements ConstructableFromArrayInterface
         string $title,
         string $slug,
         UserId $authorId,
+        string $authorMobile,
         string $authorFullName,
         string $authorEmail
     ) {
@@ -73,6 +79,7 @@ final class PostWithAuthorDto implements ConstructableFromArrayInterface
         $this->title = $title;
         $this->slug = $slug;
         $this->authorId = $authorId;
+        $this->authorMobile = $authorMobile;
         $this->authorFullName = $authorFullName;
         $this->authorEmail = $authorEmail;
     }
@@ -95,6 +102,11 @@ final class PostWithAuthorDto implements ConstructableFromArrayInterface
     public function getAuthorId(): UserId
     {
         return $this->authorId;
+    }
+
+    public function getAuthorMobile(): string
+    {
+        return $this->authorMobile;
     }
 
     public function getAuthorFullName(): string

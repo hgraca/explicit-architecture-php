@@ -236,6 +236,7 @@ final class PostQuery implements PostQueryInterface
     {
         $queryBuilder->addSelect(
             'Author.id AS authorId',
+            'Author.mobile AS authorMobile',
             'Author.fullName AS authorFullName',
             'Author.email AS authorEmail'
         )

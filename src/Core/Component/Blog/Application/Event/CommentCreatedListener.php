@@ -56,6 +56,7 @@ class CommentCreatedListener
         $this->notificationService->notify(
             new NewCommentNotification(
                 $postDto->getAuthorId(),
+                $postDto->getAuthorMobile(),
                 $commentId,
                 new EmailAddress($postDto->getAuthorEmail(), $postDto->getAuthorFullName()),
                 $postDto->getId(),
