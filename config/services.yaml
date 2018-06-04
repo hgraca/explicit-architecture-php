@@ -94,6 +94,16 @@ services:
               voterId: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailVoter'
               voterMethod: 'shouldDispatchEmail'
 
+    # This is here just as an example, it's not mandatory to have generators for all types of notifications
+    Acme\App\Core\Component\Blog\Application\Notification\NewComment\Push\NewCommentPushGenerator:
+        tags:
+            - name: 'Acme\App\Infrastructure\Notification\Strategy\Push\PushNotificationStrategy'
+              notification: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\NewCommentNotification'
+              method: 'generate'
+              # The voter is here just as an example of a notification voter, voters are not mandatory
+              voterId: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\Push\NewCommentPushVoter'
+              voterMethod: 'shouldDispatchPush'
+
     # There are several implementations of this interface, so we need to choose one of them
     Acme\App\Core\Port\Notification\Client\Sms\SmsNotifierInterface:
         class: Acme\App\Infrastructure\Notification\Client\Sms\MessageBird\MessageBirdClient

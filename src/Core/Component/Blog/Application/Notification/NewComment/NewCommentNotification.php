@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Notification\NewComment;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Notification\Client\Email\EmailAddress;
 use Acme\App\Core\Port\Notification\NotificationInterface;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
@@ -37,6 +38,11 @@ final class NewCommentNotification implements NotificationInterface
     private $emailAddress;
 
     /**
+     * @var PostId
+     */
+    private $postId;
+
+    /**
      * @var string
      */
     private $postTitle;
@@ -46,11 +52,18 @@ final class NewCommentNotification implements NotificationInterface
      */
     private $postSlug;
 
-    public function __construct(UserId $postAuthorId, CommentId $commentId, EmailAddress $emailAddress, string $postTitle, string $postSlug)
-    {
+    public function __construct(
+        UserId $postAuthorId,
+        CommentId $commentId,
+        EmailAddress $emailAddress,
+        PostId $postId,
+        string $postTitle,
+        string $postSlug
+    ) {
         $this->postAuthorId = $postAuthorId;
         $this->commentId = $commentId;
         $this->emailAddress = $emailAddress;
+        $this->postId = $postId;
         $this->postTitle = $postTitle;
         $this->postSlug = $postSlug;
     }
@@ -68,6 +81,11 @@ final class NewCommentNotification implements NotificationInterface
     public function getPostAuthorEmail(): EmailAddress
     {
         return $this->emailAddress;
+    }
+
+    public function getPostId(): PostId
+    {
+        return $this->postId;
     }
 
     public function getPostTitle(): string
