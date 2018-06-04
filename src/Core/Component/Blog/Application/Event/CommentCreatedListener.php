@@ -58,6 +58,7 @@ class CommentCreatedListener
                 $postDto->getAuthorId(),
                 $commentId,
                 new EmailAddress($postDto->getAuthorEmail(), $postDto->getAuthorFullName()),
+                $postDto->getId(),
                 $postDto->getTitle(),
                 $postDto->getSlug()
             )

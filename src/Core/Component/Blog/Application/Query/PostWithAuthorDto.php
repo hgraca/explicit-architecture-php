@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Query;
 
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\PhpExtension\ConstructableFromArrayInterface;
 use Acme\PhpExtension\ConstructableFromArrayTrait;
@@ -53,20 +54,32 @@ final class PostWithAuthorDto implements ConstructableFromArrayInterface
     private $authorEmail;
 
     /**
+     * @var PostId
+     */
+    private $id;
+
+    /**
      * @throws \Exception
      */
     public function __construct(
+        PostId $id,
         string $title,
         string $slug,
         UserId $authorId,
         string $authorFullName,
         string $authorEmail
     ) {
+        $this->id = $id;
         $this->title = $title;
         $this->slug = $slug;
         $this->authorId = $authorId;
         $this->authorFullName = $authorFullName;
         $this->authorEmail = $authorEmail;
+    }
+
+    public function getId(): PostId
+    {
+        return $this->id;
     }
 
     public function getTitle(): string
