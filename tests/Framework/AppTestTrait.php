@@ -16,6 +16,7 @@ namespace Acme\App\Test\Framework;
 
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use Acme\PhpExtension\Uuid\UuidGenerator;
+use DOMDocument;
 
 trait AppTestTrait
 {
@@ -33,5 +34,14 @@ trait AppTestTrait
     public function resetUuidGenerator(): void
     {
         UuidGenerator::reset();
+    }
+
+    public function assertValidHtml(string $html): void
+    {
+        $doc = new DOMDocument();
+
+        if ($doc->loadHTML($html) === false) {
+            self::fail('The provided string is not valid HTML.');
+        }
     }
 }

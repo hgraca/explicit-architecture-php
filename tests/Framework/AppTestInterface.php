@@ -19,4 +19,6 @@ interface AppTestInterface
     public function resetDateTimeGenerator(): void;
 
     public function resetUuidGenerator(): void;
+
+    public function assertValidHtml(string $html): void;
 }
