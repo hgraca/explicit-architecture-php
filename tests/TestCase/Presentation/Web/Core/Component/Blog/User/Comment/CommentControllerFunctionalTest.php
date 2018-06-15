@@ -23,7 +23,6 @@ use Acme\App\Test\Framework\AbstractFunctionalTest;
 use Acme\PhpExtension\DateTime\DateTimeGenerator;
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 
 /**
  * Functional test for the controllers defined inside CommentController.
@@ -67,15 +66,9 @@ final class CommentControllerFunctionalTest extends AbstractFunctionalTest
             'comment_form[content]' => 'Hi, Symfony!',
         ]);
 
-        // enables the profiler for the next request (it does nothing if the profiler is not available)
-        $client->enableProfiler();
-
         $client->submit($form);
 
-        /** @var MessageDataCollector $mailCollector */
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-        self::assertEmailWasSent(
-            $mailCollector,
+        $this->assertEmailWasSent(
             'anonymous@example.com',
             UserFixtures::JANE_EMAIL,
             $this->getTranslator()->translate(NewCommentEmailGenerator::SUBJECT_TRANSLATION_KEY)
