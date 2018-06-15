@@ -38,6 +38,7 @@ parameters:
         - 'Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface'
         - 'Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface'
         - 'Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface'
+        - 'Acme\App\Test\Framework\Decorator\EmailCollectorEmailerDecorator'
         - 'Doctrine\ORM\EntityManagerInterface'
         - 'session'
 
@@ -55,3 +56,8 @@ services:
     # So we can use these fixtures
     Acme\App\Test\Fixture\Doctrine\:
         resource: '../tests/Fixture/Doctrine/*'
+
+    Acme\App\Test\Framework\Decorator\EmailCollectorEmailerDecorator:
+        # overrides the Emailer service
+        # but that service is still available as Acme\App\Core\Port\Notification\Client\Email\EmailerInterface.inner
+        decorates: Acme\App\Core\Port\Notification\Client\Email\EmailerInterface

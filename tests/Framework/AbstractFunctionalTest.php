@@ -14,16 +14,17 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\Framework;
 
+use Acme\App\Core\Port\Notification\Client\Email\Email;
+use Acme\App\Core\Port\Notification\Client\Email\EmailAddress;
 use Acme\App\Test\Framework\Container\ContainerAwareTestTrait;
 use Acme\App\Test\Framework\Database\DatabaseAwareTestTrait;
+use Acme\App\Test\Framework\Decorator\EmailCollectorEmailerDecorator;
 use Acme\App\Test\Framework\Mock\MockTrait;
 use Acme\PhpExtension\Helper\StringHelper;
 use Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DatabaseAwareTestInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -74,31 +75,37 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
     }
 
     /**
-     * This assertion requires that the FunctionalTest enables the profiler before making the http request with:
-     *      `$client->enableProfiler();`
-     * And that the request does not follow redirects automatically.
+     * This assertion requires that the FunctionalTest does not follow redirects automatically.
      *
-     * @see http://symfony.com/doc/current/email/testing.html
+     * We can not use an email collector like here http://symfony.com/doc/current/email/testing.html
+     * because our emails are sent after the request is handled and the response is sent back.
      */
-    protected static function assertEmailWasSent(
-        MessageDataCollector $mailCollector,
+    protected function assertEmailWasSent(
         string $fromEmail = null,
         string $toEmail = null,
         string $subject = null,
         string ...$bodyPartList
     ): void {
-        /** @var Swift_Message[] $collectedEmailList */
-        $collectedEmailList = $mailCollector->getMessages();
+        $collectedEmailList = $this->getSentEmails();
 
         self::assertGreaterThan(0, \count($collectedEmailList), 'No email has been sent.');
 
-        foreach ($collectedEmailList as $message) {
+        foreach ($collectedEmailList as $email) {
             if (
-                $message instanceof Swift_Message
-                && (!$fromEmail || $fromEmail === key($message->getFrom()))
-                && (!$toEmail || $toEmail === key($message->getTo()))
-                && (!$subject || $subject === $message->getSubject())
-                && self::emailBodyContainsAllParts($message, ...$bodyPartList)
+                (!$fromEmail || $fromEmail === $email->getFrom()->getEmail())
+                && (!$toEmail
+                    || \in_array(
+                        $toEmail,
+                        array_map(
+                            function (EmailAddress $emailAddress) {
+                                return $emailAddress->getEmail();
+                            },
+                            $email->getTo()
+                        ), true
+                    )
+                )
+                && (!$subject || $subject === $email->getSubject())
+                && self::emailBodyContainsAllParts($email, ...$bodyPartList)
             ) {
                 self::assertTrue(true);
 
@@ -113,10 +120,13 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
         );
     }
 
-    private static function emailBodyContainsAllParts(Swift_Message $message, string ...$bodyPartList): bool
+    private static function emailBodyContainsAllParts(Email $email, string ...$bodyPartList): bool
     {
         foreach ($bodyPartList as $bodyPart) {
-            if (!StringHelper::contains($bodyPart, $message->getBody())) {
+            if (
+            !StringHelper::contains($bodyPart, $email->getHtmlPart()->getContent())
+            && !StringHelper::contains($bodyPart, $email->getPlainTextPart()->getContent())
+            ) {
                 return false;
             }
         }
@@ -124,18 +134,32 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
         return true;
     }
 
-    private static function formatSentEmailList($collectedEmailList): string
+    /**
+     * @param Email[] $collectedEmailList
+     */
+    private static function formatSentEmailList(array $collectedEmailList): string
     {
         $messageList = '';
-        foreach ($collectedEmailList as $message) {
-            if ($message instanceof Swift_Message) {
-                $fromEmail = key($message->getFrom());
-                $toEmail = key($message->getTo());
-                $subject = $message->getSubject();
-                $messageList .= "From: $fromEmail, To: $toEmail, Subject: $subject\n";
-            }
+        foreach ($collectedEmailList as $email) {
+            $fromEmail = key($email->getFrom());
+            $toEmail = key($email->getTo());
+            $subject = $email->getSubject();
+            $messageList .= "From: $fromEmail, To: $toEmail, Subject: $subject\n";
         }
 
         return $messageList;
+    }
+
+    /**
+     * @return Email[]
+     */
+    private function getSentEmails(): array
+    {
+        return $this->getEmailer()->getSentEmails();
+    }
+
+    private function getEmailer(): EmailCollectorEmailerDecorator
+    {
+        return $this->getService(EmailCollectorEmailerDecorator::class);
     }
 }
