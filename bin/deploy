@@ -13,7 +13,7 @@ if [ "$#" == '0' ] || [ "$#" -gt "2" ] || [ "$1" == "--help" ] || [  "$1" == "-h
 fi
 
 STAGE=${1}    # 'staging'|'production'
-APP_NAME=${2} # ${SCRUTINIZER_BRANCH}
+APP_NAME="acme-app-${2}" # acme-app-${SCRUTINIZER_BRANCH}
 PIPELINE='ppln-explicit-arch-php-sfn'
 PRODUCTION_IMAGE='hgraca/explicit-architecture:app.sfn.prd'
 
