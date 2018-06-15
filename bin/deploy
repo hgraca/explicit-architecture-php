@@ -13,7 +13,11 @@ if [ "$#" == '0' ] || [ "$#" -gt "2" ] || [ "$1" == "--help" ] || [  "$1" == "-h
 fi
 
 STAGE=${1}    # 'staging'|'production'
-APP_NAME=${2} # ${SCRUTINIZER_BRANCH}
+if [ "${2}" == "master" ]; then # Can't create an app in heroku, with the name 'master'
+    APP_NAME='blog'
+else
+    APP_NAME=${2} # ${SCRUTINIZER_BRANCH}
+fi
 PIPELINE='ppln-explicit-arch-php-sfn'
 PRODUCTION_IMAGE='hgraca/explicit-architecture:app.sfn.prd'
 
