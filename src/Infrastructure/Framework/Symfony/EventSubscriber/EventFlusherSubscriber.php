@@ -50,7 +50,7 @@ final class EventFlusherSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => ['flushEvents', self::PRIORITY],
+            KernelEvents::TERMINATE => ['flushEvents', self::PRIORITY],
             // In the case that both the Exception and Response events are triggered, we want to make sure the
             // events will not be dispatched.
             KernelEvents::EXCEPTION => ['resetEvents', self::PRIORITY + 1],
