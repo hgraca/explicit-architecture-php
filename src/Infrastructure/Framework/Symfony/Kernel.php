@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Infrastructure\Framework\Symfony;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Exception\FileLoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -52,7 +54,7 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
@@ -67,7 +69,7 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
+     * @throws FileLoaderLoadException
      */
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
