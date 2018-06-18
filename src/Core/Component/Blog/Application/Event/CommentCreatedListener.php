@@ -17,10 +17,10 @@ namespace Acme\App\Core\Component\Blog\Application\Event;
 use Acme\App\Core\Component\Blog\Application\Notification\NewComment\NewCommentNotification;
 use Acme\App\Core\Component\Blog\Application\Query\PostQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Query\PostWithAuthorDto;
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Port\Notification\Client\Email\EmailAddress;
 use Acme\App\Core\Port\Notification\NotificationServiceInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent;
+use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
 
 /**
  * Listens to the CommentCreatedEvent and triggers all the logic associated with it, in this component.

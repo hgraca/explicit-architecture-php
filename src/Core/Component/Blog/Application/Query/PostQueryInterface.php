@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Query;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
+use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
 
 interface PostQueryInterface
 {
