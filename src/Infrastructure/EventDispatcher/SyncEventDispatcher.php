@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Acme\App\Infrastructure\EventDispatcher;
 
 use Acme\App\Core\Port\EventDispatcher\BufferedEventDispatcherInterface;
-use Acme\App\Core\Port\EventDispatcher\EventInterface;
 use Acme\App\Core\Port\Lock\LockManagerInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
+use Acme\App\Core\SharedKernel\Port\EventDispatcher\EventInterface;
 use Acme\PhpExtension\Helper\TypeHelper;
 use Acme\PhpExtension\ObjectDispatcher\AbstractDispatcher;
 use Psr\Log\LoggerInterface;

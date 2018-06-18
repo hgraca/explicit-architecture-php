@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\TestCase\Infrastructure\EventDispatcher;
 
-use Acme\App\Core\Port\EventDispatcher\EventInterface;
+use Acme\App\Core\SharedKernel\Port\EventDispatcher\EventInterface;
 
 final class DummyTwoEvent implements EventInterface
 {
