@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Core\Port\EventDispatcher;
+namespace Acme\App\Core\SharedKernel\Port\EventDispatcher;
 
 /**
  * This interface has no functional value, because it does not require a set of methods, but it does have semantic

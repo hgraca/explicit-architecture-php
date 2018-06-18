@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\SharedKernel\Component\Blog\Application\Event;
 
-use Acme\App\Core\Port\EventDispatcher\EventInterface;
 use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
+use Acme\App\Core\SharedKernel\Port\EventDispatcher\EventInterface;
 
 /**
  * This is just a DTO, it only has getters, theres no logic to test, so we ignore it for code coverage purposes.

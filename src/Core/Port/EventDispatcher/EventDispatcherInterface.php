@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Port\EventDispatcher;
 
+use Acme\App\Core\SharedKernel\Port\EventDispatcher\EventInterface;
+
 interface EventDispatcherInterface
 {
     /**
