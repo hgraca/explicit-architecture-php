@@ -16,12 +16,12 @@ namespace Acme\App\Test\TestCase\Core\Component\Blog\Application\Notification\Ne
 
 use Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailGenerator;
 use Acme\App\Core\Component\Blog\Application\Notification\NewComment\NewCommentNotification;
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Notification\Client\Email\EmailAddress;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Core\Port\Translation\TranslatorInterface;
+use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 

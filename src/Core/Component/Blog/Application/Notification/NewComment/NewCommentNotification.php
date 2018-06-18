@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Application\Notification\NewComment;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Notification\Client\Email\EmailAddress;
 use Acme\App\Core\Port\Notification\NotificationInterface;
+use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 final class NewCommentNotification implements NotificationInterface
@@ -33,7 +33,7 @@ final class NewCommentNotification implements NotificationInterface
     private $postAuthorMobile;
 
     /**
-     * @var CommentId
+     * @var \Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId
      */
     private $commentId;
 

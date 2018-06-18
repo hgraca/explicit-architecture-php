@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Infrastructure\Persistence\Doctrine\Type;
 
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
+use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
 
 final class CommentIdType extends AbstractUuidType
 {

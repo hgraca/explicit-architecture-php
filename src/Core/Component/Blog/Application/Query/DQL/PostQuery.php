@@ -17,13 +17,13 @@ namespace Acme\App\Core\Component\Blog\Application\Query\DQL;
 use Acme\App\Core\Component\Blog\Application\Query\CommentListQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Query\PostQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Query\TagListQueryInterface;
-use Acme\App\Core\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\ResultCollection;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
+use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\PhpExtension\Exception\AcmeOverloadingException;
 use Acme\PhpExtension\Helper\TypeHelper;
 

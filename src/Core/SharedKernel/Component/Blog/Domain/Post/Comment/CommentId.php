@@ -12,10 +12,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Core\Component\Blog\Domain\Post\Comment;
+namespace Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment;
 
 use Acme\PhpExtension\Identity\AbstractUuidId;
 
+/**
+ * This ID needs to be in the SharedKernel because the CommentCreatedEvent depends on it, so when if it is sent over a
+ * queue to a separate service, it would need this ID there to be hydrated (be it in a PHP class format or in a
+ * descriptive format).
+ */
 final class CommentId extends AbstractUuidId
 {
 }
