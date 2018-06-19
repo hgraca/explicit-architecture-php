@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Infrastructure\Framework\Symfony\EventSubscriber;
+namespace Acme\App\Test\TestCase\Infrastructure\Persistence;
 
 use Acme\App\Core\Port\Lock\LockManagerInterface;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
-use Acme\App\Infrastructure\Framework\Symfony\EventSubscriber\RequestTransactionSubscriber;
+use Acme\App\Infrastructure\Persistence\RequestTransactionSubscriber;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Mockery;
 use Mockery\MockInterface;
@@ -45,7 +45,7 @@ final class RequestTransactionSubscriberUnitTest extends AbstractUnitTest
     {
         $this->transactionServiceMock = Mockery::mock(TransactionServiceInterface::class);
         $this->lockManagerMock = Mockery::mock(LockManagerInterface::class);
-        $this->subscriber = new RequestTransactionSubscriber($this->transactionServiceMock, $this->lockManagerMock);
+        $this->subscriber = new \Acme\App\Infrastructure\Persistence\RequestTransactionSubscriber($this->transactionServiceMock, $this->lockManagerMock);
     }
 
     /**
