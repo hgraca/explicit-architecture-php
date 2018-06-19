@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Infrastructure\Framework\Symfony\CompilerPass;
+namespace Acme\App\Test\TestCase\Infrastructure\EventDispatcher;
 
 use Acme\App\Infrastructure\EventDispatcher\SyncEventDispatcher;
-use Acme\App\Infrastructure\Framework\Symfony\CompilerPass\SyncEventDispatcherCompilerPass;
+use Acme\App\Infrastructure\EventDispatcher\SyncEventDispatcherCompilerPass;
 use Acme\App\Test\Framework\AbstractUnitTest;
 use Mockery;
 use Mockery\MockInterface;
