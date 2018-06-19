@@ -15,31 +15,29 @@ declare(strict_types=1);
 namespace Acme\App\Infrastructure\EventDispatcher;
 
 use Acme\App\Core\Port\EventDispatcher\BufferedEventDispatcherInterface;
-use Acme\App\Infrastructure\Persistence\RequestTransactionSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class EventFlusherSubscriber implements EventSubscriberInterface
 {
-    /**
-     * The default is 0.
-     * The highest the priority, the earlier a listener is executed.
-     * The symfony subscribers use values from -250 to +250, but we can use whatever integers we want.
-     *
-     * We want to execute this subscriber after committing the main use case DB transactions, so that the events
-     * already have available the DB changes made by the main use case that triggered the events.
-     * So we make sure the this subscriber priority is lower than the RequestTransactionSubscriber.
-     */
-    private const PRIORITY = RequestTransactionSubscriber::PRIORITY - 5;
+    private const DEFAULT_PRIORITY = 5;
 
     /**
      * @var BufferedEventDispatcherInterface
      */
     private $bufferedEventDispatcher;
 
-    public function __construct(BufferedEventDispatcherInterface $bufferedEventDispatcher)
-    {
+    /**
+     * @var int
+     */
+    private static $priority = self::DEFAULT_PRIORITY;
+
+    public function __construct(
+        BufferedEventDispatcherInterface $bufferedEventDispatcher,
+        int $eventFlusherSubscriberPriority = self::DEFAULT_PRIORITY
+    ) {
         $this->bufferedEventDispatcher = $bufferedEventDispatcher;
+        self::$priority = $eventFlusherSubscriberPriority;
     }
 
     /**
@@ -51,10 +49,10 @@ final class EventFlusherSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::TERMINATE => ['flushEvents', self::PRIORITY],
+            KernelEvents::TERMINATE => ['flushEvents', self::$priority],
             // In the case that both the Exception and Response events are triggered, we want to make sure the
             // events will not be dispatched.
-            KernelEvents::EXCEPTION => ['resetEvents', self::PRIORITY + 1],
+            KernelEvents::EXCEPTION => ['resetEvents', self::$priority + 1],
         ];
     }
 

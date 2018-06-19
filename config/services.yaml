@@ -42,6 +42,13 @@ services:
             $countryCode: '%country%'
             $smsSender: '%notification.sms.sender%'
 
+            # Event subscribers priorities:
+            #  The default is 0.
+            #  The highest the priority, the earlier a listener is executed.
+            #  The symfony subscribers use values from -250 to +250, but we can use whatever integers we want.
+            $requestTransactionSubscriberPriority: 10
+            $eventFlusherSubscriberPriority: 5
+
     ####################################################################################################################
     # BATCH AUTO-WIRING
     ####################################################################################################################
