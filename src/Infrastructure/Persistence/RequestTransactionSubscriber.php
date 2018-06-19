@@ -21,12 +21,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class RequestTransactionSubscriber implements EventSubscriberInterface
 {
-    /**
-     * The default is 0.
-     * The highest the priority, the earlier a listener is executed.
-     * The symfony subscribers use values from -250 to +250, but we can use whatever integers we want.
-     */
-    public const PRIORITY = 10;
+    private const DEFAULT_PRIORITY = 10;
 
     /**
      * @var TransactionServiceInterface
@@ -38,12 +33,19 @@ final class RequestTransactionSubscriber implements EventSubscriberInterface
      */
     private $lockManager;
 
+    /**
+     * @var int
+     */
+    private static $priority = self::DEFAULT_PRIORITY;
+
     public function __construct(
         TransactionServiceInterface $transactionService,
-        LockManagerInterface $lockManager
+        LockManagerInterface $lockManager,
+        int $requestTransactionSubscriberPriority = self::DEFAULT_PRIORITY
     ) {
         $this->transactionService = $transactionService;
         $this->lockManager = $lockManager;
+        self::$priority = $requestTransactionSubscriberPriority;
     }
 
     /**
@@ -55,11 +57,11 @@ final class RequestTransactionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::CONTROLLER => ['startTransaction', self::PRIORITY],
-            KernelEvents::RESPONSE => ['finishTransaction', self::PRIORITY],
+            KernelEvents::CONTROLLER => ['startTransaction', self::$priority],
+            KernelEvents::RESPONSE => ['finishTransaction', self::$priority],
             // In the case that both the Exception and Response events are triggered, we want to make sure the
             // transaction is rolled back before trying to commit it.
-            KernelEvents::EXCEPTION => ['rollbackTransaction', self::PRIORITY + 1],
+            KernelEvents::EXCEPTION => ['rollbackTransaction', self::$priority + 1],
         ];
     }
 
