@@ -12,9 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Infrastructure\Framework\Symfony\EventSubscriber;
+namespace Acme\App\Infrastructure\EventDispatcher;
 
 use Acme\App\Core\Port\EventDispatcher\BufferedEventDispatcherInterface;
+use Acme\App\Infrastructure\Framework\Symfony\EventSubscriber\RequestTransactionSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
