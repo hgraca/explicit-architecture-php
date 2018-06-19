@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Infrastructure\EventDispatcher;
 
 use Acme\App\Core\Port\EventDispatcher\BufferedEventDispatcherInterface;
-use Acme\App\Infrastructure\Framework\Symfony\EventSubscriber\RequestTransactionSubscriber;
+use Acme\App\Infrastructure\Persistence\RequestTransactionSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
