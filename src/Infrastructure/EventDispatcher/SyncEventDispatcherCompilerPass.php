@@ -12,9 +12,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Infrastructure\Framework\Symfony\CompilerPass;
+namespace Acme\App\Infrastructure\EventDispatcher;
 
-use Acme\App\Infrastructure\EventDispatcher\SyncEventDispatcher;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

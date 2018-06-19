@@ -12,15 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Test\TestCase\Infrastructure\Framework\Symfony\CompilerPass;
+namespace Acme\App\Test\TestCase\Infrastructure\EventDispatcher;
 
-final class TwoDummyListener
+final class OneDummyListener
 {
-    public function handleOne(): void
-    {
-    }
-
-    public function handleAnother(): void
+    public function handle(): void
     {
     }
 }
