@@ -1,7 +1,6 @@
 paths:
   - ./lib/php-extension/src
   - ./src
-  - ./vendor
 
 ##############################################################
 ##   LAYERS
@@ -101,11 +100,13 @@ layers:
     collectors:
       - type: bool
         must:
-          - type: directory
-            regex: vendor/.*
           - type: className
             regex: .+\\.*
         must_not:
+          - type: className
+            regex: ^Acme\\PhpExtension\\.*
+          - type: className
+            regex: ^Acme\\App\\.*
           - type: className
             regex: ^Psr\\.*
 
