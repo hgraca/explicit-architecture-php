@@ -1,0 +1,337 @@
+paths:
+  - ./lib/php-extension/src
+  - ./src
+
+layers:
+
+##############################
+#   PORT
+##############################
+
+  - name: UI-Port
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Core\\Port\\.*
+
+  - name: Core-Port
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\Port\\.*
+
+  - name: SharedKernel-Port
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\SharedKernel\\Port\\.*
+
+##############################
+#   UI COMPONENTS
+##############################
+
+  - name: UI-Component-Blog-Admin
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Core\\Component\\Blog\\Admin\\.*
+
+  - name: UI-Component-Blog-Anonymous
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Core\\Component\\Blog\\Anonymous\\.*
+
+  - name: UI-Component-Blog-User
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Core\\Component\\Blog\\User\\.*
+
+  - name: UI-Component-Login
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Core\\Component\\Login\\.*
+
+##############################
+#   UI ADAPTERS
+##############################
+
+  - name: UI-Infrastructure-Auth
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Infrastructure\\Auth\\.*
+
+  - name: UI-Infrastructure-FlashMessage
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Infrastructure\\FlashMessage\\.*
+
+  - name: UI-Infrastructure-Form
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Infrastructure\\Form\\.*
+
+  - name: UI-Infrastructure-Paginator
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Infrastructure\\Paginator\\.*
+
+  - name: UI-Infrastructure-Response
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Infrastructure\\Response\\.*
+
+  - name: UI-Infrastructure-Router
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Infrastructure\\Router\\.*
+
+##############################
+#   CORE COMPONENTS
+##############################
+
+  - name: Core-Component-Blog
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\Component\\Blog\\.*
+
+  - name: Core-Component-User
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\Component\\User\\.*
+
+  - name: SharedKernel-Component
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\Sharedkernel\\Component\\Blog\\.*
+      - type: className
+        regex: ^Acme\\App\\Core\\Sharedkernel\\Component\\User\\.*
+
+##############################
+#   INFRASTRUCTURE ADAPTERS
+##############################
+
+  - name: Core-Infrastructure-EventDispatcher
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\EventDispatcher\\.*
+
+  - name: Core-Infrastructure-Framework
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\Framework\\.*
+
+  - name: Core-Infrastructure-Lock
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\Lock\\.*
+
+  - name: Core-Infrastructure-Notification
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\Notification\\.*
+
+  - name: Core-Infrastructure-Persistence
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\Persistence\\.*
+
+  - name: Core-Infrastructure-Router
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\Router\\.*
+
+  - name: Core-Infrastructure-TemplateEngine
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\TemplateEngine\\.*
+
+  - name: Core-Infrastructure-Translation
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\Translation\\.*
+
+  - name: Core-Infrastructure-Validation
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\Validation\\.*
+
+##############################################################
+##   RULES SET
+##
+##   Some dependency rules might be missing, I only added the ones currently needed to make the test green.
+##   Any new dependency should be analysed and added if appropriate.
+##
+###############################
+
+ruleset:
+
+  UI-Port:
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Port:
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  SharedKernel-Component:
+    - SharedKernel-Port
+
+  UI-Component-Blog-Admin:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Component-Blog-Anonymous:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Component-Blog-User:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Component-Login:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+#=====
+
+  UI-Infrastructure-Auth:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Infrastructure-FlashMessage:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Infrastructure-Form:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Infrastructure-Paginator:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Infrastructure-Response:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  UI-Infrastructure-Router:
+    - UI-Port
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+#=====
+
+  Core-Component-Blog:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+
+  Core-Component-User:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+
+#=====
+
+  Core-Infrastructure-EventDispatcher:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-Framework:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-Lock:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-Notification:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-Persistence:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-Router:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-TemplateEngine:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-Translation:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
+  Core-Infrastructure-Validation:
+    - Core-Port
+    - SharedKernel-Port
+    - SharedKernel-Component
+    - Core-Component-Blog
+    - Core-Component-User
+
