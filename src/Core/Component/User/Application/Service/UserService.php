@@ -19,7 +19,7 @@ use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
 use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberException;
-use Symfony\Component\Console\Exception\RuntimeException;
+use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class UserService
@@ -86,7 +86,7 @@ final class UserService
         $user = $this->userRepository->findOneByUsername($username);
 
         if ($user === null) {
-            throw new RuntimeException(sprintf('User with username "%s" not found.', $username));
+            throw new AppRuntimeException(sprintf('User with username "%s" not found.', $username));
         }
 
         $this->userRepository->remove($user);
@@ -99,7 +99,7 @@ final class UserService
     {
         // first check if a user with the same username already exists.
         if ($this->usernameExists($username)) {
-            throw new RuntimeException("There is already a user registered with the \"$username\" username.");
+            throw new AppRuntimeException("There is already a user registered with the \"$username\" username.");
         }
 
         // validate password and email if is not this input means interactive.
@@ -110,7 +110,7 @@ final class UserService
 
         // check if a user with the same email already exists.
         if ($this->emailExists($email)) {
-            throw new RuntimeException("There is already a user registered with the \"$email\" email.");
+            throw new AppRuntimeException("There is already a user registered with the \"$email\" email.");
         }
     }
 
