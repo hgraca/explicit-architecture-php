@@ -146,7 +146,11 @@ test-ci:
 	$(MAKE) test-acc-ci
 
 test-dep:
+	$(MAKE) test-dep-components
 	$(MAKE) test-dep-layers
+
+test-dep-components:
+	deptrac analyze depfile.components.yml --formatter-graphviz-dump-image=var/deptrac_components.png --formatter-graphviz-dump-dot=var/deptrac_components.dot
 
 test-dep-layers:
 	deptrac analyze depfile.layers.yml --formatter-graphviz-dump-image=var/deptrac_layers.png --formatter-graphviz-dump-dot=var/deptrac_layers.dot
