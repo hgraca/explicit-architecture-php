@@ -18,14 +18,14 @@ use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
+use Acme\App\Core\Port\Security\UserSecretEncoderInterface;
 use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberException;
 use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class UserService
 {
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserSecretEncoderInterface
      */
     private $encoder;
 
@@ -40,7 +40,7 @@ final class UserService
     private $userRepository;
 
     public function __construct(
-        UserPasswordEncoderInterface $encoder,
+        UserSecretEncoderInterface $encoder,
         UserValidationService $validator,
         UserRepositoryInterface $userRepository
     ) {
@@ -72,7 +72,7 @@ final class UserService
             $fullName,
             $isAdmin ? User::ROLE_ADMIN : User::ROLE_USER
         );
-        $user->setPassword($this->encoder->encodePassword($user, $plainPassword));
+        $user->setPassword($this->encoder->encode($plainPassword, $user));
         $this->userRepository->add($user);
 
         return $user;
