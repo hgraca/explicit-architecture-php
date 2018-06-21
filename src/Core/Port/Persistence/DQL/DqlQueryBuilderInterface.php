@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Acme\App\Core\Port\Persistence\DQL;
 
 use Acme\App\Core\Port\Persistence\QueryBuilderInterface;
-use Doctrine\ORM\Query\QueryException;
 
 interface DqlQueryBuilderInterface extends QueryBuilderInterface
 {
@@ -155,8 +154,6 @@ interface DqlQueryBuilderInterface extends QueryBuilderInterface
      *
      * @param string $alias   the root alias of the class
      * @param string $indexBy The index for the from.*
-     *
-     * @throws QueryException
      */
     public function indexBy(string $alias, string $indexBy): self;
 
