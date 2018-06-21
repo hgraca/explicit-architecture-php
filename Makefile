@@ -145,6 +145,12 @@ test-ci:
 	docker exec -it app.sfn.ci cat ${COVERAGE_REPORT_PATH} > ${COVERAGE_REPORT_PATH}
 	$(MAKE) test-acc-ci
 
+test-dep:
+	$(MAKE) test-dep-layers
+
+test-dep-layers:
+	deptrac analyze depfile.layers.yml --formatter-graphviz-dump-image=var/deptrac_layers.png --formatter-graphviz-dump-dot=var/deptrac_layers.dot
+
 test_cov:
 	ENV='tst' ./bin/run make test_cov-guest
 

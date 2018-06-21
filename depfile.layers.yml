@@ -1,0 +1,207 @@
+paths:
+  - ./lib/php-extension/src
+  - ./src
+  - ./vendor
+
+##############################################################
+##   LAYERS
+###############################
+
+layers:
+
+###############################
+##   USER INTERFACE
+###############################
+
+  - name: UI-Component
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Core\\Component\\.*
+
+  - name: UI-Port
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Core\\Port\\.*
+
+  - name: UI-Infrastructure
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Presentation\\Web\\Infrastructure\\.*
+
+##############################
+#   APPLICATION
+##############################
+
+  - name: Application
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\Component\\.*\\Application\\.*
+
+##############################
+#   DOMAIN
+##############################
+
+  - name: Domain
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\Component\\.*\\Domain\\.*
+
+##############################
+#   PORT
+##############################
+
+  - name: Port
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\Port\\.*
+
+  - name: Port-PSR
+    collectors:
+      - type: className
+        regex: ^Psr\\.*
+
+##############################
+#   SHARED KERNEL
+##############################
+
+  - name: SharedKernel-Application
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\SharedKernel\\Component\\.*\\Application\\.*
+
+  - name: SharedKernel-Domain
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\SharedKernel\\Component\\.*\\Domain\\.*
+
+  - name: SharedKernel-Port
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Core\\SharedKernel\\Port\\.*
+
+##############################
+#   INFRASTRUCTURE
+##############################
+
+  - name: Infrastructure
+    collectors:
+      - type: className
+        regex: ^Acme\\App\\Infrastructure\\.*
+
+###############################
+##   LIBRARIES
+###############################
+
+  - name: PhpExtension
+    collectors:
+      - type: className
+        regex: ^Acme\\PhpExtension\\.*
+
+  - name: Vendor
+    collectors:
+      - type: bool
+        must:
+          - type: directory
+            regex: vendor/.*
+          - type: className
+            regex: .+\\.*
+        must_not:
+          - type: className
+            regex: ^Psr\\.*
+
+##############################################################
+##   RULES SET
+##
+##   Some dependency rules might be missing, I only added the ones currently needed to make the test green.
+##   Any new dependency should be analysed and added if appropriate.
+##
+###############################
+
+ruleset:
+
+  UI-Component:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - UI-Port
+
+  UI-Port:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - UI-Component
+
+  UI-Infrastructure:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - UI-Port
+    - UI-Component
+    - Vendor
+
+  Application:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Port
+    - Port-PSR
+
+  Domain:
+    - PhpExtension
+    - Port-PSR
+    - SharedKernel-Domain
+
+  Port:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - SharedKernel-Port
+    - Domain
+    - Application
+    - Port-PSR
+
+  SharedKernel-Application:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Port
+
+  SharedKernel-Domain:
+    - PhpExtension
+    - Vendor
+
+  SharedKernel-Port:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Port-PSR
+
+  Infrastructure:
+    - PhpExtension
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - SharedKernel-Port
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - Vendor
+
+  PhpExtension:
+    - Port-PSR
+    - Vendor
+
+  Vendor:
+    - Port-PSR
