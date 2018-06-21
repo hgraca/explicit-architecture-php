@@ -16,7 +16,7 @@ namespace Acme\App\Core\Component\User\Application\Validation;
 
 use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberException;
 use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberValidatorInterface;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Acme\App\Core\SharedKernel\Exception\InvalidArgumentException;
 
 /**
  * This class is used to provide an example of integrating simple classes as
