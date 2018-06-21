@@ -148,12 +148,16 @@ test-ci:
 test-dep:
 	$(MAKE) test-dep-components
 	$(MAKE) test-dep-layers
+	$(MAKE) test-dep-units
 
 test-dep-components:
 	deptrac analyze depfile.components.yml --formatter-graphviz-dump-image=var/deptrac_components.png --formatter-graphviz-dump-dot=var/deptrac_components.dot
 
 test-dep-layers:
 	deptrac analyze depfile.layers.yml --formatter-graphviz-dump-image=var/deptrac_layers.png --formatter-graphviz-dump-dot=var/deptrac_layers.dot
+
+test-dep-units:
+	deptrac analyze depfile.units.yml --formatter-graphviz-dump-image=var/deptrac_units.png --formatter-graphviz-dump-dot=var/deptrac_units.dot
 
 test_cov:
 	ENV='tst' ./bin/run make test_cov-guest

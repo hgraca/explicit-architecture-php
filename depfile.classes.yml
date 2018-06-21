@@ -1,0 +1,52 @@
+paths:
+  - ./lib/php-extension/src
+  - ./src
+
+layers:
+
+  - name: Controller
+    collectors:
+      - type: className
+        regex: .*Controller$
+
+  - name: Service
+    collectors:
+      - type: className
+        regex: .*Service$
+
+  - name: Query
+    collectors:
+      - type: className
+        regex: .*Query$
+      - type: className
+        regex: .*QueryInterface$
+
+  - name: Repository
+    collectors:
+      - type: className
+        regex: .*Repository$
+      - type: className
+        regex: .*RepositoryInterface$
+
+##############################################################
+##   RULES SET
+##
+##   Some dependency rules might be missing, I only added the ones currently needed to make the test green.
+##   Any new dependency should be analysed and added if appropriate.
+##
+###############################
+
+ruleset:
+
+  Controller:
+    - Service
+    - Query
+    - Repository
+
+  Service:
+    - Query
+    - Repository
+
+  Query: ~
+
+  Repository: ~
