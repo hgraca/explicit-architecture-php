@@ -12,10 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Core\Component\Blog\Application\Security;
+namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony\Voter;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Presentation\Web\Core\Component\Blog\PostVoter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -27,26 +28,33 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  */
-class PostVoter extends Voter
+class PostVoterAdapter extends Voter
 {
-    // Defining these constants is overkill for this simple application, but for real
-    // applications, it's a recommended practice to avoid relying on "magic strings"
-    public const SHOW = 'show';
-    public const EDIT = 'edit';
-    public const DELETE = 'delete';
+    /**
+     * @var PostVoter
+     */
+    private $postVoter;
+
+    public function __construct(PostVoter $postVoter)
+    {
+        $this->postVoter = $postVoter;
+    }
 
     /**
+     * @param string $attribute
+     * @param Post $subject
+     *
      * {@inheritdoc}
      */
     protected function supports($attribute, $subject): bool
     {
-        // this voter is only executed for three specific permissions on Post objects
-        return $subject instanceof Post && \in_array($attribute, [self::SHOW, self::EDIT, self::DELETE], true);
+        return $this->postVoter->supports($attribute, $subject);
     }
 
     /**
      * {@inheritdoc}
      *
+     * @param string $attribute
      * @param Post $post
      */
     protected function voteOnAttribute($attribute, $post, TokenInterface $token): bool
@@ -58,9 +66,6 @@ class PostVoter extends Voter
             return false;
         }
 
-        // the logic of this voter is pretty simple: if the logged user is the
-        // author of the given blog post, grant permission; otherwise, deny it.
-        // (the supports() method guarantees that $post is a Post object)
-        return $user->getId()->equals($post->getAuthorId());
+        return $this->postVoter->voteOnAttribute($attribute, $post, $user);
     }
 }

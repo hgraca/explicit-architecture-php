@@ -16,13 +16,13 @@ namespace Acme\App\Presentation\Web\Core\Component\Blog\Admin\Post;
 
 use Acme\App\Core\Component\Blog\Application\Query\PostQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
-use Acme\App\Core\Component\Blog\Application\Security\PostVoter;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
+use Acme\App\Presentation\Web\Core\Port\Auth\ResourceActionVoterInterface;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
@@ -125,7 +125,7 @@ class PostController
     {
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            PostVoter::SHOW,
+            ResourceActionVoterInterface::SHOW,
             'When the user is authenticated, posts can only be shown to their authors.',
             $this->postRepository->find(new PostId($request->getAttribute('id')))
         );
@@ -149,7 +149,7 @@ class PostController
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            PostVoter::EDIT,
+            ResourceActionVoterInterface::EDIT,
             'Posts can only be edited by their authors.',
             $post
         );
@@ -174,7 +174,7 @@ class PostController
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            PostVoter::EDIT,
+            ResourceActionVoterInterface::EDIT,
             'Posts can only be edited by their authors.',
             $post
         );
@@ -203,7 +203,7 @@ class PostController
 
         $this->authorizationService->denyAccessUnlessGranted(
             [],
-            PostVoter::DELETE,
+            ResourceActionVoterInterface::DELETE,
             'Posts can only be deleted by an admin or the author.',
             $post
         );
