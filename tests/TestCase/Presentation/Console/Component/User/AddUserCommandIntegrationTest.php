@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Console\Component\User;
 
 use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Infrastructure\Security\SecurityUser;
 use Acme\App\Presentation\Console\Component\User\AddUserCommand;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -116,7 +117,8 @@ final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
         $this->assertSame($this->userData['username'], $user->getUsername());
         $this->assertSame($this->userData['email'], $user->getEmail());
         $this->assertSame($this->userData['mobile'], $user->getMobile());
-        $this->assertTrue($container->get('security.password_encoder')->isPasswordValid($user, $this->userData['password']));
+        $this->assertTrue($container->get('security.password_encoder')
+            ->isPasswordValid(SecurityUser::fromUser($user), $this->userData['password']));
         $this->assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER'], $user->getRoles());
     }
 

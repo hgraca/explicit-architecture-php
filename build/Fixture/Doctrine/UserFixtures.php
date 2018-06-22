@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Build\Fixture\Doctrine;
 
 use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Infrastructure\Security\SecurityUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -55,7 +56,7 @@ class UserFixtures extends Fixture
             'Tom Doe',
             User::ROLE_ADMIN
         );
-        $encodedPassword = $this->passwordEncoder->encodePassword($tomAdmin, 'kitten');
+        $encodedPassword = $this->passwordEncoder->encodePassword(SecurityUser::fromUser($tomAdmin), 'kitten');
         $tomAdmin->setPassword($encodedPassword);
         $manager->persist($tomAdmin);
         // In case if fixture objects have relations to other fixtures, adds a reference

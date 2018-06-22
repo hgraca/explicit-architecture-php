@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony\Voter;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Infrastructure\Security\SecurityUser;
 use Acme\App\Presentation\Web\Core\Component\Blog\PostVoter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -59,13 +59,13 @@ class PostVoterAdapter extends Voter
      */
     protected function voteOnAttribute($attribute, $post, TokenInterface $token): bool
     {
-        $user = $token->getUser();
+        $securityUser = $token->getUser();
 
         // the user must be logged in; if not, deny permission
-        if (!$user instanceof User) {
+        if (!$securityUser instanceof SecurityUser) {
             return false;
         }
 
-        return $this->postVoter->voteOnAttribute($attribute, $post, $user);
+        return $this->postVoter->voteOnAttribute($attribute, $post, $securityUser->getUserId());
     }
 }

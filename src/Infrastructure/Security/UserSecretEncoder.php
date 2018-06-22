@@ -32,6 +32,6 @@ final class UserSecretEncoder implements UserSecretEncoderInterface
 
     public function encode(string $secret, User $user): string
     {
-        return $this->symfonyEncoder->encodePassword($user, $secret);
+        return $this->symfonyEncoder->encodePassword(SecurityUser::fromUser($user), $secret);
     }
 }
