@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\User\Domain\User;
 
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Defines the properties of the User entity to represent the application users.
@@ -28,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class User implements UserInterface, \Serializable
+class User implements \Serializable
 {
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_USER = 'ROLE_USER';
@@ -140,7 +139,7 @@ class User implements UserInterface, \Serializable
         $this->mobile = $mobile;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -168,31 +167,6 @@ class User implements UserInterface, \Serializable
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
-    }
-
-    /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * {@inheritdoc}
-     */
-    public function getSalt(): ?string
-    {
-        // See "Do you need to use a Salt?" at https://symfony.com/doc/current/cookbook/security/entity_provider.html
-        // we're using bcrypt in security.yml to encode the password, so
-        // the salt value is built-in and you don't have to generate one
-
-        return null;
-    }
-
-    /**
-     * Removes sensitive data from the user.
-     *
-     * {@inheritdoc}
-     */
-    public function eraseCredentials(): void
-    {
-        // if you had a plainPassword property, you'd nullify it here
-        // $this->plainPassword = null;
     }
 
     /**

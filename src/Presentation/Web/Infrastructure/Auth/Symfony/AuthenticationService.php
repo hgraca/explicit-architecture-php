@@ -14,8 +14,10 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony;
 
+use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
+use Acme\App\Infrastructure\Security\SecurityUser;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationException;
 use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
 use Acme\App\Presentation\Web\Core\Port\Auth\NoUserAuthenticatedException;
@@ -50,16 +52,23 @@ final class AuthenticationService implements AuthenticationServiceInterface
      */
     private $session;
 
+    /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
+
     public function __construct(
         CsrfTokenManagerInterface $csrfTokenManager,
         TokenStorageInterface $tokenStorage,
         HttpFoundationFactoryInterface $symfonyRequestFactory,
-        SessionInterface $session
+        SessionInterface $session,
+        UserRepositoryInterface $userRepository
     ) {
         $this->csrfTokenManager = $csrfTokenManager;
         $this->tokenStorage = $tokenStorage;
         $this->symfonyRequestFactory = $symfonyRequestFactory;
         $this->session = $session;
+        $this->userRepository = $userRepository;
     }
 
     public function isCsrfTokenValid(string $id, string $token): bool
@@ -69,18 +78,12 @@ final class AuthenticationService implements AuthenticationServiceInterface
 
     public function getLoggedInUserId(): UserId
     {
-        return $this->getLoggedInUser()->getId();
+        return $this->getSecurityUser()->getUserId();
     }
 
     public function getLoggedInUser(): User
     {
-        $token = $this->tokenStorage->getToken();
-
-        if ($token === null || !\is_object($user = $token->getUser())) {
-            throw new NoUserAuthenticatedException();
-        }
-
-        return $user;
+        return $this->userRepository->findOneById($this->getLoggedInUserId());
     }
 
     public function getLastAuthenticationError(
@@ -121,5 +124,16 @@ final class AuthenticationService implements AuthenticationServiceInterface
         }
 
         return $this->session === null ? '' : $this->session->get(Security::LAST_USERNAME, '');
+    }
+
+    private function getSecurityUser(): SecurityUser
+    {
+        $token = $this->tokenStorage->getToken();
+
+        if ($token === null || !\is_object($securityUser = $token->getUser())) {
+            throw new NoUserAuthenticatedException();
+        }
+
+        return $securityUser;
     }
 }

@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Port\Auth;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 interface ResourceActionVoterInterface
 {
@@ -27,5 +27,5 @@ interface ResourceActionVoterInterface
 
     public function supports(string $attribute, $subject): bool;
 
-    public function voteOnAttribute(string $attribute, Post $post, User $user): bool;
+    public function voteOnAttribute(string $attribute, Post $post, UserId $userId): bool;
 }

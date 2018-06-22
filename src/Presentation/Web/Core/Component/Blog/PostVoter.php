@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Web\Core\Component\Blog;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Presentation\Web\Core\Port\Auth\ResourceActionVoterInterface;
 
 final class PostVoter implements ResourceActionVoterInterface
@@ -29,11 +29,11 @@ final class PostVoter implements ResourceActionVoterInterface
         return $subject instanceof Post && \in_array($attribute, [self::SHOW, self::EDIT, self::DELETE], true);
     }
 
-    public function voteOnAttribute(string $attribute, Post $post, User $user): bool
+    public function voteOnAttribute(string $attribute, Post $post, UserId $userId): bool
     {
         // the logic of this voter is pretty simple: if the logged user is the
         // author of the given blog post, grant permission; otherwise, deny it.
         // (the supports() method guarantees that $post is a Post object)
-        return $user->getId()->equals($post->getAuthorId());
+        return $userId->equals($post->getAuthorId());
     }
 }
