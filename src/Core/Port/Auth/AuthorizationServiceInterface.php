@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Port\Auth;
+namespace Acme\App\Core\Port\Auth;
 
 interface AuthorizationServiceInterface
 {

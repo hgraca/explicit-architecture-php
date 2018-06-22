@@ -12,15 +12,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony;
+namespace Acme\App\Infrastructure\Auth\Symfony;
 
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\Port\Auth\AuthenticationException;
+use Acme\App\Core\Port\Auth\AuthenticationServiceInterface;
+use Acme\App\Core\Port\Auth\NoUserAuthenticatedException;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
-use Acme\App\Infrastructure\Security\SecurityUser;
-use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationException;
-use Acme\App\Presentation\Web\Core\Port\Auth\AuthenticationServiceInterface;
-use Acme\App\Presentation\Web\Core\Port\Auth\NoUserAuthenticatedException;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony;
+namespace Acme\App\Infrastructure\Auth\Symfony;
 
-use Acme\App\Presentation\Web\Core\Port\Auth\AccessDeniedException;
-use Acme\App\Presentation\Web\Core\Port\Auth\AuthorizationServiceInterface;
+use Acme\App\Core\Port\Auth\AccessDeniedException;
+use Acme\App\Core\Port\Auth\AuthorizationServiceInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class AuthorizationService implements AuthorizationServiceInterface
