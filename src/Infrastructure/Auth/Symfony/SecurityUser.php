@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Infrastructure\Security;
+namespace Acme\App\Infrastructure\Auth\Symfony;
 
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;

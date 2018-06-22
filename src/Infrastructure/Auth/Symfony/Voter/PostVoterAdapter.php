@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony\Voter;
+namespace Acme\App\Infrastructure\Auth\Symfony\Voter;
 
+use Acme\App\Core\Component\Blog\Application\Auth\PostVoter;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Infrastructure\Security\SecurityUser;
-use Acme\App\Presentation\Web\Core\Component\Blog\PostVoter;
+use Acme\App\Infrastructure\Auth\Symfony\SecurityUser;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class PostVoterAdapter extends Voter
 {
     /**
-     * @var PostVoter
+     * @var \Acme\App\Core\Component\Blog\Domain\Post\PostVoter
      */
     private $postVoter;
 

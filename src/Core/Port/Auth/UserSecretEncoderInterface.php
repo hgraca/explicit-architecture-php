@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Core\Port\Security;
+namespace Acme\App\Core\Port\Auth;
 
 use Acme\App\Core\Component\User\Domain\User\User;
 

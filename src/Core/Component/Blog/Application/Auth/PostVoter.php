@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Core\Component\Blog;
+namespace Acme\App\Core\Component\Blog\Application\Auth;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Port\Auth\ResourceActionVoterInterface;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
-use Acme\App\Presentation\Web\Core\Port\Auth\ResourceActionVoterInterface;
 
 final class PostVoter implements ResourceActionVoterInterface
 {

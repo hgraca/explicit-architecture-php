@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Web\Infrastructure\Auth\Symfony;
+namespace Acme\App\Infrastructure\Auth\Symfony;
 
+use Acme\App\Core\Port\Auth\AccessDeniedException;
 use Acme\App\Core\Port\Persistence\TransactionServiceInterface;
-use Acme\App\Presentation\Web\Core\Port\Auth\AccessDeniedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
