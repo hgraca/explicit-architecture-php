@@ -1,3 +1,4 @@
+/deptrac
 /node_modules/
 /var/*
 !/var/cache
