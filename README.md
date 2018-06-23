@@ -22,7 +22,7 @@ it was included here as examples.
 ### Explicit Architecture
 
 I explained [Explicit Architecture][1] in one of my blog posts, as a result of my understanding of several architectural
- styles such as (but not limited to) [EBI Architecture][11], [DDD][12], [Ports & Adapters Architecture][13], 
+ ideas such as (but not limited to) [EBI Architecture][11], [DDD][12], [Ports & Adapters Architecture][13], 
  [Onion Architecture][14] and [Clean Architecture][15].
  
 [![Explicit Architecture](https://docs.google.com/drawings/d/e/2PACX-1vQ5ps72uaZcEJzwnJbPhzUfEeBbN6CJ04j7hl2i3K2HHatNcsoyG2tgX2vnrN5xxDKLp5Jm5bzzmZdv/pub?w=960&amp;h=657)][2]
@@ -42,7 +42,7 @@ I explained [Explicit Architecture][1] in one of my blog posts, as a result of m
 - **config** (_all the config needed to run the application_)
 - **docs** (_application documentation_)
 - **lib** (_libraries used by the application, which are specific to this application and/or not distributable_)
-    - **php-extension**  (_functions and/or classes to be used as if they were part of the language itself_)
+    - **php-extension**  (_code to be used as if it was part of the language itself_)
         - _src_
         - _tests_
 - **public** (_the entry point to the application, and public frontend artifacts like CSS and JS files_)
@@ -53,13 +53,53 @@ I explained [Explicit Architecture][1] in one of my blog posts, as a result of m
         - **[SharedKernel][6]** (_application and domain code shared among all components/bounded contexts_)
     - **[Infrastructure][9]** (_the port adapters for the infrastructure tools_)
     - **[Presentation][7]** (_the presentation layer with the several user facing applications, controllers, views and related code units_)
+        - **Console** (_the CLI UI_)
+        - **Web** (_the web UI_)
+            - **Core** (_the web UI core_)
+                - **Component** (_the web UI core components_)
+                - **Port** (_the web UI core ports, used only in the web UI_)
+            - **Infrastructure** (_the web UI infrastructure, used only in the web UI_)
 - **tests**
     - **Fixture** (_data to put in the DB and use in the tests_)
     - **Framework** (_support code to run the tests, like base test classes and assertions_)
-    - **TestCase** (_unit, integration, functional, acceptance tests_)
+    - **TestCase** (_unit, integration, functional, acceptance tests, with **only one** folder tree mimicking the src folder_)
 - **translations**
 - **var** (_volatile artifacts like logs, cache, temporary test databases, generated code, ..._)
 - **vendor** (_distributable libraries_)
+
+#### Dependencies testing and documentation
+
+Since the code organization, its structure, is quite explicit we can _easily_ have an architectural integrity test 
+suite to make sure we are not breaking the architecture.
+
+This project architectural integrity test suite consists of three tests, which are executed using [deptrac]. 
+Deptrac can also generate some nice graphs with the dependencies tree, which makes it great as a documentation artifact.
+
+1. **_Layer_ dependencies integrity**
+
+    This tests the code layers dependency integrity, making sure the dependencies always goes inwards, 
+    when matched to the layers in the Explicit Architecture diagram on top.
+    
+    ![Layer dependencies](docs/images/dependencies/deptrac_layers.png)
+
+2. **_Component_ dependencies integrity**
+
+    This test makes sure that the components are decoupled between them.
+    
+    ![Component dependencies](docs/images/dependencies/deptrac_components.png)
+
+3. **_Class type_ dependencies integrity**
+
+    This test goes to a class level dependency integrity check, specially useful for classes in the same layer and component.
+    For example, the application services, query objects and repositories all belong to the Application Layer, 
+    and they all exist within each component. However, there are rules that must be followed:
+    1. A service can depend on query objects and repositories;
+    2. A query object should not depend on a service nor a repository, 
+    3. A repository should not depend on a service nor a query object. 
+    4. And, of course, none of them should depend on a controller, although that can be tested using the layers dependency 
+    test, because the controllers belong in the UI layer.
+    
+    ![Class type dependencies](docs/images/dependencies/deptrac_class.png)
 
 ## Usage
 
@@ -89,6 +129,12 @@ $ make
 ```
 
 ### Tests
+
+To be able to run the architecture integrity tests, you first need to install deptrac:
+
+```bash
+$ make dep_analyzer-install
+```
 
 Execute this command to run tests:
 
@@ -148,3 +194,5 @@ To run the tests with xDebug enabled, you need to enable it in `container/tst/xd
 [Score]: https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/badges/quality-score.png?b=master
 [CodeCov]: https://codecov.io/gh/hgraca/explicit-architecture-php/branch/master/graph/badge.svg
 [CodeInt]: https://scrutinizer-ci.com/g/hgraca/explicit-architecture-php/badges/code-intelligence.svg?b=master
+
+[deptrac]: https://github.com/sensiolabs-de/deptrac
