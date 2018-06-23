@@ -89,6 +89,15 @@ db-setup-guest:
 	$(MAKE) db-migrate-guest
 	php bin/console doctrine:fixtures:load -n
 
+dep_analyzer-install:
+	curl -LS http://get.sensiolabs.de/deptrac.phar -o deptrac
+	chmod +x deptrac
+	echo
+	echo "If you want to create nice dependency graphs, you need to install graphviz:"
+	echo "    - For osx/brew: $ brew install graphviz"
+	echo "    - For ubuntu: $ sudo apt-get install graphviz"
+	echo "    - For windows: https://graphviz.gitlab.io/_pages/Download/Download_windows.html"
+
 dep-clearcache-guest:
 	composer clearcache
 
@@ -122,6 +131,7 @@ test:
 	ENV='tst' ./bin/run php vendor/bin/phpunit
 	ENV='tst' ./bin/stop
 	$(MAKE) test-acc
+	$(MAKE) test-dep
 
 test-acc:
 	- ENV='tst' ./bin/stop # Just in case some container is left over stopped, as is the case after PHPStorm runs tests
@@ -144,20 +154,39 @@ test-ci:
 	ENV='ci' ./bin/run make test_cov-guest
 	docker exec -it app.sfn.ci cat ${COVERAGE_REPORT_PATH} > ${COVERAGE_REPORT_PATH}
 	$(MAKE) test-acc-ci
+	$(MAKE) test-dep-ci
 
 test-dep:
 	$(MAKE) test-dep-components
 	$(MAKE) test-dep-layers
-	$(MAKE) test-dep-units
+	$(MAKE) test-dep-class
+
+test-dep-graph:
+	$(MAKE) test-dep-components-graph
+	$(MAKE) test-dep-layers-graph
+	$(MAKE) test-dep-class-graph
+
+test-dep-ci:
+	$(MAKE) dep_analyzer-install
+	$(MAKE) test-dep
 
 test-dep-components:
-	deptrac analyze depfile.components.yml --formatter-graphviz-dump-image=var/deptrac_components.png --formatter-graphviz-dump-dot=var/deptrac_components.dot
+	./deptrac analyze depfile.components.yml --formatter-graphviz=0
+
+test-dep-components-graph:
+	./deptrac analyze depfile.components.yml --formatter-graphviz-dump-image=var/deptrac_components.png --formatter-graphviz-dump-dot=var/deptrac_components.dot
 
 test-dep-layers:
-	deptrac analyze depfile.layers.yml --formatter-graphviz-dump-image=var/deptrac_layers.png --formatter-graphviz-dump-dot=var/deptrac_layers.dot
+	./deptrac analyze depfile.layers.yml --formatter-graphviz=0
 
-test-dep-units:
-	deptrac analyze depfile.units.yml --formatter-graphviz-dump-image=var/deptrac_units.png --formatter-graphviz-dump-dot=var/deptrac_units.dot
+test-dep-layers-graph:
+	./deptrac analyze depfile.layers.yml --formatter-graphviz-dump-image=var/deptrac_layers.png --formatter-graphviz-dump-dot=var/deptrac_layers.dot
+
+test-dep-class:
+	./deptrac analyze depfile.classes.yml --formatter-graphviz=0
+
+test-dep-class-graph:
+	./deptrac analyze depfile.classes.yml --formatter-graphviz-dump-image=var/deptrac_class.png --formatter-graphviz-dump-dot=var/deptrac_class.dot
 
 test_cov:
 	ENV='tst' ./bin/run make test_cov-guest
