@@ -41,7 +41,10 @@ return PhpCsFixer\Config::create()
         'no_unreachable_default_argument_value' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
-        'ordered_imports' => true,
+        'ordered_imports' => [
+            'sort_algorithm' => 'alpha',
+            'imports_order' => ['class', 'function', 'const'],
+        ],
         'phpdoc_align' => false,
         'phpdoc_order' => true,
         'phpdoc_summary' => false,
