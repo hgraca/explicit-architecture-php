@@ -30,6 +30,8 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    private const ENV_PROD = 'prod';
+
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     public function getCacheDir(): string
@@ -74,13 +76,12 @@ class Kernel extends BaseKernel
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = $this->getProjectDir() . '/config';
-        if (is_dir($confDir . '/routes/')) {
-            $routes->import($confDir . '/routes/*' . self::CONFIG_EXTS, '/', 'glob');
+
+        $environmentList = array_unique([self::ENV_PROD, $this->environment]);
+        foreach ($environmentList as $environment) {
+            // Routes can not be bulk imported because they need to be ordered
+            $routes->import($confDir . '/routes/{' . $environment . '}/index' . self::CONFIG_EXTS, '/', 'glob');
         }
-        if (is_dir($confDir . '/routes/' . $this->environment)) {
-            $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
-        }
-        $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
     }
 
     protected function build(ContainerBuilder $containerBuilder): void

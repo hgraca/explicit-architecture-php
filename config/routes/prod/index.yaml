@@ -3,8 +3,11 @@
 # the template can be rendered without executing any logic in your own controller.
 # See https://symfony.com/doc/current/cookbook/templating/render_without_controller.html
 
-web_routes: # routes for the website, if we would have an API we would have a new node like this
-    resource: 'routes/web/routes.yaml'
+# We need to order the routes because of the matching order
+# PostList must come before Post so the rss.xml is not confused with a post ID
+
+website:
+    resource: 'web/index.yaml'
 
 # this route must be the last, its used to redirect any URL with a trailing slash that was not matched
 redirect_url_with_trailing_slash:

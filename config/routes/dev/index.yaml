@@ -1,0 +1,8 @@
+prod:
+    resource: '../prod/index.yaml'
+
+twig:
+    resource: 'twig.yaml'
+
+web_profiler:
+    resource: 'web_profiler.yaml'
