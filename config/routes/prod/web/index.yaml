@@ -1,0 +1,16 @@
+# We need to order the routes because of the matching order
+# PostList must come before Post so the rss.xml is not confused with a post ID
+
+homepage:
+    resource: 'homepage.yaml'
+
+blog:
+    resource: 'blog/index.yaml'
+
+login:
+    resource: 'login.yaml'
+    prefix: /{_locale}
+    requirements:
+        _locale: '%app_locales%'
+    defaults:
+        _locale: '%locale%'
