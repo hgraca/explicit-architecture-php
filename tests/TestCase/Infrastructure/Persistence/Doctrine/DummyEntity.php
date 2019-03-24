@@ -27,7 +27,7 @@ final class DummyEntity
     private $testProperty = 'FooBar';
 
     /**
-     * @var null|int
+     * @var int|null
      */
     private $anotherVar;
 

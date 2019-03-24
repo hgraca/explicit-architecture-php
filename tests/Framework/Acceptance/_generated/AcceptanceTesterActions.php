@@ -1785,7 +1785,7 @@ trait AcceptanceTesterActions
      *
      * @param $field
      *
-     * @return array|mixed|null|string
+     * @return array|mixed|string|null
      *
      * @see \Codeception\Lib\InnerBrowser::grabValueFrom()
      */

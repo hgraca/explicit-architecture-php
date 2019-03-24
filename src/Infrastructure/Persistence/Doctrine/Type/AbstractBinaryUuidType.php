@@ -32,7 +32,7 @@ abstract class AbstractBinaryUuidType extends UuidBinaryType
     /**
      * @throws \Doctrine\DBAL\Types\ConversionException
      *
-     * @return null|AbstractUuidId
+     * @return AbstractUuidId|null
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
