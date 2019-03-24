@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true      # automatically injects dependencies in your services
+        autoconfigure: true # automatically registers your services as commands, event subscribers, etc.
+        public: false       # disallow fetch services directly from the container via $container->get()
+
+    # To use the test fixtures
+    Acme\App\Test\Fixture\Doctrine\:
+        resource: '%kernel.project_dir%/tests/Fixture/Doctrine/*'
+
+    Acme\App\Test\Framework\Decorator\EmailCollectorEmailerDecorator:
+        # overrides the Emailer service
+        # but that service is still available as Acme\App\Core\Port\Notification\Client\Email\EmailerInterface.inner
+        decorates: Acme\App\Core\Port\Notification\Client\Email\EmailerInterface

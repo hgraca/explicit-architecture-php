@@ -1,0 +1,26 @@
+services:
+    _defaults:
+        autowire: true      # automatically injects dependencies in your services
+        autoconfigure: true # automatically registers your services as commands, event subscribers, etc.
+        public: false       # disallow fetch services directly from the container via $container->get()
+
+    ####################################################################################################################
+    # ADJUSTMENTS TO THE AUTO-WIRING
+    ####################################################################################################################
+
+    # When the service definition only contains arguments, you can omit the
+    # 'arguments' key and define the arguments just below the service class
+
+    # There are several implementations of this interface, so we need to choose one of them
+    Acme\App\Core\Port\Notification\Client\Sms\SmsNotifierInterface:
+        class: Acme\App\Infrastructure\Notification\Client\Sms\MessageBird\MessageBirdClient
+        arguments:
+            $countryCode: '%country%'
+            $smsSender: '%notification.sms.sender%'
+
+    Acme\App\Core\Port\Notification\NotificationServiceInterface:
+        class: Acme\App\Infrastructure\Notification\NotificationService
+        arguments:
+            - '@Acme\App\Infrastructure\Notification\Strategy\Email\EmailNotificationStrategy'
+            - '@Acme\App\Infrastructure\Notification\Strategy\Push\PushNotificationStrategy'
+            - '@Acme\App\Infrastructure\Notification\Strategy\Sms\SmsNotificationStrategy'

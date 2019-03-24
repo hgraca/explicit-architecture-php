@@ -26,7 +26,7 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
  * @author Javier Eguiluz
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class Kernel extends BaseKernel
+final class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
@@ -39,6 +39,11 @@ class Kernel extends BaseKernel
         return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
+    private function getConfDir(): string
+    {
+        return $this->getProjectDir() . '/config';
+    }
+
     public function getLogDir(): string
     {
         return $this->getProjectDir() . '/var/log';
@@ -47,7 +52,7 @@ class Kernel extends BaseKernel
     public function registerBundles()
     {
         /** @var bool[][] $contents */
-        $contents = require $this->getProjectDir() . '/config/bundles.php';
+        $contents = require $this->getConfDir() . '/bundles.php';
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
@@ -61,13 +66,11 @@ class Kernel extends BaseKernel
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
     {
         $containerBuilder->setParameter('container.dumper.inline_class_loader', true);
-        $confDir = $this->getProjectDir() . '/config';
-        $loader->load($confDir . '/packages/*' . self::CONFIG_EXTS, 'glob');
-        if (is_dir($confDir . '/packages/' . $this->environment)) {
-            $loader->load($confDir . '/packages/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
-        }
-        $loader->load($confDir . '/services' . self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . '/services_' . $this->environment . self::CONFIG_EXTS, 'glob');
+        $confDir = $this->getConfDir();
+
+        $this->configureParameters($loader, $confDir);
+        $this->configurePackages($loader, $confDir);
+        $this->configureServices($loader, $confDir);
     }
 
     /**
@@ -75,7 +78,7 @@ class Kernel extends BaseKernel
      */
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $confDir = $this->getProjectDir() . '/config';
+        $confDir = $this->getConfDir();
 
         $environmentList = array_unique([self::ENV_PROD, $this->environment]);
         foreach ($environmentList as $environment) {
@@ -87,11 +90,43 @@ class Kernel extends BaseKernel
     protected function build(ContainerBuilder $containerBuilder): void
     {
         /** @var bool[][] $contents */
-        $contents = require $this->getProjectDir() . '/config/compiler_pass.php';
+        $contents = require $this->getConfDir() . '/compiler_pass.php';
         foreach ($contents as $compilerPass => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 $containerBuilder->addCompilerPass(new $compilerPass());
             }
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function configureParameters(LoaderInterface $loader, string $confDir): void
+    {
+        $environmentList = array_unique([self::ENV_PROD, $this->environment]);
+        foreach ($environmentList as $environment) {
+            $loader->load($confDir . '/parameters/{' . $environment . '}' . self::CONFIG_EXTS, 'glob');
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function configurePackages(LoaderInterface $loader, string $confDir): void
+    {
+        $loader->load($confDir . '/packages/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . '/packages/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function configureServices(LoaderInterface $loader, string $confDir): void
+    {
+        $environmentList = array_unique([self::ENV_PROD, $this->environment]);
+        foreach ($environmentList as $environment) {
+            $loader->load($confDir . '/services/{' . $environment . '}' . self::CONFIG_EXTS, 'glob');
+            $loader->load($confDir . '/services/{' . $environment . '}/**/*' . self::CONFIG_EXTS, 'glob');
         }
     }
 }

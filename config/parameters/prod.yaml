@@ -1,0 +1,24 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    # Localization
+    locale: 'en'
+    country: 'NL'
+
+    # This parameter defines the codes of the locales (languages) enabled in the application
+    app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
+
+    # Email settings
+    notification.email.sender_address: anonymous@example.com
+    notification.email.sender_name: anonymous@example.com
+
+    # SMS settings
+    notification.sms.default_destination: ~
+    notification.sms.sender: 'The Symfony Demo blog'
+    notification.sms.twilio.client.sid: 'some-dummy-id'
+    notification.sms.twilio.client.token: 'some-dummy-token'
+    notification.sms.message_bird.client.access_key: 'some-dummy-access_key'
+
+    # Push settings
+    notification.push.one_signal.app_id: 'some-dummy-id'
+    notification.push.one_signal.rest_api_key: 'some-dummy-key'

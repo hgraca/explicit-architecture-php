@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        autowire: true      # automatically injects dependencies in your services
+        autoconfigure: true # automatically registers your services as commands, event subscribers, etc.
+        public: false       # disallow fetch services directly from the container via $container->get()
+
+    ####################################################################################################################
+    # ADJUSTMENTS TO THE AUTO-WIRING
+    ####################################################################################################################
+
+    # When the service definition only contains arguments, you can omit the
+    # 'arguments' key and define the arguments just below the service class
+
+    Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberValidatorInterface:
+        class: Acme\App\Infrastructure\Validation\PhoneNumber\LibPhoneNumber\PhoneNumberValidator
+        arguments:
+            $phoneNumberUtil: '@libphonenumber\PhoneNumberUtil'
+            $countryCode: '%country%'
