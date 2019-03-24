@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 include_once('lib/docker.php');
 
+$debug = false;
+
 $env = getenv('ENV') ?: 'dev';
 $rootDir = __DIR__ . '/..';
 $returnVal = 0;
@@ -12,10 +14,10 @@ $returnVal = 0;
 $containerName = 'app.sfn.' . $env;
 $yamlFile = "$rootDir/build/container/$env/docker-compose.yml";
 
-// we use the "-t 0" so that we don't have a timeout of 10s
-$downCommand = "docker-compose -f $yamlFile down -t 0";
+$downCommand = "docker-compose -f $yamlFile down -t 0"; // we use the "-t 0" so that we don't have a timeout of 10s, needs version >= 1.22
 
 if (isContainerExists($containerName)) {
+    if ($debug) echo "[DEBUG-STOP] $downCommand \n";
     system($downCommand, $returnVal);
 }
 

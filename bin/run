@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 include_once('lib/docker.php');
 
+$debug = false;
+
 $env = getenv('ENV') ?: 'dev';
 $argumentList = array_slice($argv, 1);
 $rootDir = __DIR__ . '/..';
@@ -20,7 +22,7 @@ $detached = '';
 
 $containerName = 'app.sfn.' . $env;
 $yamlFile = "$rootDir/build/container/$env/docker-compose.yml";
-$downCommand = "docker-compose -f $yamlFile down -t 0"; // we use the "-t 0" so that we don't have a timeout of 10s
+$downCommand = "docker-compose -f $yamlFile down -t 0"; // we use the "-t 0" so that we don't have a timeout of 10s, needs version >= 1.22
 
 if (empty($argumentList) && isContainerRunning($containerName)) {
     exit($returnVal);
@@ -45,12 +47,15 @@ if (!$detached) {
 
 if (isContainerRunning($containerName)) {
     $containerWasRunning = true;
+    if ($debug) echo "[DEBUG-RUN] docker exec -it $containerName $guestCommand \n";
     system("docker exec -it $containerName $guestCommand", $returnVal);
 } else {
+    if ($debug) echo "[DEBUG-RUN] $hostCommand \n";
     system($hostCommand, $returnVal);
 }
 
 if (!$detached && !$containerWasRunning && isContainerExists($containerName)) {
+    if ($debug) echo "[DEBUG-RUN] $downCommand \n";
     system($downCommand);
 }
 
