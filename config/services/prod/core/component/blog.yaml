@@ -1,0 +1,50 @@
+services:
+    _defaults:
+        autowire: true      # automatically injects dependencies in your services
+        autoconfigure: true # automatically registers your services as commands, event subscribers, etc.
+        public: false       # disallow fetch services directly from the container via $container->get()
+
+    ####################################################################################################################
+    # ADJUSTMENTS TO THE AUTO-WIRING
+    ####################################################################################################################
+
+    # When the service definition only contains arguments, you can omit the
+    # 'arguments' key and define the arguments just below the service class
+
+    # We make it lazy loaded so that we can get it from the container and inject it into the event dispatcher
+    # without it being instantiated
+    Acme\App\Core\Component\Blog\Application\Event\CommentCreatedListener:
+        lazy:  true
+        tags:
+            -   name: 'sync_event_dispatcher'
+                event: 'Acme\App\Core\SharedKernel\Component\Blog\Application\Event\CommentCreatedEvent'
+                method: notifyPostAuthorAboutNewComment
+
+    Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailGenerator:
+        tags:
+            -   name: 'Acme\App\Infrastructure\Notification\Strategy\Email\EmailNotificationStrategy'
+                notification: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\NewCommentNotification'
+                method: 'generate'
+                # The voter is here just as an example of a notification voter, voters are not mandatory
+                voterId: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCommentEmailVoter'
+                voterMethod: 'shouldDispatchEmail'
+
+    # This is here just as an example, it's not mandatory to have generators for all types of notifications
+    Acme\App\Core\Component\Blog\Application\Notification\NewComment\Push\NewCommentPushGenerator:
+        tags:
+            -   name: 'Acme\App\Infrastructure\Notification\Strategy\Push\PushNotificationStrategy'
+                notification: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\NewCommentNotification'
+                method: 'generate'
+                # The voter is here just as an example of a notification voter, voters are not mandatory
+                voterId: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\Push\NewCommentPushVoter'
+                voterMethod: 'shouldDispatchPush'
+
+    # This is here just as an example, it's not mandatory to have generators for all types of notifications
+    Acme\App\Core\Component\Blog\Application\Notification\NewComment\Sms\NewCommentSmsGenerator:
+        tags:
+            -   name: 'Acme\App\Infrastructure\Notification\Strategy\Sms\SmsNotificationStrategy'
+                notification: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\NewCommentNotification'
+                method: 'generate'
+                # The voter is here just as an example of a notification voter, voters are not mandatory
+                voterId: 'Acme\App\Core\Component\Blog\Application\Notification\NewComment\Sms\NewCommentSmsVoter'
+                voterMethod: 'shouldDispatchSms'

@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true      # automatically injects dependencies in your services
+        autoconfigure: true # automatically registers your services as commands, event subscribers, etc.
+        public: false       # disallow fetch services directly from the container via $container->get()
+
+    Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface:
+        class: Acme\App\Presentation\Web\Infrastructure\FlashMessage\Symfony\FlashMessageService
+        arguments:
+            $flashBag: "@=service('session').getFlashBag()"

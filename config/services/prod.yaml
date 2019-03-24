@@ -1,0 +1,54 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # automatically injects dependencies in your services
+        autoconfigure: true # automatically registers your services as commands, event subscribers, etc.
+        public: false       # disallow fetch services directly from the container via $container->get()
+
+        bind: # defines the scalar arguments once and apply them to any service defined/created in this file
+            $locales: '%app_locales%'
+            $defaultLocale: '%locale%'
+            $defaultFromEmailAddress: '%notification.email.sender_address%'
+            $defaultFromEmailName: '%notification.email.sender_name%'
+
+            # Event subscribers priorities:
+            #  The default is 0.
+            #  The highest the priority, the earlier a listener is executed.
+            #  The symfony subscribers use values from -250 to +250, but we can use whatever integers we want.
+            $requestTransactionSubscriberPriority: 10
+            $eventFlusherSubscriberPriority: 5
+
+    ####################################################################################################################
+    # BATCH AUTO-WIRING
+    ####################################################################################################################
+
+    # Makes classes in src/ available to be used as services.
+    # This creates a service per class whose id is the fully-qualified class name.
+    Acme\App\:
+        resource: '%kernel.project_dir%/src/*'
+        # You can exclude directories or files but if a service is unused, it's removed anyway.
+        # However, excluding these makes the auto-wiring faster and less prone to errors.
+        exclude: '%kernel.project_dir%/src/**/{Entity,*Enum.php,*ValueObject.php,*Dto.php,*ViewModel.php}'
+
+    # To use the production fixtures, containing data needed for the application to work, ie. the initial admin user
+    Acme\App\Build\Fixture\Doctrine\:
+        resource: '%kernel.project_dir%/build/Fixture/Doctrine/*'
+
+    Acme\PhpExtension\:
+        resource: '%kernel.project_dir%/lib/php-extension/src/*'
+        # You can exclude directories or files but if a service is unused, it's removed anyway.
+        # However, excluding these makes the auto-wiring faster and less prone to errors.
+        exclude: '%kernel.project_dir%/lib/php-extension/src/**/{Entity,*Enum.php,*ValueObject.php,*Dto.php,*ViewModel.php}'
+
+    ####################################################################################################################
+    # ADJUSTMENTS TO THE AUTO-WIRING
+    ####################################################################################################################
+
+    libphonenumber\PhoneNumberUtil:
+        factory: ['libphonenumber\PhoneNumberUtil', getInstance]
+
+    Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface:
+        class: Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
+
+    Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface:
+        class: Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory

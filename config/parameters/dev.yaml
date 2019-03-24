@@ -1,0 +1,9 @@
+parameters:
+    # SMS settings
+    notification.sms.default_destination: '+19009990006' # Can be a developer phone number, but usually shouldn't
+    notification.sms.twilio.client.sid: 'some-dummy-DEV-id'
+    notification.sms.twilio.client.token: 'some-dummy-DEV-token'
+
+    # Push settings
+    notification.push.one_signal.app_id: 'some-dummy-DEV-id'
+    notification.push.one_signal.rest_api_key: 'some-dummy-DEV-key'
