@@ -143,7 +143,7 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
             ->getMock();
         $tagRepository->expects($this->any())
             ->method('findBy')
-            ->will($this->returnValue($findByReturnValues));
+            ->willReturn($findByReturnValues);
 
         $entityManager = $this
             ->getMockBuilder(ObjectManager::class)
@@ -151,7 +151,7 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
             ->getMock();
         $entityManager->expects($this->any())
             ->method('getRepository')
-            ->will($this->returnValue($tagRepository));
+            ->willReturn($tagRepository);
 
         return new TagArrayToStringTransformer($entityManager);
     }

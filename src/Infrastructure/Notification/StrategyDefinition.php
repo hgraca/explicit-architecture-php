@@ -33,12 +33,12 @@ final class StrategyDefinition
     private $generatorMethod;
 
     /**
-     * @var null|object
+     * @var object|null
      */
     private $voter;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $voterMethod;
 

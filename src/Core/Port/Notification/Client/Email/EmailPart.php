@@ -26,12 +26,12 @@ class EmailPart
     private $content;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $contentType;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $charset;
 

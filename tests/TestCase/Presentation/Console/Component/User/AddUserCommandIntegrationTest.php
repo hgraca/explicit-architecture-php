@@ -42,7 +42,7 @@ final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
         exec('stty 2>&1', $output, $exitcode);
         $isSttySupported = $exitcode === 0;
 
-        $isWindows = '\\' === DIRECTORY_SEPARATOR;
+        $isWindows = '\\' === \DIRECTORY_SEPARATOR;
 
         if ($isWindows || !$isSttySupported) {
             $this->markTestSkipped('`stty` is required to test this command.');

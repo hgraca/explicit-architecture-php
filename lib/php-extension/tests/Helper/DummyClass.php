@@ -27,7 +27,7 @@ final class DummyClass extends DummyClassParent
     private $testProperty = 'FooBar';
 
     /**
-     * @var null|int
+     * @var int|null
      */
     private $anotherVar;
 

@@ -27,7 +27,7 @@ final class DummyQueryService implements QueryServiceInterface
     private $canHandle;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $invokeWasCalledWith;
 

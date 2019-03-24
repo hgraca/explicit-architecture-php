@@ -91,7 +91,7 @@ final class AuthenticationService implements AuthenticationServiceInterface
     ): ?AuthenticationException {
         $request = $this->symfonyRequestFactory->createRequest($request);
         $session = $this->session;
-        /** @var null|SymfonyAuthenticationException $symfonyAuthenticationException */
+        /** @var SymfonyAuthenticationException|null $symfonyAuthenticationException */
         $symfonyAuthenticationException = null;
 
         if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {

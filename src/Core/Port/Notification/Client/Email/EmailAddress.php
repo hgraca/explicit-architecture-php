@@ -26,7 +26,7 @@ class EmailAddress
     private $email;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $name;
 
