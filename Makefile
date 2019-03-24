@@ -121,6 +121,9 @@ deploy_stg-ci:
 deploy_prd-ci:
 	bin/deploy production ${SCRUTINIZER_BRANCH}
 
+graphql-compile:
+	bin/console graphql:compile
+
 shell:
 	docker exec -it app.sfn.dev sh
 

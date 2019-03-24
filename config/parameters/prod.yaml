@@ -8,6 +8,9 @@ parameters:
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN
 
+    # GraphQL API
+    graphql.debug: false
+
     # Email settings
     notification.email.sender_address: anonymous@example.com
     notification.email.sender_name: anonymous@example.com

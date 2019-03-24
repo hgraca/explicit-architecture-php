@@ -1,3 +1,5 @@
+graphql:
+    resource: 'graphql.yaml'
 
 rest:
     resource: 'rest.yaml'

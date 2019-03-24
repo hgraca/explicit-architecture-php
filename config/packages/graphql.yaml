@@ -1,0 +1,67 @@
+overblog_graphql:
+
+    definitions:
+        # Disable the bundle out of box classLoader listener
+        use_classloader_listener: false
+        # Change to "false" to disable auto compilation. To generate types manually use "graphql:compile" command.
+        auto_compile: true
+        # Change generated classes cache dir
+        cache_dir: '%kernel.project_dir%/var/cache/graphql/generated'
+        # Can also change the generated classes namespace
+        class_namespace: 'Acme\App\Presentation\Api\GraphQl\Generated'
+        config_validation: '%graphql.debug%'
+        show_debug_info: '%graphql.debug%'
+        # disable resolver and mutation auto mapping, so we can use the Symfony DIC
+        auto_mapping: false
+
+        schema:
+            query: ~
+            mutation: ~
+            # When using .graphql types DSL for configuration, we need to use resolver maps when we have
+            # a specific resolver or authorization config for a property.
+            resolver_maps: []
+            # The name of extra types that can not be detected by graphql-php during static schema analysis.
+            # These types names should be explicitly declared here
+            types: []
+
+        mappings:
+            # To enable bundles and root dir auto discover
+            auto_discover: false
+            types:
+                    # To include different types from the same dir [yaml, xml, graphql, null]
+                -   types: [yaml, graphql]
+                    # sub directories are also searched
+                    dir: "%kernel.project_dir%/config/services/prod/presentation/api/graphql"
+                    # use this to change the default file suffix, use ~ for no suffix
+                    suffix: Type
+                    # To include only one type from one dir, although we can define the same dir several times with different types and suffixes
+#                -   type: yaml
+#                    dir: "%kernel.project_dir%/config/graphql/types"
+
+    errors_handler:
+        # false will totally disable errors handling
+        enabled: true
+        # custom generic error message
+        internal_error_message: 'An error occurred, please retry later or contact us!'
+        rethrow_internal_exceptions: false
+        # default: false; will add trace stack and debugMessage to error
+        debug: '%graphql.debug%'
+        # default: true; false will disabled the default logging behavior
+        log: false
+        # the service to use to log
+        logger_service: logger
+        # map an exception to a parent exception if the exact exception is not in the mapping
+        map_exceptions_to_parent: true
+        exceptions:
+            warnings:
+                - 'Acme\App\Core\Port\Auth\AccessDeniedException'
+            errors:
+                - 'Acme\PhpExtension\Exception\AcmeExceptionInterface'
+
+    services:
+        promise_adapter: 'webonyx_graphql.sync_promise_adapter'
+
+overblog_dataloader:
+    defaults:
+        promise_adapter: 'overblog_dataloader.webonyx_graphql_sync_promise_adapter'
+    loaders: ~

@@ -6,6 +6,9 @@
 # We need to order the routes because of the matching order
 # PostList must come before Post so the rss.xml is not confused with a post ID
 
+api:
+    resource: 'api/index.yaml'
+
 website:
     resource: 'web/index.yaml'
 
