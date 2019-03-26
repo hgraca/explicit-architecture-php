@@ -1,0 +1,9 @@
+interface User{
+    id: String!
+    fullName: String!
+    username: String!
+    email: String!
+    mobile: String!
+    password: String!
+    type: String!
+}

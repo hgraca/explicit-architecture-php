@@ -38,6 +38,17 @@ overblog_graphql:
             query: Query
 #            mutation: ~
 #            subscription: ~
+            # When using .graphql types DSL for configuration, we need to use resolver maps when we have
+            # a specific resolver or authorization config for a property.
+            resolver_maps:
+                - Acme\App\Presentation\Api\GraphQl\Node\User\UserResolverMap
+                - Acme\App\Presentation\Api\GraphQl\QueryResolverMap
+            # The name of extra types that can not be detected by graphql-php during static schema analysis.
+            # These types names should be explicitly declared here
+            types:
+                - 'Admin'
+                - 'Editor'
+                - 'Visitor'
         show_debug_info: '%graphql.debug%' # Show some performance stats in extensions
         use_classloader_listener: false # Disable the bundle out of box classLoader listener, to use composer autoloader
 #        use_experimental_executor: false
@@ -61,6 +72,7 @@ overblog_graphql:
         # map an exception to a parent exception if the exact exception is not in the mapping
         map_exceptions_to_parent: true
 #        rethrow_internal_exceptions: false
+
     services:
 #        executor:             Overblog\GraphQLBundle\Executor\Executor
         promise_adapter:      GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter
