@@ -15,14 +15,19 @@ overblog_graphql:
         auto_mapping: false
 
         schema:
-            query: ~
+            query: Query
             mutation: ~
             # When using .graphql types DSL for configuration, we need to use resolver maps when we have
             # a specific resolver or authorization config for a property.
-            resolver_maps: []
+            resolver_maps:
+                - Acme\App\Presentation\Api\GraphQl\Node\User\UserResolverMap
+                - Acme\App\Presentation\Api\GraphQl\QueryResolverMap
             # The name of extra types that can not be detected by graphql-php during static schema analysis.
             # These types names should be explicitly declared here
-            types: []
+            types:
+                - 'Admin'
+                - 'Editor'
+                - 'Visitor'
 
         mappings:
             # To enable bundles and root dir auto discover
