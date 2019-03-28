@@ -1,3 +1,4 @@
 type Query {
+    user(id: String!): User!
     userList: [User!]!
 }
