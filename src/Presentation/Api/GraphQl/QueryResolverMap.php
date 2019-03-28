@@ -14,9 +14,12 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Api\GraphQl;
 
+use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
+use Acme\App\Core\Component\Blog\Domain\Post\Post;
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
+use Acme\App\Presentation\Api\GraphQl\Node\Post\PostViewModel;
 use Acme\App\Presentation\Api\GraphQl\Node\User\AbstractUserViewModel;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Resolver\ResolverMap as BaseResolverMap;
@@ -29,15 +32,31 @@ final class QueryResolverMap extends BaseResolverMap
      */
     private $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
+    /**
+     * @var PostRepositoryInterface
+     */
+    private $postRepository;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        PostRepositoryInterface $postRepository
+    ) {
         $this->userRepository = $userRepository;
+        $this->postRepository = $postRepository;
     }
 
     protected function map(): array
     {
         return [
             'Query' => [
+                'postList' => function () {
+                    return array_map(
+                        function (Post $post) {
+                            return PostViewModel::constructFromEntity($post);
+                        },
+                        $this->postRepository->findAll()->toArray()
+                    );
+                },
                 'user' => function ($value, Argument $args) {
                     $user = $this->userRepository->findOneById(new UserId($args['id']));
 

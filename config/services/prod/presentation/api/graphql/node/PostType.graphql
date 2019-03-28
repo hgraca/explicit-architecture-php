@@ -1,0 +1,8 @@
+type Post {
+    id: String!
+    title: String!
+    slug: String!
+    summary: String!
+    content: String!
+    publishedAt: AtomDateTime!
+}
