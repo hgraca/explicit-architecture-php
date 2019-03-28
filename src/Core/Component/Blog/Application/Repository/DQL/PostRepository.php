@@ -20,6 +20,7 @@ use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
+use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
 
 /**
  * This custom Doctrine repository contains some methods which are useful when
@@ -57,6 +58,24 @@ class PostRepository implements PostRepositoryInterface
         $this->dqlQueryBuilder = $dqlQueryBuilder;
         $this->queryService = $queryService;
         $this->persistenceService = $persistenceService;
+    }
+
+    /**
+     * @return Post[]
+     */
+    public function findAll(array $orderByList = ['id' => 'DESC'], int $maxResults = null): ResultCollectionInterface
+    {
+        $this->dqlQueryBuilder->create(Post::class);
+
+        foreach ($orderByList as $property => $direction) {
+            $this->dqlQueryBuilder->orderBy('Post.' . $property, $direction);
+        }
+
+        if ($maxResults) {
+            $this->dqlQueryBuilder->setMaxResults($maxResults);
+        }
+
+        return $this->queryService->query($this->dqlQueryBuilder->build());
     }
 
     public function find(PostId $id): Post
