@@ -27,7 +27,7 @@ interface UserRepositoryInterface
     /**
      * @return User[]
      */
-    public function findAll(array $orderBy, int $maxResults): ResultCollectionInterface;
+    public function findAll(array $orderByList = ['id' => 'DESC'], int $maxResults = null): ResultCollectionInterface;
 
     public function findOneByUsername(string $username): User;
 
