@@ -16,9 +16,9 @@ namespace Acme\App\Presentation\Api\GraphQl;
 
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\User\User;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Presentation\Api\GraphQl\Node\User\AbstractUserViewModel;
-use Acme\App\Presentation\Api\GraphQl\Node\User\Admin\AdminViewModel;
-use Acme\App\Presentation\Api\GraphQl\Node\User\Editor\EditorViewModel;
+use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Resolver\ResolverMap as BaseResolverMap;
 use function array_map;
 
@@ -38,24 +38,20 @@ final class QueryResolverMap extends BaseResolverMap
     {
         return [
             'Query' => [
+                'user' => function ($value, Argument $args) {
+                    $user = $this->userRepository->findOneById(new UserId($args['id']));
+
+                    return AbstractUserViewModel::constructFromEntity($user);
+                },
                 'userList' => function () {
                     return array_map(
                         function (User $user) {
-                            return $this->hydrateUserViewModel($user);
+                            return AbstractUserViewModel::constructFromEntity($user);
                         },
                         $this->userRepository->findAll()->toArray()
                     );
                 },
             ],
         ];
-    }
-
-    private function hydrateUserViewModel(User $user): AbstractUserViewModel
-    {
-        if ($user->isAdmin()) {
-            return AdminViewModel::constructFromEntity($user);
-        }
-
-        return EditorViewModel::constructFromEntity($user);
     }
 }
