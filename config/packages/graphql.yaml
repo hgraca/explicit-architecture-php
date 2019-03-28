@@ -43,7 +43,9 @@ overblog_graphql:
             resolver_maps:
                 - Acme\App\Presentation\Api\GraphQl\Node\User\UserResolverMap
                 - Acme\App\Presentation\Api\GraphQl\QueryResolverMap
+                - Acme\App\Presentation\Api\GraphQl\Scalar\AtomDateTimeResolverMap
             # The name of extra types that can not be detected by graphql-php during static schema analysis.
+            # These are, at least, types extending interfaces
             # These types names should be explicitly declared here
             types:
                 - 'Admin'
