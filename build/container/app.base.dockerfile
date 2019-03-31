@@ -1,10 +1,10 @@
-FROM php:7.1-alpine
+FROM php:7.3-alpine
 
 # `apk --update`    updates indexes before installing
 # `apk --no-cache`  doesn't put stuff in the cache, so we don't need to remove it at the end
 # `apk --virtual`   lets us uninstall temporary dependencies in one go at the end
 RUN apk --update add --no-cache --virtual build-dependencies autoconf g++ && \
-    apk add --no-cache make zlib-dev curl && \
+    apk add --no-cache make libzip-dev curl && \
     mkdir -p /tmp/pear/cache && \
     docker-php-ext-configure pcntl && \
     docker-php-ext-install pcntl && \
