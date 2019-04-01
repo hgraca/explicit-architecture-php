@@ -21,6 +21,7 @@ use Acme\App\Core\Port\Persistence\DQL\DqlQueryBuilderInterface;
 use Acme\App\Core\Port\Persistence\PersistenceServiceInterface;
 use Acme\App\Core\Port\Persistence\QueryServiceRouterInterface;
 use Acme\App\Core\Port\Persistence\ResultCollectionInterface;
+use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 /**
  * This custom Doctrine repository contains some methods which are useful when
@@ -66,6 +67,30 @@ class PostRepository implements PostRepositoryInterface
     public function findAll(array $orderByList = ['id' => 'DESC'], int $maxResults = null): ResultCollectionInterface
     {
         $this->dqlQueryBuilder->create(Post::class);
+
+        foreach ($orderByList as $property => $direction) {
+            $this->dqlQueryBuilder->orderBy('Post.' . $property, $direction);
+        }
+
+        if ($maxResults) {
+            $this->dqlQueryBuilder->setMaxResults($maxResults);
+        }
+
+        return $this->queryService->query($this->dqlQueryBuilder->build());
+    }
+
+    /**
+     * @return Post[]
+     */
+    public function findAllByUserId(
+        UserId $userId,
+        array $orderByList = ['publishedAt' => 'DESC'],
+        int $maxResults = null
+    ): ResultCollectionInterface {
+        $this->dqlQueryBuilder->create(Post::class);
+
+        $this->dqlQueryBuilder->where('Post.authorId = :user')
+            ->setParameter('user', $userId);
 
         foreach ($orderByList as $property => $direction) {
             $this->dqlQueryBuilder->orderBy('Post.' . $property, $direction);
