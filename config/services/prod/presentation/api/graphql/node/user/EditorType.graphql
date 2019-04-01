@@ -8,4 +8,24 @@ type Editor implements User {
     type: String!
 
     editorViewModelClass: String!
+
+    createdPosts(
+        after: String
+        first: Int
+        before: String
+        last: Int
+    ): CreatedPostsConnection!
+}
+
+type CreatedPostsConnection {
+    pageInfo: PageInfo!
+    count: Int!
+    foo: String!
+    edges: [CreatedPostsEdge!]!
+}
+
+type CreatedPostsEdge {
+    cursor: String!
+    bar: String!
+    node: Post!
 }
