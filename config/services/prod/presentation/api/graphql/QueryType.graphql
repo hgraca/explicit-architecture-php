@@ -1,4 +1,5 @@
 type Query {
+    post(id: String!): Post!
     postList: [Post!]!
     user(id: String!): User!
     userList: [User!]!

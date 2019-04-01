@@ -16,6 +16,7 @@ namespace Acme\App\Presentation\Api\GraphQl;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
+use Acme\App\Core\Component\Blog\Domain\Post\PostId;
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
@@ -49,6 +50,11 @@ final class QueryResolverMap extends BaseResolverMap
     {
         return [
             'Query' => [
+                'post' => function ($value, Argument $args) {
+                    $post = $this->postRepository->find(new PostId($args['id']));
+
+                    return PostViewModel::constructFromEntity($post);
+                },
                 'postList' => function () {
                     return array_map(
                         function (Post $post) {
