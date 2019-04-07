@@ -41,6 +41,8 @@ overblog_graphql:
             # When using .graphql types DSL for configuration, we need to use resolver maps when we have
             # a specific resolver or authorization config for a property.
             resolver_maps:
+                - Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Comment\PostCommentsConnectionResolverMap
+                - Acme\App\Presentation\Api\GraphQl\Node\Post\PostResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\User\Connection\CreatedPosts\CreatedPostsConnectionResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\User\Connection\CreatedPosts\CreatedPostsEdgeResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\User\Editor\EditorResolverMap

@@ -5,4 +5,22 @@ type Post {
     summary: String!
     content: String!
     publishedAt: AtomDateTime!
+
+    comments(
+        after: String
+        first: Int
+        before: String
+        last: Int
+    ): PostCommentsConnection!
+}
+
+type PostCommentsConnection {
+    pageInfo: PageInfo!
+    count: Int!
+    edges: [PostCommentsEdge!]!
+}
+
+type PostCommentsEdge {
+    cursor: String!
+    node: Comment!
 }

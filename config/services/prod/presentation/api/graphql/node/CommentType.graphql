@@ -1,0 +1,5 @@
+type Comment {
+    id: String!
+    content: String!
+    publishedAt: AtomDateTime!
+}
