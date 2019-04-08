@@ -42,6 +42,16 @@ class Tag implements JsonSerializable
         $this->name = $name;
     }
 
+    public function getId(): TagId
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     /**
      * {@inheritdoc}
      */
