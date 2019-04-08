@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Acme\App\Core\Component\Blog\Domain\Post\Tag;
 
+use JsonSerializable;
+
 /**
  * Defines the properties of the Tag entity to represent the post tags.
  *
@@ -22,7 +24,7 @@ namespace Acme\App\Core\Component\Blog\Domain\Post\Tag;
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  * @author Herberto Graca <herberto.graca@gmail.com>
  */
-class Tag implements \JsonSerializable
+class Tag implements JsonSerializable
 {
     /**
      * @var TagId
