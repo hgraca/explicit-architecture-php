@@ -12,6 +12,13 @@ type Post {
         before: String
         last: Int
     ): PostCommentsConnection!
+
+    tags(
+        after: String
+        first: Int
+        before: String
+        last: Int
+    ): PostTagsConnection!
 }
 
 type PostCommentsConnection {
@@ -23,4 +30,15 @@ type PostCommentsConnection {
 type PostCommentsEdge {
     cursor: String!
     node: Comment!
+}
+
+type PostTagsConnection {
+    pageInfo: PageInfo!
+    count: Int!
+    edges: [PostTagsEdge!]!
+}
+
+type PostTagsEdge {
+    cursor: String!
+    node: Tag!
 }
