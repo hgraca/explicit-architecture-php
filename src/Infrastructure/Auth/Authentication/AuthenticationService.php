@@ -129,7 +129,12 @@ final class AuthenticationService implements AuthenticationServiceInterface
     {
         $token = $this->tokenStorage->getToken();
 
-        if ($token === null || !\is_object($securityUser = $token->getUser())) {
+        if ($token === null) {
+            throw new NoUserAuthenticatedException();
+        }
+
+        $securityUser = $token->getUser();
+        if (!$securityUser instanceof SecurityUser) {
             throw new NoUserAuthenticatedException();
         }
 
