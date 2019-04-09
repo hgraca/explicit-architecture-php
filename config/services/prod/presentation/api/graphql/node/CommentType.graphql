@@ -2,4 +2,21 @@ type Comment {
     id: String!
     content: String!
     publishedAt: AtomDateTime!
+
+    # It might look like overkill to have a connection, instead of the `User` type, because there is only one author,
+    # however, this is future proof: If we want to add a feature allowing to have several authors for the same post,
+    # the only change will be the amount of authors returned, everything else will stay the same, so there will be
+    # no BC breaks, which would happen if we would use the `User` type directly.
+    authors: CommentAuthorsConnection!
+}
+
+type CommentAuthorsConnection {
+    pageInfo: PageInfo!
+    count: Int!
+    edges: [CommentAuthorsEdge!]!
+}
+
+type CommentAuthorsEdge {
+    cursor: String!
+    node: User!
 }
