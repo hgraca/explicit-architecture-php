@@ -18,7 +18,7 @@ use Acme\App\Core\Component\Blog\Application\Query\PostDto;
 use Acme\App\Core\Component\Blog\Application\Query\PostListQueryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\PostService;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Port\Auth\AuthenticationServiceInterface;
+use Acme\App\Core\Port\Auth\Authentication\AuthenticationServiceInterface;
 use Acme\App\Core\Port\Router\UrlGeneratorInterface;
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\FlashMessage\FlashMessageServiceInterface;

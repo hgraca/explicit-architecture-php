@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Test\TestCase\Presentation\Console\Component\User;
 
 use Acme\App\Core\Component\User\Domain\User\User;
-use Acme\App\Infrastructure\Auth\Symfony\SecurityUser;
+use Acme\App\Infrastructure\Auth\Authentication\SecurityUser;
 use Acme\App\Presentation\Console\Component\User\AddUserCommand;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

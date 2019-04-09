@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Acme\App\Presentation\Web\Core\Component\Login\Anonymous;
 
-use Acme\App\Core\Port\Auth\AuthenticationException;
+use Acme\App\Core\Port\Auth\Authentication\AuthenticationException;
 use Acme\App\Core\Port\TemplateEngine\TemplateViewModelInterface;
 
 final class LoginViewModel implements TemplateViewModelInterface

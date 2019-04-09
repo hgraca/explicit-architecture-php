@@ -18,8 +18,8 @@ use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Application\Service\CommentService;
 use Acme\App\Core\Component\Blog\Domain\Post\Comment\Comment;
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
-use Acme\App\Core\Port\Auth\AuthenticationServiceInterface;
-use Acme\App\Core\Port\Auth\AuthorizationServiceInterface;
+use Acme\App\Core\Port\Auth\Authentication\AuthenticationServiceInterface;
+use Acme\App\Core\Port\Auth\Authorization\AuthorizationServiceInterface;
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Presentation\Web\Core\Port\Form\FormFactoryInterface;
 use Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface;
@@ -61,7 +61,7 @@ class CommentController
     private $postRepository;
 
     /**
-     * @var \Acme\App\Core\Port\Auth\AuthorizationServiceInterface
+     * @var AuthorizationServiceInterface
      */
     private $authorizationService;
 

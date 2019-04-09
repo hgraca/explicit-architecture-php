@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Build\Fixture\Doctrine;
 
 use Acme\App\Core\Component\User\Domain\User\User;
-use Acme\App\Infrastructure\Auth\Symfony\SecurityUser;
+use Acme\App\Infrastructure\Auth\Authentication\SecurityUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

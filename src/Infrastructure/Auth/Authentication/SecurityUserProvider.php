@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Infrastructure\Auth\Symfony;
+namespace Acme\App\Infrastructure\Auth\Authentication;
 
 use Acme\App\Core\SharedKernel\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
