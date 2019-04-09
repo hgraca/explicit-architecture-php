@@ -18,12 +18,15 @@ use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\PhpExtension\ConstructableFromArrayInterface;
 use Acme\PhpExtension\ConstructableFromArrayTrait;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\UserEntityInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class SecurityUser implements UserInterface, EquatableInterface, ConstructableFromArrayInterface
+final class SecurityUser implements UserInterface, UserEntityInterface, EquatableInterface, ConstructableFromArrayInterface
 {
     use ConstructableFromArrayTrait;
+    use EntityTrait;
 
     /**
      * @var UserId
@@ -51,6 +54,7 @@ final class SecurityUser implements UserInterface, EquatableInterface, Construct
         $this->username = $username;
         $this->password = $password;
         $this->roles = $roles;
+        $this->setIdentifier($userId->toScalar());
     }
 
     public static function fromUser(User $user): self

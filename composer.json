@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.1.3",
         "ext-pdo_sqlite": "*",
+        "defuse/php-encryption": "^2.2.1",
         "doctrine/doctrine-bundle": "^1.12.7",
         "doctrine/doctrine-fixtures-bundle": "^3.3.0",
         "doctrine/doctrine-migrations-bundle": "^v1.3.2",
@@ -13,6 +14,7 @@
         "erusev/parsedown": "^1.7.4",
         "ezyang/htmlpurifier": "^v4.12.0",
         "giggsey/libphonenumber-for-php": "^8.11.5",
+        "league/oauth2-server": "^7.4.0",
         "messagebird/php-rest-api": "^v1.16.1",
         "nyholm/psr7": "^1.2.1",
         "ramsey/uuid": "^3.9.3",

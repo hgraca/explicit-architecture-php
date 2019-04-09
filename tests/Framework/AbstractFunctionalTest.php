@@ -16,6 +16,7 @@ namespace Acme\App\Test\Framework;
 
 use Acme\App\Core\Port\Notification\Client\Email\Email;
 use Acme\App\Core\Port\Notification\Client\Email\EmailAddress;
+use Acme\App\Core\Port\Router\UrlType;
 use Acme\App\Test\Framework\Container\ContainerAwareTestTrait;
 use Acme\App\Test\Framework\Database\DatabaseAwareTestTrait;
 use Acme\App\Test\Framework\Decorator\EmailCollectorEmailerDecorator;
@@ -26,6 +27,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * A functional test will test the application as a black box, emulating user http requests.
@@ -40,6 +42,7 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
     use DatabaseAwareTestTrait;
     use MockeryPHPUnitIntegration;
     use MockTrait;
+    use RoutingAwareTestTrait;
 
     /**
      * @var Client
@@ -48,7 +51,28 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
 
     protected function getHttpClient(array $options = [], array $server = []): Client
     {
-        return $this->client ?? $this->client = parent::createClient($options, $server);
+        return $this->client ?? $this->client = self::createClient($options, $server);
+    }
+
+    protected function requestRoute(
+        string $method,
+        string $route,
+        array $arguments = [],
+        array $parameters = [],
+        UrlType $type = null,
+        array $server = [],
+        string $content = null
+    ): Response {
+        $this->getHttpClient()->request(
+            $method,
+            $this->generateUrl($route, $arguments, $type),
+            $parameters,
+            $files = [],
+            $server,
+            $content
+        );
+
+        return $this->getHttpClient()->getResponse();
     }
 
     protected function getContainer(): ContainerInterface

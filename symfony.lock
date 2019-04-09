@@ -23,6 +23,9 @@
     "dama/doctrine-test-bundle": {
         "version": "v4.0.1"
     },
+    "defuse/php-encryption": {
+        "version": "v2.2.1"
+    },
     "doctrine/annotations": {
         "version": "v1.5.0"
     },
@@ -142,6 +145,15 @@
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "lcobucci/jwt": {
+        "version": "3.3.1"
+    },
+    "league/event": {
+        "version": "2.2.0"
+    },
+    "league/oauth2-server": {
+        "version": "7.4.0"
     },
     "malukenho/mcbumpface": {
         "version": "0.1.3"

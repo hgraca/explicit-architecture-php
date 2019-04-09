@@ -19,17 +19,22 @@ use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\Port\Auth\Authentication\AuthenticationException;
 use Acme\App\Core\Port\Auth\Authentication\AuthenticationServiceInterface;
 use Acme\App\Core\Port\Auth\Authentication\NoUserAuthenticatedException;
+use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\UserEntityInterface;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface as OauthUserRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException as SymfonyAuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-final class AuthenticationService implements AuthenticationServiceInterface
+final class AuthenticationService implements AuthenticationServiceInterface, OauthUserRepositoryInterface
 {
     /**
      * @var CsrfTokenManagerInterface
@@ -56,18 +61,25 @@ final class AuthenticationService implements AuthenticationServiceInterface
      */
     private $userRepository;
 
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $userPasswordEncoder;
+
     public function __construct(
         CsrfTokenManagerInterface $csrfTokenManager,
         TokenStorageInterface $tokenStorage,
         HttpFoundationFactoryInterface $symfonyRequestFactory,
         SessionInterface $session,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        UserPasswordEncoderInterface $userPasswordEncoder
     ) {
         $this->csrfTokenManager = $csrfTokenManager;
         $this->tokenStorage = $tokenStorage;
         $this->symfonyRequestFactory = $symfonyRequestFactory;
         $this->session = $session;
         $this->userRepository = $userRepository;
+        $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
     public function isCsrfTokenValid(string $id, string $token): bool
@@ -123,6 +135,32 @@ final class AuthenticationService implements AuthenticationServiceInterface
         }
 
         return $this->session === null ? '' : $this->session->get(Security::LAST_USERNAME, '');
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @param string $grantType
+     */
+    public function getUserEntityByUserCredentials(
+        $username,
+        $password,
+        $grantType,
+        ClientEntityInterface $clientEntity
+    ): ?UserEntityInterface {
+        try {
+            $user = $this->userRepository->findOneByUsername($username);
+        } catch (EmptyQueryResultException$e) {
+            return null;
+        }
+
+        $securityUser = SecurityUser::fromUser($user);
+
+        if (!$this->userPasswordEncoder->isPasswordValid($securityUser, $password)) {
+            return null;
+        }
+
+        return $securityUser;
     }
 
     private function getSecurityUser(): SecurityUser

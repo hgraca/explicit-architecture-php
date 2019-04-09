@@ -1,0 +1,5 @@
+prod:
+    resource: '../prod/index.yaml'
+
+oauth:
+    resource: 'oauth.yaml'

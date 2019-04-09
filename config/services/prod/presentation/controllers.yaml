@@ -8,6 +8,6 @@ services:
     # This creates a service per class whose id is the fully-qualified class name.
     # Controllers are imported separately to make sure they're public,
     # and have a tag that allows actions to type-hint services.
-    Acme\App\Presentation\Web\Core\:
-        resource: '%kernel.project_dir%/src/Presentation/Web/Core/**/*Controller.php'
+    Acme\App\Presentation\:
+        resource: '%kernel.project_dir%/src/Presentation/**/*Controller.php'
         tags: ['controller.service_arguments']

@@ -1,0 +1,4 @@
+test_oauth_get_access_token:
+    path: /rest/oauth/accessTokenTest
+    controller: Acme\App\Test\TestCase\Presentation\Api\Rest\Oauth\OauthTestController::get
+    methods: [GET]
