@@ -43,6 +43,7 @@ overblog_graphql:
             resolver_maps:
                 - Acme\App\Presentation\Api\GraphQl\Node\Comment\CommentResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\Comment\Connection\Author\CommentAuthorsConnectionResolverMap
+                - Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Author\PostAuthorsConnectionResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Comment\PostCommentsConnectionResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Tag\PostTagsConnectionResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\Post\PostResolverMap
