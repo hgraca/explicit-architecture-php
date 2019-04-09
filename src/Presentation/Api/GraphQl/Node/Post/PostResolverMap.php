@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Presentation\Api\GraphQl\Node\Post;
 
 use Acme\App\Core\Component\Blog\Domain\Post\PostId;
+use Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Author\PostAuthorsResolver;
 use Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Comment\PostCommentsResolver;
 use Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Tag\PostTagsResolver;
 use ArrayObject;
@@ -34,10 +35,19 @@ final class PostResolverMap extends BaseResolverMap
      */
     private $postTagsResolver;
 
-    public function __construct(PostCommentsResolver $postCommentsResolver, PostTagsResolver $postTagsResolver)
-    {
+    /**
+     * @var PostAuthorsResolver
+     */
+    private $postAuthorsResolver;
+
+    public function __construct(
+        PostCommentsResolver $postCommentsResolver,
+        PostTagsResolver $postTagsResolver,
+        PostAuthorsResolver $postAuthorsResolver
+    ) {
         $this->postCommentsResolver = $postCommentsResolver;
         $this->postTagsResolver = $postTagsResolver;
+        $this->postAuthorsResolver = $postAuthorsResolver;
     }
 
     protected function map(): array
@@ -49,6 +59,9 @@ final class PostResolverMap extends BaseResolverMap
                 },
                 'tags' => function (PostViewModel $value, Argument $args, ArrayObject $context, ResolveInfo $info) {
                     return $this->postTagsResolver->getPostTagsConnection(new PostId($value->getId()));
+                },
+                'authors' => function (PostViewModel $value, Argument $args, ArrayObject $context, ResolveInfo $info) {
+                    return $this->postAuthorsResolver->getPostAuthorsConnection(new PostId($value->getId()));
                 },
             ],
         ];
