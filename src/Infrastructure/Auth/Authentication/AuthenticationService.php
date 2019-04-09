@@ -20,6 +20,7 @@ use Acme\App\Core\Port\Auth\Authentication\AuthenticationException;
 use Acme\App\Core\Port\Auth\Authentication\AuthenticationServiceInterface;
 use Acme\App\Core\Port\Auth\Authentication\NoUserAuthenticatedException;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface as OauthUserRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -29,7 +30,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-final class AuthenticationService implements AuthenticationServiceInterface
+final class AuthenticationService implements AuthenticationServiceInterface, OauthUserRepositoryInterface
 {
     /**
      * @var CsrfTokenManagerInterface
@@ -129,7 +130,12 @@ final class AuthenticationService implements AuthenticationServiceInterface
     {
         $token = $this->tokenStorage->getToken();
 
-        if ($token === null || !\is_object($securityUser = $token->getUser())) {
+        if ($token === null) {
+            throw new NoUserAuthenticatedException();
+        }
+
+        $securityUser = $token->getUser();
+        if (!$securityUser instanceof SecurityUser) {
             throw new NoUserAuthenticatedException();
         }
 
