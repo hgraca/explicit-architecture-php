@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Infrastructure\Auth\Symfony;
+namespace Acme\App\Infrastructure\Auth\Authorization;
 
-use Acme\App\Core\Port\Auth\AccessDeniedException;
+use Acme\App\Core\Port\Auth\Authorization\AccessDeniedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Acme\App\Core\Component\Blog\Application\Auth;
 
 use Acme\App\Core\Component\Blog\Domain\Post\Post;
-use Acme\App\Core\Port\Auth\ResourceActionVoterInterface;
+use Acme\App\Core\Port\Auth\Authorization\ResourceActionVoterInterface;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 
 final class PostVoter implements ResourceActionVoterInterface

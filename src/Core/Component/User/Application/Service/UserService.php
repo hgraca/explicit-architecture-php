@@ -17,7 +17,7 @@ namespace Acme\App\Core\Component\User\Application\Service;
 use Acme\App\Core\Component\User\Application\Repository\UserRepositoryInterface;
 use Acme\App\Core\Component\User\Application\Validation\UserValidationService;
 use Acme\App\Core\Component\User\Domain\User\User;
-use Acme\App\Core\Port\Auth\UserSecretEncoderInterface;
+use Acme\App\Core\Port\Auth\Authentication\UserSecretEncoderInterface;
 use Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException;
 use Acme\App\Core\Port\Validation\PhoneNumber\PhoneNumberException;
 use Acme\App\Core\SharedKernel\Exception\AppRuntimeException;
