@@ -20,7 +20,6 @@ use Acme\App\Infrastructure\TemplateEngine\Twig\TemplateEngine;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 use DateTime;
 use ReflectionException;
-use Zend\Diactoros\Response;
 
 /**
  * @medium
@@ -92,7 +91,7 @@ final class TemplateEngineIntegrationTest extends AbstractIntegrationTest
     public function renderResponse_with_a_base_response(): void
     {
         $status = 599;
-        $originalResponse = (new Response())
+        $originalResponse = $this->createPsrResponse()
             ->withStatus($status)
             ->withHeader('a', 'b')
             ->withHeader('c', ['d', 'e']);
