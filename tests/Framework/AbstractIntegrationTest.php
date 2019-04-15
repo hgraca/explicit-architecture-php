@@ -19,8 +19,11 @@ use Acme\App\Test\Framework\Database\DatabaseAwareTestTrait;
 use Acme\App\Test\Framework\Mock\MockTrait;
 use Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DatabaseAwareTestInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * An integration test will test the integration of the application code with the framework, the DB,
@@ -43,5 +46,15 @@ abstract class AbstractIntegrationTest extends KernelTestCase implements Databas
         }
 
         return self::$kernel->getContainer();
+    }
+
+    protected function createPsrResponse($content = '', int $status = 200, array $headers = []): ResponseInterface
+    {
+        return $this->getHttpMessageFactory()->createResponse(new Response($content, $status, $headers));
+    }
+
+    private function getHttpMessageFactory(): HttpMessageFactoryInterface
+    {
+        return self::getService(HttpMessageFactoryInterface::class);
     }
 }

@@ -14,6 +14,7 @@
         "ezyang/htmlpurifier": "^v4.12.0",
         "giggsey/libphonenumber-for-php": "^8.11.5",
         "messagebird/php-rest-api": "^v1.16.1",
+        "nyholm/psr7": "^1.2.1",
         "ramsey/uuid": "^3.9.3",
         "ramsey/uuid-doctrine": "^1.6.0",
         "sensio/framework-extra-bundle": "^v5.5.3",
@@ -37,8 +38,7 @@
         "symfony/yaml": "^v4.4.5",
         "twig/extensions": "^v1.5.4",
         "twilio/sdk": "^5.42.2",
-        "white-october/pagerfanta-bundle": "^v1.3.2",
-        "zendframework/zend-diactoros": "^1.8.7"
+        "white-october/pagerfanta-bundle": "^v1.3.2"
     },
     "require-dev": {
         "codeception/codeception": "^2.5.6",

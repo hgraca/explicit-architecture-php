@@ -36,4 +36,5 @@ parameters:
         - 'Acme\App\Presentation\Web\Core\Port\Response\ResponseFactoryInterface'
         - 'Acme\App\Test\Framework\Decorator\EmailCollectorEmailerDecorator'
         - 'Doctrine\ORM\EntityManagerInterface'
+        - 'Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface'
         - 'session'
