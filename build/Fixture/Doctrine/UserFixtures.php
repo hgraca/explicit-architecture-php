@@ -32,7 +32,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserFixtures extends Fixture
 {
+    public const TOM_USERNAME = 'tom_admin';
+    public const TOM_PASSWORD = 'kitten';
     public const TOM_MOBILE = '+31631769211';
+    public const REFERENCE_ADMIN_TOM = 'tom-admin';
 
     /**
      * @var UserPasswordEncoderInterface
@@ -50,19 +53,22 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $tomAdmin = User::constructWithoutPassword(
-            'tom_admin',
+            self::TOM_USERNAME,
             'tom_admin@symfony.com',
             self::TOM_MOBILE,
             'Tom Doe',
             User::ROLE_ADMIN
         );
-        $encodedPassword = $this->passwordEncoder->encodePassword(SecurityUser::fromUser($tomAdmin), 'kitten');
+        $encodedPassword = $this->passwordEncoder->encodePassword(
+            SecurityUser::fromUser($tomAdmin),
+            self::TOM_PASSWORD
+        );
         $tomAdmin->setPassword($encodedPassword);
         $manager->persist($tomAdmin);
         // In case if fixture objects have relations to other fixtures, adds a reference
         // to that object by name and later reference it to form a relation.
         // See https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html#sharing-objects-between-fixtures
-        $this->addReference('tom-admin', $tomAdmin);
+        $this->addReference(self::REFERENCE_ADMIN_TOM, $tomAdmin);
 
         $manager->flush();
     }
