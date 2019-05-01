@@ -12,3 +12,8 @@ services:
         # overrides the Emailer service
         # but that service is still available as Acme\App\Core\Port\Notification\Client\Email\EmailerInterface.inner
         decorates: Acme\App\Core\Port\Notification\Client\Email\EmailerInterface
+
+    # Auto-configure test controllers as services
+    Acme\App\Test\TestCase\Presentation\:
+        resource: '%kernel.project_dir%/tests/TestCase/Presentation/**/*Controller.php'
+        tags: ['controller.service_arguments']
