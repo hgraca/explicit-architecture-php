@@ -1,0 +1,16 @@
+Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthClient:
+    type: entity
+    table: OauthClient
+    id:
+        identifier:
+            type: oauth_client_id
+            generator: { strategy: NONE }
+    fields:
+        name:
+            type: string
+        redirectUri:
+            type: string
+        secret:
+            type: string
+        active:
+            type: boolean

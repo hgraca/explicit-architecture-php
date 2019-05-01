@@ -1,0 +1,19 @@
+Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthRefreshToken:
+    type: entity
+    table: OauthRefreshToken
+    id:
+        identifier:
+            type: oauth_refresh_token_id
+            generator: { strategy: NONE }
+    fields:
+        expiryDateTime:
+            type: datetime
+        revoked:
+            type: boolean
+
+    manyToOne:
+        accessToken:
+            targetEntity: Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthAccessToken
+            joinColumn:
+                name: access_token_id
+                referencedColumnName: identifier

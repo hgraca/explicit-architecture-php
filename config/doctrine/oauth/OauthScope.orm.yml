@@ -1,0 +1,7 @@
+Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthScope:
+    type: entity
+    table: OauthScope
+    id:
+        identifier:
+            type: string
+            generator: { strategy: NONE }

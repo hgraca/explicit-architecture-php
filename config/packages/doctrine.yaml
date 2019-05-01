@@ -18,6 +18,9 @@ doctrine:
             tag_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\TagIdType
             post_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\PostIdType
             user_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\UserIdType
+            oauth_access_token_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\OauthAccessTokenIdType
+            oauth_client_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\OauthClientIdType
+            oauth_refresh_token_id: Acme\App\Infrastructure\Persistence\Doctrine\Type\OauthRefreshTokenIdType
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         dql:
@@ -52,3 +55,8 @@ doctrine:
                 dir: '%kernel.project_dir%/config/doctrine/user'
                 prefix: 'Acme\App\Core\Component\User\Domain\User'
                 alias: User
+            Oauth:
+                is_bundle: false
+                type: yml
+                dir: '%kernel.project_dir%/config/doctrine/oauth'
+                prefix: 'Acme\App\Infrastructure\Auth\Authentication\Oauth'

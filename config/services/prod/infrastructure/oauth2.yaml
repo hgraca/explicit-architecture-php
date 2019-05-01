@@ -1,0 +1,28 @@
+services:
+    _defaults:
+        autowire: true      # automatically injects dependencies in your services
+        autoconfigure: true # automatically registers your services as commands, event subscribers, etc.
+        public: false       # disallow fetch services directly from the container via $container->get()
+
+    oauth_encryption_key:
+        class: Defuse\Crypto\Key
+        factory:   'Defuse\Crypto\Key::loadFromAsciiSafeString'
+        arguments: ['%env(OAUTH2_ENCRYPTION_KEY)%']
+
+    League\OAuth2\Server\AuthorizationServer:
+        arguments:
+            $clientRepository: '@Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthClientRepository'
+            $accessTokenRepository: '@Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthAccessTokenRepository'
+            $scopeRepository: '@Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthScopeRepository'
+            $privateKey: '%env(OAUTH2_PRIVATE_KEY)%'
+            $encryptionKey: '@oauth_encryption_key'
+
+    League\OAuth2\Server\Grant\PasswordGrant:
+        arguments:
+            $userRepository: '@Acme\App\Infrastructure\Auth\Authentication\AuthenticationService'
+            $refreshTokenRepository: '@Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthRefreshTokenRepository'
+
+    League\OAuth2\Server\ResourceServer:
+        arguments:
+            $accessTokenRepository: '@Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthAccessTokenRepository'
+            $publicKey: '%env(OAUTH2_PUBLIC_KEY)%'

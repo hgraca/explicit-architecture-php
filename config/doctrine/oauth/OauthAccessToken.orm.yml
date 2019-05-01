@@ -1,0 +1,31 @@
+Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthAccessToken:
+    type: entity
+    table: OauthAccessToken
+    id:
+        identifier:
+            type: oauth_access_token_id
+            generator: { strategy: NONE }
+    fields:
+        userIdentifier:
+            type: user_id
+        expiryDateTime:
+            type: datetime
+
+    manyToMany:
+        scopes:
+            targetEntity: Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthScope
+            joinTable:
+                name: OauthAccessTokenScope
+                joinColumns:
+                    access_token_id:
+                        referencedColumnName: identifier
+                inverseJoinColumns:
+                    scope_id:
+                        referencedColumnName: identifier
+
+    manyToOne:
+        client:
+            targetEntity: Acme\App\Infrastructure\Auth\Authentication\Oauth\OauthClient
+            joinColumn:
+                name: client_id
+                referencedColumnName: identifier
