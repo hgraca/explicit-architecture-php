@@ -65,7 +65,7 @@ final class KeyValueStorageFixtures extends Fixture implements DependentFixtureI
     private function createServiceProWithInvitesHasPushEnabled(): void
     {
         /* @var User $user */
-        $user = $this->getReference(UserFixtures::JANE);
+        $user = $this->getReference(UserFixtures::REFERENCE_ADMIN_JANE);
 
         $this->insertPair('push_enabled_' . $user->getId(), '1');
         $this->insertPair('sms_enabled_' . $user->getId(), '0');
