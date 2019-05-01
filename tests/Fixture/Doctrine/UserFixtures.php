@@ -34,7 +34,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserFixtures extends Fixture
 {
-    public const JANE = 'jane-admin';
+    public const REFERENCE_ADMIN_JANE = 'jane-admin';
+    public const REFERENCE_USER_JOHN = 'john-user';
     public const JANE_EMAIL = 'jane_admin@symfony.com';
     public const JOHN_EMAIL = 'john_user@symfony.com';
     public const JANE_MOBILE = '+31631769212';
@@ -68,7 +69,7 @@ class UserFixtures extends Fixture
         // In case if fixture objects have relations to other fixtures, adds a reference
         // to that object by name and later reference it to form a relation.
         // See https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html#sharing-objects-between-fixtures
-        $this->addReference('jane-admin', $janeAdmin);
+        $this->addReference(self::REFERENCE_ADMIN_JANE, $janeAdmin);
 
         $johnUser = User::constructWithoutPassword(
             'john_user',
@@ -80,7 +81,7 @@ class UserFixtures extends Fixture
         $encodedPassword = $this->passwordEncoder->encodePassword(SecurityUser::fromUser($johnUser), 'kitten');
         $johnUser->setPassword($encodedPassword);
         $manager->persist($johnUser);
-        $this->addReference('john-user', $johnUser);
+        $this->addReference(self::REFERENCE_USER_JOHN, $johnUser);
 
         $manager->flush();
     }
