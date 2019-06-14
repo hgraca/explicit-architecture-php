@@ -92,6 +92,9 @@
     "ezyang/htmlpurifier": {
         "version": "v4.9.3"
     },
+    "facebook/webdriver": {
+        "version": "1.6.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -109,6 +112,15 @@
     },
     "giggsey/locale": {
         "version": "1.5"
+    },
+    "guzzlehttp/guzzle": {
+        "version": "6.3.3"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
     },
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
