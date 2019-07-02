@@ -4,7 +4,17 @@ root = true
 ; Unix-style newlines
 [*]
 end_of_line = LF
+insert_final_newline = true
 
 [*.php]
+charset = utf-8
 indent_style = space
 indent_size = 4
+
+[Makefile]
+indent_style = tab
+
+[*.{yml, yaml}]
+charset = utf-8
+indent_style = space
+indent_size = 2
