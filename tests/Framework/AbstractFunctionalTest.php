@@ -46,14 +46,14 @@ abstract class AbstractFunctionalTest extends WebTestCase implements DatabaseAwa
      */
     private $client;
 
-    protected function getClient(array $options = [], array $server = []): Client
+    protected function getHttpClient(array $options = [], array $server = []): Client
     {
         return $this->client ?? $this->client = parent::createClient($options, $server);
     }
 
     protected function getContainer(): ContainerInterface
     {
-        return $this->getClient()->getContainer();
+        return $this->getHttpClient()->getContainer();
     }
 
     protected static function assertResponseStatusCode(

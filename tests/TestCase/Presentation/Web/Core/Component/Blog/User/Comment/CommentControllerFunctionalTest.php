@@ -50,7 +50,9 @@ final class CommentControllerFunctionalTest extends AbstractFunctionalTest
     {
         $this->overrideDateTimeGenerator();
 
-        $client = $this->getClient([], [
+        $client = $this->getHttpClient(
+            [],
+            [
             'PHP_AUTH_USER' => 'john_user',
             'PHP_AUTH_PW' => 'kitten',
         ]);

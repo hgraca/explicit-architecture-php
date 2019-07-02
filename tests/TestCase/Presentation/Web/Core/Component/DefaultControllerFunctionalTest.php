@@ -45,11 +45,11 @@ final class DefaultControllerFunctionalTest extends AbstractFunctionalTest
      */
     public function public_urls(string $url): void
     {
-        $this->getClient()->request('GET', $url);
+        $this->getHttpClient()->request('GET', $url);
 
         $this->assertResponseStatusCode(
             Response::HTTP_OK,
-            $this->getClient(),
+            $this->getHttpClient(),
             sprintf('The %s public URL does not load correctly.', $url)
         );
     }
@@ -66,9 +66,9 @@ final class DefaultControllerFunctionalTest extends AbstractFunctionalTest
     public function public_blog_post(): void
     {
         $blogPost = $this->findAPost();
-        $this->getClient()->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
+        $this->getHttpClient()->request('GET', sprintf('/en/blog/posts/%s', $blogPost->getSlug()));
 
-        self::assertResponseStatusCode(Response::HTTP_OK, $this->getClient());
+        self::assertResponseStatusCode(Response::HTTP_OK, $this->getHttpClient());
     }
 
     /**
@@ -85,12 +85,12 @@ final class DefaultControllerFunctionalTest extends AbstractFunctionalTest
         $post = $this->findAPost();
         $postId = $post->getId();
 
-        $this->getClient()->request('GET', sprintf($url, (string) $postId));
+        $this->getHttpClient()->request('GET', sprintf($url, (string) $postId));
 
-        self::assertResponseStatusCode(Response::HTTP_FOUND, $this->getClient());
+        self::assertResponseStatusCode(Response::HTTP_FOUND, $this->getHttpClient());
         $this->assertSame(
             'http://localhost/en/login',
-            $this->getClient()->getResponse()->getTargetUrl(),
+            $this->getHttpClient()->getResponse()->getTargetUrl(),
             sprintf('The %s secure URL redirects to the login form.', $url)
         );
     }
