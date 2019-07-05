@@ -19,9 +19,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+define('DOT_ENV_FILE', __DIR__ . '/../.env');
+define('DOT_ENV_DIST_FILE', __DIR__ . '/../.env');
+
 // The check is to ensure we don't use .env in production
-if (!isset($_ENV['APP_ENV'])) {
-    (new Dotenv())->load(__DIR__ . '/../.env');
+if (
+    !isset($_ENV['APP_ENV'])
+    || $_ENV['APP_ENV'] === 'dev'
+    || $_ENV['APP_ENV'] === 'test'
+) {
+    (new Dotenv())->load(file_exists(DOT_ENV_FILE) ? DOT_ENV_FILE : DOT_ENV_DIST_FILE);
 }
 
 if ($_ENV['APP_DEBUG'] ?? ('prod' !== ($_ENV['APP_ENV'] ?? 'dev'))) {
