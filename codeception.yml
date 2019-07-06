@@ -1,3 +1,4 @@
+# docs: https://codeception.com/docs/reference/Configuration.html
 params:
     - .env # load params from .env file
     - env # load params from environment
@@ -7,6 +8,9 @@ paths:
     data: tests/Fixture
     support: tests/Framework/Acceptance
     envs: tests/_envs
+#settings:
+#    # Name of bootstrap file that will be used. Each bootstrap file should be inside a suite directory (ie: TestCase).
+#    bootstrap: _bootstrap_cest.php
 actor_suffix: Tester
 extensions:
     enabled:
