@@ -47,6 +47,10 @@ services:
     libphonenumber\PhoneNumberUtil:
         factory: ['libphonenumber\PhoneNumberUtil', getInstance]
 
+    Psr\Http\Message\ServerRequestInterface:
+        factory: 'Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface:createRequest'
+        arguments: ['@=service("request_stack").getMasterRequest()']
+
     Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface:
         class: Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
 
