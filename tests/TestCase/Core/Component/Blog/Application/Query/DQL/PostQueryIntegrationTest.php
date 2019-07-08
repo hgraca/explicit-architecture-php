@@ -79,7 +79,7 @@ final class PostQueryIntegrationTest extends AbstractIntegrationTest
             function (Tag $tag) {
                 return (string) $tag;
             },
-            $post->getTags()->toArray()
+            $post->getTags()
         );
         sort($postTagList);
         $postDtoTagList = $postDto->getTagList();

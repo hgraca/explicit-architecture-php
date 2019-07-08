@@ -22,6 +22,7 @@ use Acme\PhpExtension\String\Slugger;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use function is_array;
 
 /**
  * Defines the properties of the Post entity to represent the blog posts.
@@ -87,6 +88,8 @@ class Post
     private $comments = [];
 
     /**
+     * We don't want to have any reference to Doctrine in the Domain, so we remove the Collection type hint from here.
+     *
      * @var Tag[]
      */
     private $tags = [];
@@ -235,29 +238,38 @@ class Post
     }
 
     /**
-     * We don't want to have here any reference to doctrine, so we remove the Collection type hint from everywhere.
-     * The safest is to treat it as an array but we can't type hint it with 'array' because we might actually
-     * return an Collection.
-     *
      * @return Tag[]
      */
-    public function getTags()
+    public function getTags(): array
     {
-        return $this->tags;
+        // Since we don't type hint `tags` as a Doctrine collection, the `toArray` method is not recognized,
+        // however, we do know it's a doctrine collection.
+        // If Doctrine would allow us to define our own custom collections, this wouldn't be a problem.
+        // As that is not the case, unfortunately we have here a hidden dependency.
+        return is_array($this->tags)
+            ? $this->tags
+            : $this->tags->toArray();
     }
 
     /**
-     * Because we removed the doctrine `Collection` return type hint from `getTags()`, the `clear()` method below is
+     * Since we don't type hint `tags` as a Doctrine collection, the `clear()` method below is
      *  not recognized by the IDE, as it is not even possible to call a method on an array.
      *
-     * So we create this method here to encapsulate that operation, and minimize the issue.
+     * So we create this method here to encapsulate that operation, and minimize the issue, treating the `Post` entity
+     * as an aggregate root.
      *
      * It is also a good practise to encapsulate these chained operations,
      * from an object calisthenics point of view.
      */
     public function clearTags(): void
     {
-        $this->getTags()->clear();
+        // Since we don't type hint `tags` as a Doctrine collection, the `clear` method is not recognized,
+        // however, we do know it's a doctrine collection.
+        // If Doctrine would allow us to define our own custom collections, this wouldn't be a problem.
+        // As that is not the case, unfortunately we have here a hidden dependency.
+        is_array($this->tags)
+            ? $this->tags = []
+            : $this->tags->clear();
     }
 
     private function contains($item, $list): bool
