@@ -21,6 +21,7 @@ parameters:
         - 'Acme\App\Core\Component\Blog\Application\Query\DQL\FindLatestPostsQuery'
         - 'Acme\App\Core\Component\Blog\Application\Query\DQL\FindPostsBySearchRequestQuery'
         - 'Acme\App\Core\Component\Blog\Application\Query\CommentListQueryInterface'
+        - 'Acme\App\Core\Component\Blog\Application\Query\FindAuthorIdByCommentIdQueryInterface'
         - 'Acme\App\Core\Component\Blog\Application\Query\PostQueryInterface'
         - 'Acme\App\Core\Component\Blog\Application\Query\TagListQueryInterface'
         - 'Acme\App\Core\Component\Blog\Application\Repository\DQL\PostRepository'
