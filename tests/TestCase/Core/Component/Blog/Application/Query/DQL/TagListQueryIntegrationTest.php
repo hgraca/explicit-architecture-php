@@ -55,7 +55,7 @@ final class TagListQueryIntegrationTest extends AbstractIntegrationTest
             function (Tag $tag) {
                 return (string) $tag;
             },
-            $post->getTags()->toArray()
+            $post->getTags()
         );
         sort($postTagList);
 
