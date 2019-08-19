@@ -22,6 +22,7 @@ use Acme\App\Core\Component\User\Domain\User\User;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Presentation\Api\GraphQl\Node\Post\PostViewModel;
 use Acme\App\Presentation\Api\GraphQl\Node\User\AbstractUserViewModel;
+use Acme\App\Presentation\Api\GraphQl\Node\User\UserResolver;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Resolver\ResolverMap as BaseResolverMap;
 use function array_map;
@@ -38,18 +39,28 @@ final class QueryResolverMap extends BaseResolverMap
      */
     private $postRepository;
 
+    /**
+     * @var UserResolver
+     */
+    private $userResolver;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
-        PostRepositoryInterface $postRepository
+        PostRepositoryInterface $postRepository,
+        UserResolver $userResolver
     ) {
         $this->userRepository = $userRepository;
         $this->postRepository = $postRepository;
+        $this->userResolver = $userResolver;
     }
 
     protected function map(): array
     {
         return [
             'Query' => [
+                'me' => function ($value, Argument $args) {
+                    return $this->userResolver->getUser();
+                },
                 'post' => function ($value, Argument $args) {
                     $post = $this->postRepository->find(new PostId($args['id']));
 

@@ -197,4 +197,15 @@ class User implements \Serializable
 
         return false;
     }
+
+    public function isEditor(): bool
+    {
+        foreach ($this->getRoles() as $role) {
+            if ($role === self::ROLE_EDITOR) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
