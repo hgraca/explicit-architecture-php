@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Acme\App\Presentation\Api\GraphQl\Node\User\CreatedPosts;
+namespace Acme\App\Presentation\Api\GraphQl\Node\User\Connection\CreatedPosts;
 
 use Acme\App\Core\Component\Blog\Application\Repository\PostRepositoryInterface;
 use Acme\App\Core\Component\Blog\Domain\Post\Post;

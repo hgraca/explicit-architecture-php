@@ -16,7 +16,7 @@ namespace Acme\App\Presentation\Api\GraphQl\Node\User\Editor;
 
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Presentation\Api\GraphQl\Node\User\AbstractUserViewModel;
-use Acme\App\Presentation\Api\GraphQl\Node\User\CreatedPosts\CreatedPostsResolver;
+use Acme\App\Presentation\Api\GraphQl\Node\User\Connection\CreatedPosts\CreatedPostsResolver;
 use ArrayObject;
 use GraphQL\Type\Definition\ResolveInfo;
 use Overblog\GraphQLBundle\Definition\Argument;

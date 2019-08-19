@@ -26,8 +26,8 @@ overblog_graphql:
                 - Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Comment\PostCommentsConnectionResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\Post\Connection\Tag\PostTagsConnectionResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\Post\PostResolverMap
-                - Acme\App\Presentation\Api\GraphQl\Node\User\CreatedPosts\CreatedPostsConnectionResolverMap
-                - Acme\App\Presentation\Api\GraphQl\Node\User\CreatedPosts\CreatedPostsEdgeResolverMap
+                - Acme\App\Presentation\Api\GraphQl\Node\User\Connection\CreatedPosts\CreatedPostsConnectionResolverMap
+                - Acme\App\Presentation\Api\GraphQl\Node\User\Connection\CreatedPosts\CreatedPostsEdgeResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\User\Editor\EditorResolverMap
                 - Acme\App\Presentation\Api\GraphQl\Node\User\UserResolverMap
                 - Acme\App\Presentation\Api\GraphQl\QueryResolverMap
