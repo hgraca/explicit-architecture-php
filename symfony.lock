@@ -182,15 +182,6 @@
     "overblog/dataloader-php": {
         "version": "v0.5.3"
     },
-    "overblog/graphql-bundle": {
-        "version": "0.11",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "0.11",
-            "ref": "80a27b90b4928728bc2afe3ff1198826e033285c"
-        }
-    },
     "overblog/graphql-php-generator": {
         "version": "v0.7.5"
     },
