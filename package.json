@@ -2,7 +2,7 @@
   "devDependencies": {
     "@symfony/webpack-encore": "^0.9.1",
     "bloodhound-js": "^1.2.1",
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap-sass": "^3.4.1",
     "bootstrap-tagsinput": "^0.7.1",
     "bootswatch": "^3.3.7",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
