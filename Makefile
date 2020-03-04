@@ -97,7 +97,7 @@ dep_analyzer-install:
 	echo
 	echo "If you want to create nice dependency graphs, you need to install graphviz:"
 	echo "    - For osx/brew: $ brew install graphviz"
-	echo "    - For ubuntu: $ sudo apt-get install graphviz"
+	echo "    - For ubuntu: $ sudo apt-get install -y graphviz"
 	echo "    - For windows: https://graphviz.gitlab.io/_pages/Download/Download_windows.html"
 
 dep-clearcache-guest:
