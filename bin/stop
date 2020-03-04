@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 include_once('lib/docker.php');
 
+assertDockerComposeVersion();
+
 $debug = false;
 
 $env = getenv('ENV') ?: 'dev';

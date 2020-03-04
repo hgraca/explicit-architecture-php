@@ -44,3 +44,13 @@ function isContainerExists(string $containerName): bool
 
     return true;
 }
+
+function assertDockerComposeVersion(): void
+{
+    $minimumVersion = '1.22';
+    $currentVersion = shell_exec("docker-compose version --short");
+    if ($currentVersion < $minimumVersion) {
+        echo "The minimum docker-compose version is $minimumVersion \n";
+        exit(1);
+    }
+}
