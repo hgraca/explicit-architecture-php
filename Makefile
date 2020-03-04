@@ -63,9 +63,11 @@ box-build-prd:
 	docker-compose -f build/container/prd/docker-compose.yml build --force-rm app
 
 box-push-base:
+	docker login
 	docker push ${CONTAINER_NAME_BASE}
 
 box-push-prd:
+	docker login
 	docker push ${CONTAINER_NAME_PRD}
 
 #   We run this in tst ENV so that we never run it with xdebug on
