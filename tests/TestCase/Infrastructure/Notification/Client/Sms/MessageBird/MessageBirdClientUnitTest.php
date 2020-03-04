@@ -33,6 +33,8 @@ use Mockery\MockInterface;
  * @author Winfred Peereboom
  *
  * @small
+ *
+ * @internal
  */
 final class MessageBirdClientUnitTest extends AbstractUnitTest
 {
@@ -51,7 +53,7 @@ final class MessageBirdClientUnitTest extends AbstractUnitTest
      */
     private $messageBirdClient;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->messageBirdClient = Mockery::mock(Client::class);
         $this->messageBirdClientAdapter = new MessageBirdClient(
@@ -68,7 +70,7 @@ final class MessageBirdClientUnitTest extends AbstractUnitTest
      *
      * @throws PhoneNumberException
      */
-    public function sendNotification(): void
+    public function send_notification(): void
     {
         $messages = $this->mockSuccessfulMessage(self::TO_PHONE_NUMBER);
         $this->messageBirdClient->messages = $messages;
@@ -83,12 +85,13 @@ final class MessageBirdClientUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Core\Port\Notification\Client\Sms\Exception\SmsNotifierException
      *
      * @throws PhoneNumberException
      */
-    public function sendNotification_transforms_message_bird_exception(): void
+    public function send_notification_transforms_message_bird_exception(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Notification\Client\Sms\Exception\SmsNotifierException::class);
+
         $messages = $this->mockFailedMessage();
 
         $this->messageBirdClient->messages = $messages;
@@ -106,7 +109,7 @@ final class MessageBirdClientUnitTest extends AbstractUnitTest
      *
      * @throws PhoneNumberException
      */
-    public function sendNotification_default_number_overrides_notification(): void
+    public function send_notification_default_number_overrides_notification(): void
     {
         $messages = $this->mockSuccessfulMessage(self::TO_DEFAULT_PHONE_NUMBER);
         $this->messageBirdClient->messages = $messages;

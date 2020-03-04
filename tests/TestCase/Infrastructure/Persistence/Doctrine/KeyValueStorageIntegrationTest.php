@@ -26,6 +26,8 @@ use Doctrine\ORM\EntityManagerInterface;
  * @author Kasper Agg
  *
  * @medium
+ *
+ * @internal
  */
 final class KeyValueStorageIntegrationTest extends AbstractIntegrationTest
 {

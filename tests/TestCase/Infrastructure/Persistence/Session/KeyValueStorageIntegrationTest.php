@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * @author Kasper Agg
  *
  * @medium
+ *
+ * @internal
  */
 final class KeyValueStorageIntegrationTest extends AbstractIntegrationTest
 {

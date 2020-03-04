@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @large
+ *
+ * @internal
  */
 final class SecurityControllerFunctionalTest extends AbstractFunctionalTest
 {
@@ -48,7 +50,7 @@ final class SecurityControllerFunctionalTest extends AbstractFunctionalTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client);
 
-        $this->assertSame(
+        self::assertSame(
             $urlGenerator->generateUrl(RouteData::ANONYMOUS_POST_LIST, [], UrlType::absoluteUrl()),
             $crawler->getUri()
         );
@@ -80,9 +82,9 @@ final class SecurityControllerFunctionalTest extends AbstractFunctionalTest
         );
         $crawler = $client->submit($form);
 
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->assertSame(
+        self::assertSame(
             $urlGenerator->generateUrl(RouteData::LOGIN, [], UrlType::absoluteUrl()),
             $crawler->getUri()
         );

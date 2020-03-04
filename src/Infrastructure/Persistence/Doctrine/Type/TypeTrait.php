@@ -36,8 +36,6 @@ trait TypeTrait
 
     /**
      * @param AbstractPlatform $platform This needs to be here in order to comply to the Type class method signature
-     *
-     * @return mixed
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {

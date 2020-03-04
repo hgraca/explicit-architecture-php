@@ -27,6 +27,8 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class PostServiceUnitTest extends AbstractUnitTest
 {
@@ -55,7 +57,7 @@ final class PostServiceUnitTest extends AbstractUnitTest
      */
     private $postService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->postRepositorySpy = Mockery::spy(PostRepositoryInterface::class);
         $this->postSlugExistsQuerySpy = Mockery::spy(PostSlugExistsQueryInterface::class);

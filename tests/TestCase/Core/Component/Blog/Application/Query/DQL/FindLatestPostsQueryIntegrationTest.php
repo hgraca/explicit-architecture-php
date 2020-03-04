@@ -28,6 +28,8 @@ use DateTimeImmutable;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class FindLatestPostsQueryIntegrationTest extends AbstractIntegrationTest
 {
@@ -51,7 +53,7 @@ final class FindLatestPostsQueryIntegrationTest extends AbstractIntegrationTest
      */
     private $queryService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         DateTimeGenerator::overrideDefaultGenerator(function () {
             return new DateTimeImmutable('now + 1 hour');

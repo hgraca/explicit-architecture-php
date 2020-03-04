@@ -20,13 +20,15 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class AllTemplatesCalledExistIntegrationTest extends AbstractIntegrationTest
 {
     private const EXCLUDE_IF_CONTAINS_CHARS = ['\'', '"', '~', '%'];
     private const REGEX = <<<'REGEXP'
-/[\'\"]@(.*?\.twig)[\'\"]/
-REGEXP;
+        /[\'\"]@(.*?\.twig)[\'\"]/
+        REGEXP;
 
     private const PATHS_TO_SEARCH = [
         'src/Presentation/Web',

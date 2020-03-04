@@ -25,6 +25,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class SyncEventDispatcherCompilerPassUnitTest extends AbstractUnitTest
 {
@@ -67,7 +69,7 @@ final class SyncEventDispatcherCompilerPassUnitTest extends AbstractUnitTest
      */
     private $compilerPass;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = Mockery::mock(ContainerBuilder::class);
         $this->compilerPass = new SyncEventDispatcherCompilerPass();

@@ -22,6 +22,8 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class FindPostsBySearchRequestQueryIntegrationTest extends AbstractIntegrationTest
 {
@@ -35,7 +37,7 @@ final class FindPostsBySearchRequestQueryIntegrationTest extends AbstractIntegra
      */
     private $persistenceService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->query = self::getService(FindPostsBySearchRequestQuery::class);
         $this->persistenceService = self::getService(QueryServiceInterface::class);
@@ -44,7 +46,7 @@ final class FindPostsBySearchRequestQueryIntegrationTest extends AbstractIntegra
     /**
      * @test
      */
-    public function findBySearchQuery(): void
+    public function find_by_search_query(): void
     {
         $rawQuery = 'lo';
         $postList = $this->query->execute($rawQuery);

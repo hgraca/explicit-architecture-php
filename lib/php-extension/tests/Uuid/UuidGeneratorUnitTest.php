@@ -21,6 +21,8 @@ use Ramsey\Uuid\Uuid as RamseyUuid;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class UuidGeneratorUnitTest extends AbstractUnitTest
 {
@@ -43,7 +45,7 @@ final class UuidGeneratorUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function overrideDefaultGenerator_as_uuid(): void
+    public function override_default_generator_as_uuid(): void
     {
         $uuid = '7a980ca1-5504-4b8c-93be-605cb76700ec';
         UuidGenerator::overrideDefaultGenerator(
@@ -58,7 +60,7 @@ final class UuidGeneratorUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function overrideDefaultGenerator_as_string(): void
+    public function override_default_generator_as_string(): void
     {
         $uuid = '7a980ca1-5504-4b8c-93be-605cb76700ec';
         UuidGenerator::overrideDefaultGenerator(

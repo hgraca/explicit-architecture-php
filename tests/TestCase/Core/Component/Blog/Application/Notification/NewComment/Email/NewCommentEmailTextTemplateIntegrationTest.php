@@ -18,6 +18,11 @@ use Acme\App\Core\Component\Blog\Application\Notification\NewComment\Email\NewCo
 use Acme\App\Core\Port\TemplateEngine\TemplateEngineInterface;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
+/**
+ * @internal
+ *
+ * @small
+ */
 final class NewCommentEmailTextTemplateIntegrationTest extends AbstractIntegrationTest
 {
     public const TEMPLATE = '@Core/Component/Blog/Application/Notification/NewComment/Email/NewCommentEmail.txt.twig';

@@ -18,9 +18,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait DatabaseAwareTestTrait
 {
-    /**
-     * @return mixed
-     */
     abstract protected function getService(string $service);
 
     protected function clearDatabaseCache(): void

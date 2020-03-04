@@ -23,6 +23,8 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
 {
@@ -58,7 +60,7 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function addNotificationMessageGenerator_CreatesTheCorrectStructure(): void
+    public function add_notification_message_generator_Creates_the_correct_structure(): void
     {
         $notificationName = 'some_name';
 
@@ -86,7 +88,7 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function generateNotificationMessage_GetsTheCorrectMessage(): void
+    public function generate_notification_message_Gets_the_correct_message(): void
     {
         $notification = new DummyNotification('hash');
 
@@ -108,10 +110,11 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Infrastructure\Notification\Strategy\InvalidGeneratorException
      */
-    public function addNotificationMessageGenerator_throwsExceptionWhenGeneratorMethodDoesNotExist(): void
+    public function add_notification_message_generator_throws_exception_when_generator_method_does_not_exist(): void
     {
+        $this->expectException(\Acme\App\Infrastructure\Notification\Strategy\InvalidGeneratorException::class);
+
         $this->notificationStrategy->addNotificationMessageGenerator(
             $this->generator,
             DummyNotification::class,
@@ -121,12 +124,13 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Infrastructure\Notification\Strategy\InvalidVoterException
      *
      * @throws \ReflectionException
      */
-    public function isAllowedForNotification_throwsExceptionWhenVoterMethodDoesNotExist(): void
+    public function is_allowed_for_notification_throws_exception_when_voter_method_does_not_exist(): void
     {
+        $this->expectException(\Acme\App\Infrastructure\Notification\Strategy\InvalidVoterException::class);
+
         $notification = new DummyNotification('hash');
 
         $this->notificationStrategy->addNotificationMessageGenerator(
@@ -146,12 +150,13 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Infrastructure\Notification\Strategy\UnprocessableNotificationException
      *
      * @throws \ReflectionException
      */
-    public function generateNotificationMessage_ThrowsExceptionWhenNotificationNotFound(): void
+    public function generate_notification_message_Throws_exception_when_notification_not_found(): void
     {
+        $this->expectException(\Acme\App\Infrastructure\Notification\Strategy\UnprocessableNotificationException::class);
+
         $notification = new DummyNotification('hash');
 
         ReflectionHelper::invokeProtectedMethod(
@@ -164,7 +169,7 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function canHandleNotification_ReturnsFalseIfTheresNoGeneratorForNotification(): void
+    public function can_handle_notification_Returns_false_if_theres_no_generator_for_notification(): void
     {
         $this->notificationStrategy->addNotificationMessageGenerator(
             $this->generator,
@@ -180,7 +185,7 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function canHandleNotification_ReturnsFalseIfTheVoterReturnsFalse(): void
+    public function can_handle_notification_Returns_false_if_the_voter_returns_false(): void
     {
         $notification = new DummyNotification('some_hash');
 
@@ -210,7 +215,7 @@ final class AbstractNotificationStrategyUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function canHandleNotification_ReturnsTrue(): void
+    public function can_handle_notification_Returns_true(): void
     {
         $notification = new DummyNotification('some_hash');
 

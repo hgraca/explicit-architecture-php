@@ -29,6 +29,8 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ make test
  *
  * @large
+ *
+ * @internal
  */
 final class PostListControllerFunctionalTest extends AbstractFunctionalTest
 {
@@ -41,7 +43,7 @@ final class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $crawler = $client->request('GET', '/en/blog/posts');
 
         self::assertResponseStatusCode(Response::HTTP_OK, $client);
-        $this->assertCount(
+        self::assertCount(
             PaginatorInterface::DEFAULT_MAX_ITEMS_PER_PAGE,
             $crawler->filter('article.post'),
             'The homepage does not display the right number of posts.'
@@ -57,12 +59,12 @@ final class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $crawler = $client->request('GET', '/en/blog/posts/rss.xml');
 
         self::assertResponseStatusCode(Response::HTTP_OK, $client);
-        $this->assertSame(
+        self::assertSame(
             'text/xml; charset=UTF-8',
             $client->getResponse()->headers->get('Content-Type')
         );
 
-        $this->assertCount(
+        self::assertCount(
             PaginatorInterface::DEFAULT_MAX_ITEMS_PER_PAGE,
             $crawler->filter('item'),
             'The xml file does not display the right number of posts.'
@@ -78,11 +80,11 @@ final class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $client->request('GET', '/en/blog/posts');
         $headers = $client->getResponse()->headers;
 
-        $this->assertSame('0', $headers->getCacheControlDirective('max-age'));
-        $this->assertTrue($headers->getCacheControlDirective('must-revalidate'));
-        $this->assertTrue($headers->getCacheControlDirective('no-cache'));
-        $this->assertTrue($headers->getCacheControlDirective('private'));
-        $this->assertSame('10', $headers->getCacheControlDirective('s-maxage'));
+        self::assertSame('0', $headers->getCacheControlDirective('max-age'));
+        self::assertTrue($headers->getCacheControlDirective('must-revalidate'));
+        self::assertTrue($headers->getCacheControlDirective('no-cache'));
+        self::assertTrue($headers->getCacheControlDirective('private'));
+        self::assertSame('10', $headers->getCacheControlDirective('s-maxage'));
     }
 
     /**
@@ -102,7 +104,7 @@ final class PostListControllerFunctionalTest extends AbstractFunctionalTest
             ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
-        $this->assertSame(
+        self::assertSame(
             $expectedContentType = 'application/json',
             $actualContentType = $client->getResponse()->headers->get('Content-Type'),
             "The response content type does not match. Expected '$expectedContentType' got '$actualContentType'."
@@ -111,7 +113,7 @@ final class PostListControllerFunctionalTest extends AbstractFunctionalTest
 
         $postList = \json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertCount(
+        self::assertCount(
             $expectedCount,
             $postList,
             'The json file does not display the right number of posts.'

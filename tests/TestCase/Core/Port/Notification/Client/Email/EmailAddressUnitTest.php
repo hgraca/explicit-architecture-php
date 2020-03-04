@@ -22,6 +22,8 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Marijn Koesen
  *
  * @small
+ *
+ * @internal
  */
 final class EmailAddressUnitTest extends AbstractUnitTest
 {
@@ -29,11 +31,11 @@ final class EmailAddressUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider getAddresses
      */
-    public function getEmail_and_getName_work_as_expected(string $address, ?string $name = null): void
+    public function get_email_and_get_name_work_as_expected(string $address, ?string $name = null): void
     {
         $mailAddress = new EmailAddress($address, $name);
-        $this->assertEquals($address, $mailAddress->getEmail());
-        $this->assertEquals($name, $mailAddress->getName());
+        self::assertEquals($address, $mailAddress->getEmail());
+        self::assertEquals($name, $mailAddress->getName());
     }
 
     public function getAddresses(): array
@@ -60,10 +62,10 @@ final class EmailAddressUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider getToStringData
      */
-    public function toString_allows_casting_to_string(?string $name, string $email, string $result): void
+    public function to_string_allows_casting_to_string(?string $name, string $email, string $result): void
     {
         $mailAddress = new EmailAddress($email, (string) $name);
-        $this->assertSame($result, (string) $mailAddress);
+        self::assertSame($result, (string) $mailAddress);
     }
 
     public function getToStringData(): array

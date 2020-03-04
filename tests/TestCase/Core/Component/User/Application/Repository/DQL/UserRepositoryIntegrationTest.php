@@ -24,6 +24,8 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
 {
@@ -47,7 +49,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     private $queryService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->repository = self::getService(UserRepository::class);
         $this->persistenceService = self::getService(DqlPersistenceService::class);
@@ -109,12 +111,13 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
     public function delete_removes_the_entity(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException::class);
+
         $user = $this->findAUser();
         $userId = $user->getId();
         $user = $this->findById($userId);
@@ -131,7 +134,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function findAll_takes_DESC_ordering_into_account(): void
+    public function find_all_takes_DESC_ordering_into_account(): void
     {
         $allUsersOrderedDesc = $this->repository->findAll();
         /** @var User $previousUser */
@@ -147,7 +150,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function findAll_takes_ASC_ordering_into_account(): void
+    public function find_all_takes_ASC_ordering_into_account(): void
     {
         $allUsersOrderedDesc = $this->repository->findAll(['id' => 'ASC']);
         /** @var User $previousUser */
@@ -163,7 +166,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function findAll_takes_max_results_into_account(): void
+    public function find_all_takes_max_results_into_account(): void
     {
         $userList = $this->repository->findAll(['id' => 'DESC'], 1);
 
@@ -173,7 +176,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function findOneByUsername(): void
+    public function find_one_by_username(): void
     {
         $user = $this->findAUser();
         $userId = $user->getId();
@@ -189,7 +192,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function findOneByEmail(): void
+    public function find_one_by_email(): void
     {
         $user = $this->findAUser();
         $userId = $user->getId();
@@ -205,7 +208,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function findOneById(): void
+    public function find_one_by_id(): void
     {
         $user = $this->findAUser();
         $userId = $user->getId();

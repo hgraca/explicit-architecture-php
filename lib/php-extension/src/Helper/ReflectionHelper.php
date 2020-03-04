@@ -48,8 +48,6 @@ final class ReflectionHelper extends AbstractStaticClass
 
     /**
      * @throws ReflectionException
-     *
-     * @return mixed
      */
     public static function instantiateWithoutConstructor(string $classFqcn)
     {
@@ -60,8 +58,6 @@ final class ReflectionHelper extends AbstractStaticClass
 
     /**
      * @throws ReflectionException
-     *
-     * @return mixed
      */
     public static function invokeProtectedMethod($object, string $methodName, array $arguments = [])
     {

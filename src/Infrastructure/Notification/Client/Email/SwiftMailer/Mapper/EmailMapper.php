@@ -24,8 +24,6 @@ interface EmailMapper
 {
     /**
      * Map an existing Email to another format
-     *
-     * @return mixed
      */
     public function map(Email $message);
 }

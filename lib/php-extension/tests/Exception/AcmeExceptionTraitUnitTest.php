@@ -21,6 +21,8 @@ use Exception;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class AcmeExceptionTraitUnitTest extends AbstractUnitTest
 {

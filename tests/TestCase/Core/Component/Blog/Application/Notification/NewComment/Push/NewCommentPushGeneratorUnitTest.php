@@ -25,6 +25,11 @@ use Acme\App\Test\Framework\AbstractUnitTest;
 use Mockery;
 use Mockery\MockInterface;
 
+/**
+ * @internal
+ *
+ * @small
+ */
 final class NewCommentPushGeneratorUnitTest extends AbstractUnitTest
 {
     /**

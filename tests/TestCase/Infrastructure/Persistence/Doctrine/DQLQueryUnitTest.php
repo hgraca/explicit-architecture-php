@@ -19,6 +19,8 @@ use Acme\App\Test\Framework\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class DQLQueryUnitTest extends AbstractUnitTest
 {
@@ -27,7 +29,7 @@ final class DQLQueryUnitTest extends AbstractUnitTest
      */
     private $filters;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->filters = ['a', 'b', 'c'];
     }
@@ -37,7 +39,7 @@ final class DQLQueryUnitTest extends AbstractUnitTest
      *
      * @return mixed
      */
-    public function getFilters(): void
+    public function get_filters(): void
     {
         $query = new DqlQuery($this->filters);
 
@@ -47,7 +49,7 @@ final class DQLQueryUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function setHydrationMode_and_getHydrationMode(): void
+    public function set_hydration_mode_and_get_hydration_mode(): void
     {
         $hydrationMode = 999;
         $query = new DqlQuery($this->filters);

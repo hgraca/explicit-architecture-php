@@ -19,15 +19,18 @@ use Acme\PhpExtension\Uuid\Uuid;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class UuidUnitTest extends AbstractUnitTest
 {
     /**
      * @test
-     * @expectedException \Acme\PhpExtension\Uuid\InvalidUuidStringException
      */
     public function construct_throws_exception_if_invalid_uuid_string(): void
     {
+        $this->expectException(\Acme\PhpExtension\Uuid\InvalidUuidStringException::class);
+
         new Uuid('foo');
     }
 
@@ -35,7 +38,7 @@ final class UuidUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideUuid
      */
-    public function isValid(string $uuid, bool $expectedValue): void
+    public function is_valid(string $uuid, bool $expectedValue): void
     {
         self::assertEquals($expectedValue, Uuid::isValid($uuid));
     }
@@ -51,7 +54,7 @@ final class UuidUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function toString_returns_correct_string(): void
+    public function to_string_returns_correct_string(): void
     {
         $uuid = '7a980ca1-5504-4b8c-93be-605cb76700ec';
 

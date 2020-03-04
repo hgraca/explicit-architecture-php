@@ -28,6 +28,8 @@ use Exception;
  * @author Ruud Van Der Weiijde
  *
  * @small
+ *
+ * @internal
  */
 final class EmailUnitTest extends AbstractUnitTest
 {
@@ -35,11 +37,11 @@ final class EmailUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider getSubjectAndFromAddress
      */
-    public function constructorPass(string $subject, EmailAddress $from): void
+    public function constructor_pass(string $subject, EmailAddress $from): void
     {
         $message = new Email($subject, $from);
-        $this->assertEquals($subject, $message->getSubject());
-        $this->assertEquals($from, $message->getFrom());
+        self::assertEquals($subject, $message->getSubject());
+        self::assertEquals($from, $message->getFrom());
     }
 
     public function getSubjectAndFromAddress(): array
@@ -56,7 +58,7 @@ final class EmailUnitTest extends AbstractUnitTest
      *
      * @throws Exception
      */
-    public function setBodyHtmlPass(string $content, string $contentType, string $charset = null): void
+    public function set_body_html_pass(string $content, string $contentType, string $charset = null): void
     {
         $message = $this->getSimpleEmail();
         $message = $this->setContentAndCharsetBasedOnContentType($content, $contentType, $charset ?? '', $message);
@@ -69,10 +71,10 @@ final class EmailUnitTest extends AbstractUnitTest
     private function assertBodyMatchesGivenContentAndContentType(Email $message, string $content, string $contentType): void
     {
         $parts = $message->getParts();
-        $this->assertTrue(\is_array($parts));
+        self::assertIsArray($parts);
         foreach ($parts as $part) {
             if ($part->getContentType() === $contentType) {
-                $this->assertEquals($content, $part->getContent());
+                self::assertEquals($content, $part->getContent());
 
                 return;
             }
@@ -84,18 +86,16 @@ final class EmailUnitTest extends AbstractUnitTest
     /**
      * @test
      * @dataProvider getHtmlContentAndCharset
-     * @expectedException \Acme\App\Core\Port\Notification\Client\Email\Exception\EmailPartAlreadyProvidedException
      */
-    public function setBodyHtmlTwiceFails(string $content, string $contentType, string $charset = null): void
+    public function set_body_html_twice_fails(string $content, string $contentType, string $charset = null): void
     {
+        $this->expectException(\Acme\App\Core\Port\Notification\Client\Email\Exception\EmailPartAlreadyProvidedException::class);
+
         $message = new Email('subbject', new EmailAddress('from@address.tld'));
         $message = $this->setContentAndCharsetBasedOnContentType($content, $contentType, $charset ?? '', $message);
         $this->setContentAndCharsetBasedOnContentType($content, $contentType, $charset ?? '', $message);
     }
 
-    /**
-     * @return array
-     */
     public function getHtmlContentAndCharset(): array
     {
         $contentHtml = '<p>UTF-8 Characters: ö ü ä</p><p>UTF-8 Chinese: 激 光 這 </p><p>HTML Entity Characters: &#28450; &#23383;</p>';
@@ -114,7 +114,7 @@ final class EmailUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function getFirstTo(): void
+    public function get_first_to(): void
     {
         $firstEmail = 'first@example.org';
         $secondEmail = 'second@example.org';
@@ -122,30 +122,13 @@ final class EmailUnitTest extends AbstractUnitTest
         $message = new Email('subject', new EmailAddress('from@address.tld'));
         $message->addTo(new EmailAddress($firstEmail));
         $message->addTo(new EmailAddress($secondEmail));
-        $this->assertEquals($firstEmail, $message->getFirstTo()->getEmail());
+        self::assertEquals($firstEmail, $message->getFirstTo()->getEmail());
     }
 
     /**
      * @test
      */
-    public function getFirstToMatching(): void
-    {
-        $firstEmail = 'first@example.org';
-        $secondEmail = 'second@example.org';
-
-        $message = new Email('subject', new EmailAddress('from@address.tld'));
-        $message->addTo(new EmailAddress($firstEmail));
-        $message->addTo(new EmailAddress($secondEmail));
-
-        $this->assertEquals($secondEmail, $message->getFirstToMatchingRegex('/^second.*/')->getEmail());
-    }
-
-    /**
-     * @test
-     * @expectedException \Acme\App\Core\Port\Notification\Client\Email\Exception\EmailAddressNotFoundException
-     * @expectedExceptionMessage No e-mail address found with the pattern /not-expected/
-     */
-    public function getFirstToMatchingNone(): void
+    public function get_first_to_matching(): void
     {
         $firstEmail = 'first@example.org';
         $secondEmail = 'second@example.org';
@@ -154,123 +137,141 @@ final class EmailUnitTest extends AbstractUnitTest
         $message->addTo(new EmailAddress($firstEmail));
         $message->addTo(new EmailAddress($secondEmail));
 
-        $this->assertEquals($secondEmail, $message->getFirstToMatchingRegex('/not-expected/')->getEmail());
+        self::assertEquals($secondEmail, $message->getFirstToMatchingRegex('/^second.*/')->getEmail());
     }
 
     /**
      * @test
      */
-    public function plainTextPart(): void
+    public function get_first_to_matching_none(): void
+    {
+        $this->expectException(\Acme\App\Core\Port\Notification\Client\Email\Exception\EmailAddressNotFoundException::class);
+        $this->expectExceptionMessage('No e-mail address found with the pattern /not-expected/');
+
+        $firstEmail = 'first@example.org';
+        $secondEmail = 'second@example.org';
+
+        $message = new Email('subject', new EmailAddress('from@address.tld'));
+        $message->addTo(new EmailAddress($firstEmail));
+        $message->addTo(new EmailAddress($secondEmail));
+
+        self::assertEquals($secondEmail, $message->getFirstToMatchingRegex('/not-expected/')->getEmail());
+    }
+
+    /**
+     * @test
+     */
+    public function plain_text_part(): void
     {
         $plainText = 'Plain text part';
         $message = new Email('subject', new EmailAddress('from@address.tld'));
         $message->setBodyText($plainText);
-        $this->assertEquals($plainText, $message->getPlainTextPart()->getContent());
+        self::assertEquals($plainText, $message->getPlainTextPart()->getContent());
     }
 
     /**
      * @test
      */
-    public function htmlPart(): void
+    public function html_part(): void
     {
         $html = '<html><body>Hello World</body></html>';
         $message = new Email('subject', new EmailAddress('from@address.tld'));
         $message->setBodyHtml($html);
-        $this->assertEquals($html, $message->getHtmlPart()->getContent());
+        self::assertEquals($html, $message->getHtmlPart()->getContent());
     }
 
     /**
      * @test
      */
-    public function notContainingPartsYet(): void
+    public function not_containing_parts_yet(): void
     {
         $message = new Email('subject', new EmailAddress('from@address.tld'));
-        $this->assertEmpty($message->getHtmlPart());
-        $this->assertEmpty($message->getPlainTextPart());
+        self::assertEmpty($message->getHtmlPart());
+        self::assertEmpty($message->getPlainTextPart());
     }
 
     /**
      * @test
      * @dataProvider getAddresses
      */
-    public function messageTo(string $toAddress): void
+    public function message_to(string $toAddress): void
     {
         $message = $this->getSimpleEmail();
         $message->addTo(new EmailAddress($toAddress));
         $mailAddresses = $message->getTo();
-        $this->assertTrue(\is_array($mailAddresses));
-        $this->assertEquals($toAddress, $mailAddresses[0]->getEmail());
+        self::assertIsArray($mailAddresses);
+        self::assertEquals($toAddress, $mailAddresses[0]->getEmail());
     }
 
     /**
      * @test
      * @dataProvider getMultipleAddresses
      */
-    public function messageMultipleTo(string $toAddressOne, string $toAddressTwo): void
+    public function message_multiple_to(string $toAddressOne, string $toAddressTwo): void
     {
         $message = $this->getSimpleEmail();
         $message->addTo(new EmailAddress($toAddressOne));
         $message->addTo(new EmailAddress($toAddressTwo));
         $mailAddresses = $message->getTo();
-        $this->assertTrue(\is_array($mailAddresses));
-        $this->assertEquals($toAddressOne, $mailAddresses[0]->getEmail());
-        $this->assertEquals($toAddressTwo, $mailAddresses[1]->getEmail());
+        self::assertIsArray($mailAddresses);
+        self::assertEquals($toAddressOne, $mailAddresses[0]->getEmail());
+        self::assertEquals($toAddressTwo, $mailAddresses[1]->getEmail());
     }
 
     /**
      * @test
      * @dataProvider getAddresses
      */
-    public function messageCc(string $ccAddress): void
+    public function message_cc(string $ccAddress): void
     {
         $message = $this->getSimpleEmail();
         $message->addCc(new EmailAddress($ccAddress));
         $mailAddresses = $message->getCc();
-        $this->assertTrue(\is_array($mailAddresses));
-        $this->assertEquals($ccAddress, $mailAddresses[0]->getEmail());
+        self::assertIsArray($mailAddresses);
+        self::assertEquals($ccAddress, $mailAddresses[0]->getEmail());
     }
 
     /**
      * @test
      * @dataProvider getMultipleAddresses
      */
-    public function messageTwoCc(string $ccAddressOne, string $ccAddressTwo): void
+    public function message_two_cc(string $ccAddressOne, string $ccAddressTwo): void
     {
         $message = $this->getSimpleEmail();
         $message->addCc(new EmailAddress($ccAddressOne));
         $message->addCc(new EmailAddress($ccAddressTwo));
         $mailAddresses = $message->getCc();
-        $this->assertTrue(\is_array($mailAddresses));
-        $this->assertEquals($ccAddressOne, $mailAddresses[0]->getEmail());
-        $this->assertEquals($ccAddressTwo, $mailAddresses[1]->getEmail());
+        self::assertIsArray($mailAddresses);
+        self::assertEquals($ccAddressOne, $mailAddresses[0]->getEmail());
+        self::assertEquals($ccAddressTwo, $mailAddresses[1]->getEmail());
     }
 
     /**
      * @test
      * @dataProvider getAddresses
      */
-    public function messageBcc(string $bccAddress): void
+    public function message_bcc(string $bccAddress): void
     {
         $message = $this->getSimpleEmail();
         $message->addBcc(new EmailAddress($bccAddress));
         $mailAddresses = $message->getBcc();
-        $this->assertTrue(\is_array($mailAddresses));
-        $this->assertEquals($bccAddress, $mailAddresses[0]->getEmail());
+        self::assertIsArray($mailAddresses);
+        self::assertEquals($bccAddress, $mailAddresses[0]->getEmail());
     }
 
     /**
      * @test
      * @dataProvider getMultipleAddresses
      */
-    public function messageTwoBcc(string $bccAddressOne, string $bccAddressTwo): void
+    public function message_two_bcc(string $bccAddressOne, string $bccAddressTwo): void
     {
         $message = $this->getSimpleEmail();
         $message->addBcc(new EmailAddress($bccAddressOne));
         $message->addBcc(new EmailAddress($bccAddressTwo));
         $mailAddresses = $message->getBcc();
-        $this->assertTrue(\is_array($mailAddresses));
-        $this->assertEquals($bccAddressOne, $mailAddresses[0]->getEmail());
-        $this->assertEquals($bccAddressTwo, $mailAddresses[1]->getEmail());
+        self::assertIsArray($mailAddresses);
+        self::assertEquals($bccAddressOne, $mailAddresses[0]->getEmail());
+        self::assertEquals($bccAddressTwo, $mailAddresses[1]->getEmail());
     }
 
     public function getAddresses(): array
@@ -304,7 +305,7 @@ final class EmailUnitTest extends AbstractUnitTest
      *
      * @throws Exception
      */
-    public function addHeaders($headerValuePairs): void
+    public function add_headers($headerValuePairs): void
     {
         $expected = [];
         $message = $this->getSimpleEmail();
@@ -337,7 +338,7 @@ final class EmailUnitTest extends AbstractUnitTest
                 unset($expected[$key]);
             }
         }
-        $this->assertEquals(0, \count($expected));
+        self::assertCount(0, $expected);
     }
 
     public function getHeaders(): array
@@ -373,24 +374,24 @@ final class EmailUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider getTrackingCodeValues
      */
-    public function setTrackMessageOpening(string $trackingCodeMessageOpen): void
+    public function set_track_message_opening(string $trackingCodeMessageOpen): void
     {
         $message = $this->getSimpleEmail();
         $expected = $trackingCodeMessageOpen;
         $message->setTrackMessageOpening((bool) $trackingCodeMessageOpen);
-        $this->assertEquals($expected, $message->shouldTrackMessageOpening());
+        self::assertEquals($expected, $message->shouldTrackMessageOpening());
     }
 
     /**
      * @test
      * @dataProvider getTrackingCodeValues
      */
-    public function setTrackClicks(bool $trackingCodeMessageClick): void
+    public function set_track_clicks(bool $trackingCodeMessageClick): void
     {
         $message = $this->getSimpleEmail();
         $expected = $trackingCodeMessageClick;
         $message->setTrackClicks($trackingCodeMessageClick);
-        $this->assertEquals($expected, $message->shouldTrackClicks());
+        self::assertEquals($expected, $message->shouldTrackClicks());
     }
 
     public function getTrackingCodeValues(): array
@@ -405,11 +406,11 @@ final class EmailUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider getTrackingCampaigns
      */
-    public function setTrackingCampaign(string $trackingCampaign): void
+    public function set_tracking_campaign(string $trackingCampaign): void
     {
         $message = $this->getSimpleEmail();
         $message->setTrackingCampaign($trackingCampaign);
-        $this->assertEquals($trackingCampaign, $message->getTrackingCampaign());
+        self::assertEquals($trackingCampaign, $message->getTrackingCampaign());
     }
 
     public function getTrackingCampaigns(): array
@@ -425,12 +426,12 @@ final class EmailUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider getTags
      */
-    public function setTags(array $tags): void
+    public function set_tags(array $tags): void
     {
         $message = $this->getSimpleEmail();
         $message->setTags($tags);
         $messageTags = $message->getTags();
-        $this->assertEquals($tags, $messageTags);
+        self::assertEquals($tags, $messageTags);
     }
 
     public function getTags(): array
@@ -474,7 +475,7 @@ final class EmailUnitTest extends AbstractUnitTest
             $message->addHeader($header['key'], $value);
         }
 
-        $this->assertEquals($subject, $message->getSubject());
+        self::assertEquals($subject, $message->getSubject());
 
         foreach ($message->getTo() as $to) {
             $this->compareMailAddressWithArray($emailAddress, $to);
@@ -488,16 +489,16 @@ final class EmailUnitTest extends AbstractUnitTest
             $this->compareMailAddressWithArray($emailAddress, $bcc);
         }
 
-        $this->assertEquals(2, count($message->getParts()));
+        self::assertCount(2, $message->getParts());
 
         foreach ($message->getParts() as $part) {
-            $this->assertArrayHasKey($part->getContentType(), $body);
-            $this->assertEquals($body[$part->getContentType()]['content'], $part->getContent());
+            self::assertArrayHasKey($part->getContentType(), $body);
+            self::assertEquals($body[$part->getContentType()]['content'], $part->getContent());
 
             if (isset($body[$part->getContentType()]['characterset'])) {
-                $this->assertEquals($body[$part->getContentType()]['characterset'], $part->getCharset());
+                self::assertEquals($body[$part->getContentType()]['characterset'], $part->getCharset());
             } else {
-                $this->assertNull($part->getCharset());
+                self::assertNull($part->getCharset());
             }
         }
 
@@ -507,21 +508,21 @@ final class EmailUnitTest extends AbstractUnitTest
                 if ($header['key'] === $messageHeader->getName()) {
                     $headerMatches = true;
                     if (isset($header['value'])) {
-                        $this->assertEquals($header['value'], $messageHeader->getValue());
+                        self::assertEquals($header['value'], $messageHeader->getValue());
                     } else {
-                        $this->assertEmpty($messageHeader->getValue());
+                        self::assertEmpty($messageHeader->getValue());
                     }
                 }
             }
 
-            $this->assertTrue($headerMatches);
+            self::assertTrue($headerMatches);
         }
     }
 
     private function compareMailAddressWithArray(array $expected, EmailAddress $given): void
     {
-        $this->assertEquals($expected['mail'], $given->getEmail());
-        $this->assertEquals($expected['name'], $given->getName());
+        self::assertEquals($expected['mail'], $given->getEmail());
+        self::assertEquals($expected['name'], $given->getName());
     }
 
     private function setContentAndCharsetBasedOnContentType(string $content, string $contentType, string $charset, Email $message): Email

@@ -68,8 +68,6 @@ interface DqlQueryBuilderInterface extends QueryBuilderInterface
      *         ->distinct()
      *         ->from('User', 'u');
      * </code>
-     *
-     * @param bool $flag
      */
     public function distinct(bool $flag = true): self;
 
@@ -267,8 +265,6 @@ interface DqlQueryBuilderInterface extends QueryBuilderInterface
      *         ->andWhere('u.is_active = 1');
      * </code>
      *
-     * @param mixed $where The query restrictions.*
-     *
      * @see where()
      */
     public function andWhere(string $predicates): self;
@@ -284,8 +280,6 @@ interface DqlQueryBuilderInterface extends QueryBuilderInterface
      *         ->where('u.id = 1')
      *         ->orWhere('u.id = 2');
      * </code>
-     *
-     * @param mixed $where The WHERE statement.*
      *
      * @see where()
      */

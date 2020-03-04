@@ -21,6 +21,8 @@ use Symfony\Component\Lock\Lock;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class LockManagerIntegrationTest extends AbstractIntegrationTest
 {
@@ -71,7 +73,7 @@ final class LockManagerIntegrationTest extends AbstractIntegrationTest
      *
      * @throws \ReflectionException
      */
-    public function releaseAll(): void
+    public function release_all(): void
     {
         $lockManager = $this->getLockManager();
         $lockManager->acquire('lock1');

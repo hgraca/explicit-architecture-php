@@ -27,6 +27,8 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class PostSlugExistsQueryIntegrationTest extends AbstractIntegrationTest
 {

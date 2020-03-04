@@ -23,6 +23,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as SymfonyUrlGener
 
 /**
  * @small
+ *
+ * @internal
  */
 final class UrlGeneratorServiceUnitTest extends AbstractUnitTest
 {
@@ -46,7 +48,7 @@ final class UrlGeneratorServiceUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideUrlType
      */
-    public function generateUrl(?UrlType $urlType): void
+    public function generate_url(?UrlType $urlType): void
     {
         $route = 'some_route';
         $parameters = ['a' => 'parameter'];

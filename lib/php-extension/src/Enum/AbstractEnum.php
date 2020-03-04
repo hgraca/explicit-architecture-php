@@ -77,9 +77,6 @@ abstract class AbstractEnum
         throw new BadMethodCallException(sprintf('%s::%s() does not exist', static::class, $methodName));
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue()
     {
         return $this->value;

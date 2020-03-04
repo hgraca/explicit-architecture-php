@@ -25,6 +25,8 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class OneSignalClientUnitTest extends AbstractUnitTest
 {
@@ -33,7 +35,7 @@ final class OneSignalClientUnitTest extends AbstractUnitTest
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendNotification(): void
+    public function send_notification(): void
     {
         $appIDKey = 'app_id';
         $restAPIKey = 'rest_api_key';

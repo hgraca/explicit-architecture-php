@@ -19,6 +19,8 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class StringHelperUnitTest extends AbstractUnitTest
 {
@@ -46,7 +48,7 @@ final class StringHelperUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideStudlyTests
      */
-    public function toStudlyCase(string $input, string $expectedOutput): void
+    public function to_studly_case(string $input, string $expectedOutput): void
     {
         self::assertSame($expectedOutput, StringHelper::toStudlyCase($input));
     }
@@ -69,7 +71,7 @@ final class StringHelperUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideCamelCaseTests
      */
-    public function toCamelCase(string $input, string $expectedOutput): void
+    public function to_camel_case(string $input, string $expectedOutput): void
     {
         self::assertSame($expectedOutput, StringHelper::toCamelCase($input));
     }
@@ -89,7 +91,7 @@ final class StringHelperUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideSnakeCaseTests
      */
-    public function toSnakeCase(string $input, string $expectedOutput): void
+    public function to_snake_case(string $input, string $expectedOutput): void
     {
         self::assertSame($expectedOutput, StringHelper::toSnakeCase($input));
     }

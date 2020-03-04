@@ -22,6 +22,8 @@ use Acme\App\Infrastructure\Notification\Client\Email\SwiftMailer\Mapper\SwiftEm
  * @author Marijn Koesen
  *
  * @small
+ *
+ * @internal
  */
 final class MandrillSwiftEmailMapperUnitTest extends SwiftEmailMapperUnitTest
 {

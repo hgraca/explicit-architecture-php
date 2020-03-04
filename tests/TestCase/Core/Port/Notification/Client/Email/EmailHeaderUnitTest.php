@@ -25,18 +25,20 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Marijn Koesen
  *
  * @small
+ *
+ * @internal
  */
 final class EmailHeaderUnitTest extends AbstractUnitTest
 {
     /**
      * @test
      */
-    public function getValue_and_getName_work_as_expected(): void
+    public function get_value_and_get_name_work_as_expected(): void
     {
         $name = 'header name';
         $value = 'header value';
         $messageHeader = new EmailHeader($name, $value);
-        $this->assertEquals($name, $messageHeader->getName());
-        $this->assertEquals($value, $messageHeader->getValue());
+        self::assertEquals($name, $messageHeader->getName());
+        self::assertEquals($value, $messageHeader->getValue());
     }
 }

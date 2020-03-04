@@ -31,7 +31,6 @@ final class ExceptionController extends TwigExceptionController
     }
 
     /**
-     * @param Request $request
      * @param string  $format
      * @param int     $code          An HTTP response status code
      * @param bool    $showException

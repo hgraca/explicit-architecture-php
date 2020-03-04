@@ -19,6 +19,8 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class TypeHelperUnitTest extends AbstractUnitTest
 {
@@ -26,7 +28,7 @@ final class TypeHelperUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideValues
      */
-    public function getType($value, string $expectedType): void
+    public function get_type($value, string $expectedType): void
     {
         self::assertEquals($expectedType, TypeHelper::getType($value));
     }

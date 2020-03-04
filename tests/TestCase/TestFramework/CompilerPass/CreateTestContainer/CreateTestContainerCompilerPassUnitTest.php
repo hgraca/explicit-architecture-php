@@ -25,6 +25,8 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class CreateTestContainerCompilerPassUnitTest extends AbstractUnitTest
 {
@@ -38,7 +40,7 @@ final class CreateTestContainerCompilerPassUnitTest extends AbstractUnitTest
      */
     private $compilerPass;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->containerBuilder = Mockery::mock(ContainerBuilder::class);
         $this->compilerPass = new CreateTestContainerCompilerPass();
@@ -65,11 +67,11 @@ final class CreateTestContainerCompilerPassUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     *
-     * @expectedException \Acme\App\Test\Framework\CompilerPass\CreateTestContainer\DuplicateServiceInTestContainerException
      */
     public function process_throws_exception_if_duplicated_service_in_test_container(): void
     {
+        $this->expectException(\Acme\App\Test\Framework\CompilerPass\CreateTestContainer\DuplicateServiceInTestContainerException::class);
+
         $this->mockTestContainerServiceListParameter($this->getTestContainerServiceListWithDuplicatedService());
 
         $this->compilerPass->process($this->containerBuilder);
@@ -77,11 +79,11 @@ final class CreateTestContainerCompilerPassUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     *
-     * @expectedException \Acme\App\Test\Framework\CompilerPass\CreateTestContainer\AbstractServiceInTestContainerException
      */
     public function process_throws_exception_if_abstract_service_in_test_container(): void
     {
+        $this->expectException(\Acme\App\Test\Framework\CompilerPass\CreateTestContainer\AbstractServiceInTestContainerException::class);
+
         $this->mockTestContainerServiceListParameter($this->getTestContainerServiceListWithAbstractService());
         $this->mockContainerDefinitionList();
 
@@ -92,11 +94,11 @@ final class CreateTestContainerCompilerPassUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     *
-     * @expectedException \Acme\App\Test\Framework\CompilerPass\CreateTestContainer\ServiceInTestContainerNotFoundInProductionContainerException
      */
     public function process_throws_exception_if_inexistent_service_in_test_container(): void
     {
+        $this->expectException(\Acme\App\Test\Framework\CompilerPass\CreateTestContainer\ServiceInTestContainerNotFoundInProductionContainerException::class);
+
         $this->mockTestContainerServiceListParameter($this->getTestContainerServiceListWithInexistentService());
         $this->mockContainerDefinitionList();
 

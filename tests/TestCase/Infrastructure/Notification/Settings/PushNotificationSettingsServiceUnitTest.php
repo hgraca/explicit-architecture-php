@@ -23,6 +23,8 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class PushNotificationSettingsServiceUnitTest extends AbstractUnitTest
 {
@@ -50,7 +52,7 @@ final class PushNotificationSettingsServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function hasNotificationsEnabled_true(): void
+    public function has_notifications_enabled_true(): void
     {
         $userId = new UserId();
 
@@ -62,7 +64,7 @@ final class PushNotificationSettingsServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function hasNotificationsEnabled_false(): void
+    public function has_notifications_enabled_false(): void
     {
         $userId = new UserId();
 
@@ -74,7 +76,7 @@ final class PushNotificationSettingsServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function enableNotifications(): void
+    public function enable_notifications(): void
     {
         $userId = new UserId();
 
@@ -86,7 +88,7 @@ final class PushNotificationSettingsServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function disableNotifications(): void
+    public function disable_notifications(): void
     {
         $userId = new UserId();
 

@@ -33,8 +33,6 @@ interface ResultCollectionInterface extends Countable, IteratorAggregate
     /**
      * @throws EmptyQueryResultException
      * @throws NotUniqueQueryResultException
-     *
-     * @return mixed
      */
     public function getSingleResult();
 
@@ -49,8 +47,6 @@ interface ResultCollectionInterface extends Countable, IteratorAggregate
 
     /**
      * @param string|ConstructableFromArrayInterface $fqcn
-     *
-     * @return mixed
      */
     public function hydrateSingleResultAs(string $fqcn);
 

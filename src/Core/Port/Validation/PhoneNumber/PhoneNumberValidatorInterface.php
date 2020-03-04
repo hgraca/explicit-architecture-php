@@ -17,8 +17,6 @@ namespace Acme\App\Core\Port\Validation\PhoneNumber;
 interface PhoneNumberValidatorInterface
 {
     /**
-     * @param string $phoneNumber
-     *
      * @throws PhoneNumberException
      */
     public function validate(string $phoneNumber, string $countryCode = null): void;

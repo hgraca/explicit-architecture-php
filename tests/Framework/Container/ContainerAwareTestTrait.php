@@ -41,9 +41,6 @@ trait ContainerAwareTestTrait
         return $testContainer;
     }
 
-    /**
-     * @return mixed
-     */
     protected function getService(string $service)
     {
         return $this->getTestContainer()->get($service);
@@ -54,9 +51,6 @@ trait ContainerAwareTestTrait
         $this->getContainer()->set($service, $object);
     }
 
-    /**
-     * @return mixed
-     */
     protected function getParameter(string $parameter)
     {
         return $this->getContainer()->getParameter($parameter);

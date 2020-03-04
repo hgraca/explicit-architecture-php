@@ -39,6 +39,8 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ ./vendor/bin/phpunit
  *
  * @large
+ *
+ * @internal
  */
 final class PostControllerFunctionalTest extends AbstractFunctionalTest
 {
@@ -54,7 +56,7 @@ final class PostControllerFunctionalTest extends AbstractFunctionalTest
      */
     private $queryService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->dqlQueryBuilder = $this->getService(DqlQueryBuilderInterface::class);
         $this->queryService = $this->getService(QueryServiceRouterInterface::class);
@@ -129,7 +131,7 @@ final class PostControllerFunctionalTest extends AbstractFunctionalTest
 
         /** @var Post $post */
         $post = $this->findById($postId);
-        $this->assertSame($newBlogPostTitle, $post->getTitle());
+        self::assertSame($newBlogPostTitle, $post->getTitle());
     }
 
     /**
@@ -139,11 +141,11 @@ final class PostControllerFunctionalTest extends AbstractFunctionalTest
      * thanks to the DAMADoctrineTestBundle and its PHPUnit listener, all changes
      * to the database are rolled back when this test completes. This means that
      * all the application tests begin with the same database contents.
-     *
-     * @expectedException \Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException
      */
     public function admin_delete_post(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException::class);
+
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $this->getService(UrlGeneratorInterface::class);
 
@@ -159,7 +161,7 @@ final class PostControllerFunctionalTest extends AbstractFunctionalTest
 
         self::assertResponseStatusCode(Response::HTTP_OK, $client);
 
-        $this->assertSame(
+        self::assertSame(
             $urlGenerator->generateUrl('admin_post_list', [], UrlType::absoluteUrl()),
             $crawler->getUri()
         );
@@ -192,7 +194,7 @@ final class PostControllerFunctionalTest extends AbstractFunctionalTest
             ['token' => 'invalid_token']
         );
 
-        $this->assertSame(
+        self::assertSame(
             $urlGenerator->generateUrl('admin_post_list', [], UrlType::absoluteUrl()),
             $crawler->getUri()
         );

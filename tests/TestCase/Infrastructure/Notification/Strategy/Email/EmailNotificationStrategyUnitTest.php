@@ -24,6 +24,8 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class EmailNotificationStrategyUnitTest extends AbstractUnitTest
 {
@@ -44,7 +46,7 @@ final class EmailNotificationStrategyUnitTest extends AbstractUnitTest
      */
     private $notificationMessageGeneratorMock;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->mailerMock = Mockery::mock(EmailerInterface::class);
         $this->notificationStrategy = new EmailNotificationStrategy($this->mailerMock);
@@ -61,7 +63,7 @@ final class EmailNotificationStrategyUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function notify_SendsOutCorrectNotification(): void
+    public function notify_Sends_out_correct_notification(): void
     {
         $generatedMessage = Mockery::mock(Email::class);
 

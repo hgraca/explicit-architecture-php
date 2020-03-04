@@ -19,6 +19,8 @@ use Acme\App\Test\Framework\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class PostUnitTest extends AbstractUnitTest
 {
@@ -26,7 +28,7 @@ final class PostUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideSuffixes
      */
-    public function postfixSlug(string $suffix): void
+    public function postfix_slug(string $suffix): void
     {
         $title = 'Some Interesting Title';
 

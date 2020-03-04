@@ -23,6 +23,8 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
 {
@@ -39,7 +41,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
      */
     private $connectionMock;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->connectionMock = self::mock(Connection::class);
         $this->entityManagerMock = self::mock(EntityManagerInterface::class);
@@ -69,7 +71,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function startTransaction_with_auto_commit_does_not_start_transaction(): void
+    public function start_transaction_with_auto_commit_does_not_start_transaction(): void
     {
         $this->connectionMock->shouldNotReceive('beginTransaction');
 
@@ -79,7 +81,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function startTransaction_without_auto_commit_starts_transaction(): void
+    public function start_transaction_without_auto_commit_starts_transaction(): void
     {
         $this->connectionMock->shouldReceive('beginTransaction')->once();
 
@@ -91,7 +93,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
      *
      * @throws ConnectionException
      */
-    public function finishTransaction_with_auto_commit_does_not_commit_transaction(): void
+    public function finish_transaction_with_auto_commit_does_not_commit_transaction(): void
     {
         $this->connectionMock->shouldNotReceive('isTransactionActive');
         $this->connectionMock->shouldNotReceive('commit');
@@ -106,7 +108,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
      *
      * @throws ConnectionException
      */
-    public function finishTransaction_without_auto_commit_commits_transaction(): void
+    public function finish_transaction_without_auto_commit_commits_transaction(): void
     {
         $this->connectionMock->shouldReceive('isTransactionActive')->once()->andReturn(true);
         $this->connectionMock->shouldReceive('commit')->once();
@@ -121,7 +123,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
      *
      * @throws ConnectionException
      */
-    public function rollbackTransaction_with_auto_commit_should_not_roll_back(): void
+    public function rollback_transaction_with_auto_commit_should_not_roll_back(): void
     {
         $this->connectionMock->shouldNotReceive('isTransactionActive');
         $this->connectionMock->shouldNotReceive('rollback');
@@ -136,7 +138,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
      *
      * @throws ConnectionException
      */
-    public function rollbackTransaction_without_auto_commit_should_roll_back_when_a_transaction_is_active(): void
+    public function rollback_transaction_without_auto_commit_should_roll_back_when_a_transaction_is_active(): void
     {
         $this->connectionMock->shouldReceive('isTransactionActive')->once()->andReturn(true);
         $this->connectionMock->shouldReceive('rollBack')->once();
@@ -151,7 +153,7 @@ final class DQLPersistenceServiceUnitTest extends AbstractUnitTest
      *
      * @throws ConnectionException
      */
-    public function rollbackTransaction_without_auto_commit_should_not_roll_back_when_no_transaction_is_active(): void
+    public function rollback_transaction_without_auto_commit_should_not_roll_back_when_no_transaction_is_active(): void
     {
         $this->connectionMock->shouldReceive('isTransactionActive')->once()->andReturn(false);
         $this->connectionMock->shouldNotReceive('rollback');

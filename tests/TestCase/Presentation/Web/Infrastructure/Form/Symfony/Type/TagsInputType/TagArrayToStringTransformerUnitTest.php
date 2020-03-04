@@ -26,6 +26,8 @@ use Doctrine\ORM\EntityRepository;
  * See https://symfony.com/doc/current/testing/database.html
  *
  * @small
+ *
+ * @internal
  */
 final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
 {
@@ -40,8 +42,8 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     {
         $tags = $this->getMockedTransformer()->reverseTransform('Hello, Demo, How');
 
-        $this->assertCount(3, $tags);
-        $this->assertSame('Hello', (string) $tags[0]);
+        self::assertCount(3, $tags);
+        self::assertSame('Hello', (string) $tags[0]);
     }
 
     /**
@@ -55,8 +57,8 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     {
         $transformer = $this->getMockedTransformer();
 
-        $this->assertCount(3, $transformer->reverseTransform('Hello, Demo,, How'));
-        $this->assertCount(3, $transformer->reverseTransform('Hello, Demo, How,'));
+        self::assertCount(3, $transformer->reverseTransform('Hello, Demo,, How'));
+        self::assertCount(3, $transformer->reverseTransform('Hello, Demo, How,'));
     }
 
     /**
@@ -70,7 +72,7 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     {
         $tags = $this->getMockedTransformer()->reverseTransform('   Hello   ');
 
-        $this->assertSame('Hello', (string) $tags[0]);
+        self::assertSame('Hello', (string) $tags[0]);
     }
 
     /**
@@ -84,7 +86,7 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
     {
         $tags = $this->getMockedTransformer()->reverseTransform('Hello, Hello, Hello');
 
-        $this->assertCount(1, $tags);
+        self::assertCount(1, $tags);
     }
 
     /**
@@ -102,9 +104,9 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
         ];
         $tags = $this->getMockedTransformer($persistedTags)->reverseTransform('Hello, World, How, Are, You');
 
-        $this->assertCount(5, $tags);
-        $this->assertSame($persistedTags[0], $tags[0]);
-        $this->assertSame($persistedTags[1], $tags[1]);
+        self::assertCount(5, $tags);
+        self::assertSame($persistedTags[0], $tags[0]);
+        self::assertSame($persistedTags[1], $tags[1]);
     }
 
     /**
@@ -123,7 +125,7 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
         ];
         $transformed = $this->getMockedTransformer()->transform($persistedTags);
 
-        $this->assertSame('Hello,World', $transformed);
+        self::assertSame('Hello,World', $transformed);
     }
 
     /**
@@ -133,15 +135,13 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
      * @param array $findByReturnValues The values returned when calling to the findBy() method
      *
      * @throws \Doctrine\ORM\ORMException
-     *
-     * @return TagArrayToStringTransformer
      */
     private function getMockedTransformer(array $findByReturnValues = []): TagArrayToStringTransformer
     {
         $tagRepository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $tagRepository->expects($this->any())
+        $tagRepository->expects(self::any())
             ->method('findBy')
             ->willReturn($findByReturnValues);
 
@@ -149,7 +149,7 @@ final class TagArrayToStringTransformerUnitTest extends AbstractUnitTest
             ->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $entityManager->expects($this->any())
+        $entityManager->expects(self::any())
             ->method('getRepository')
             ->willReturn($tagRepository);
 

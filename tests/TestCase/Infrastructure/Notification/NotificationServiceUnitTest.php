@@ -24,13 +24,15 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class NotificationServiceUnitTest extends AbstractUnitTest
 {
     /**
      * @test
      */
-    public function onlyExpectedStrategiesGetToNotify(): void
+    public function only_expected_strategies_get_to_notify(): void
     {
         /* @var NotificationInterface|MockInterface $notification */
         $notification = Mockery::mock(NotificationInterface::class);

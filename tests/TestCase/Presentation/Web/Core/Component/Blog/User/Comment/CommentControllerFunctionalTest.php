@@ -35,6 +35,8 @@ use InvalidArgumentException;
  *     $ ./vendor/bin/phpunit
  *
  * @large
+ *
+ * @internal
  */
 final class CommentControllerFunctionalTest extends AbstractFunctionalTest
 {
@@ -89,7 +91,7 @@ final class CommentControllerFunctionalTest extends AbstractFunctionalTest
             return;
         }
 
-        $this->assertSame(
+        self::assertSame(
             'Hi, Symfony!',
             $newComment,
             'Content before: ' . $contentBefore . "\n\n\n"
@@ -120,7 +122,7 @@ final class CommentControllerFunctionalTest extends AbstractFunctionalTest
             ['comment_form[content]' => 'Hi, Symfony!']
         );
 
-        $this->assertSame(
+        self::assertSame(
             $urlGenerator->generateUrl('security_login', [], UrlType::absoluteUrl()),
             $crawler->getUri()
         );

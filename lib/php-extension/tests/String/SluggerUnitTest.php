@@ -28,15 +28,19 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
  *     $ ./vendor/bin/phpunit
  *
  * @small
+ *
+ * @internal
  */
 final class SluggerUnitTest extends AbstractUnitTest
 {
     /**
      * @dataProvider getSlugs
+     *
+     * @test
      */
-    public function testSlugify(string $string, string $slug): void
+    public function slugify(string $string, string $slug): void
     {
-        $this->assertSame($slug, Slugger::slugify($string));
+        self::assertSame($slug, Slugger::slugify($string));
     }
 
     public function getSlugs()

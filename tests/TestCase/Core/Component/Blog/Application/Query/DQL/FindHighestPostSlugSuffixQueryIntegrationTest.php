@@ -27,6 +27,8 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegrationTest
 {
@@ -93,11 +95,11 @@ final class FindHighestPostSlugSuffixQueryIntegrationTest extends AbstractIntegr
 
     /**
      * @test
-     *
-     * @expectedException \Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException
      */
     public function execute_throws_exception_if_slug_not_found(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException::class);
+
         $titleStem = 'Some Interesting Title';
         $post = new Post();
         $post->setTitle($titleStem);

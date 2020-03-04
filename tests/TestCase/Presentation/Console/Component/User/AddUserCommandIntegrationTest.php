@@ -23,6 +23,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
 {
@@ -45,7 +47,7 @@ final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
         $isWindows = '\\' === \DIRECTORY_SEPARATOR;
 
         if ($isWindows || !$isSttySupported) {
-            $this->markTestSkipped('`stty` is required to test this command.');
+            self::markTestSkipped('`stty` is required to test this command.');
         }
     }
 
@@ -111,15 +113,15 @@ final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
 
         /** @var User $user */
         $user = $container->get('doctrine')->getRepository(User::class)->findOneByEmail($this->userData['email']);
-        $this->assertNotNull($user);
+        self::assertNotNull($user);
 
-        $this->assertSame($this->userData['full-name'], $user->getFullName());
-        $this->assertSame($this->userData['username'], $user->getUsername());
-        $this->assertSame($this->userData['email'], $user->getEmail());
-        $this->assertSame($this->userData['mobile'], $user->getMobile());
-        $this->assertTrue($container->get('security.password_encoder')
+        self::assertSame($this->userData['full-name'], $user->getFullName());
+        self::assertSame($this->userData['username'], $user->getUsername());
+        self::assertSame($this->userData['email'], $user->getEmail());
+        self::assertSame($this->userData['mobile'], $user->getMobile());
+        self::assertTrue($container->get('security.password_encoder')
             ->isPasswordValid(SecurityUser::fromUser($user), $this->userData['password']));
-        $this->assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER'], $user->getRoles());
+        self::assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER'], $user->getRoles());
     }
 
     /**

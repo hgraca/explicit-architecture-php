@@ -19,13 +19,15 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class ClassHelperUnitTest extends AbstractUnitTest
 {
     /**
      * @test
      */
-    public function extractCanonicalClassName(): void
+    public function extract_canonical_class_name(): void
     {
         self::assertSame('ClassHelperUnitTest', ClassHelper::extractCanonicalClassName(__CLASS__));
     }
@@ -33,10 +35,10 @@ final class ClassHelperUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function extractCanonicalMethodName(): void
+    public function extract_canonical_method_name(): void
     {
         self::assertSame(
-            'extractCanonicalMethodName',
+            'extract_canonical_method_name',
             ClassHelper::extractCanonicalMethodName(__METHOD__)
         );
     }

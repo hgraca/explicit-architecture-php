@@ -20,6 +20,8 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class AbstractDispatcherUnitTest extends AbstractUnitTest
 {
@@ -28,7 +30,7 @@ final class AbstractDispatcherUnitTest extends AbstractUnitTest
      */
     private $dispatcher;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->dispatcher = new DummyDispatcher();
     }

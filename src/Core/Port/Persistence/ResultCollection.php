@@ -89,8 +89,6 @@ final class ResultCollection implements ResultCollectionInterface
 
     /**
      * @param string|ConstructableFromArrayInterface $fqcn
-     *
-     * @return mixed
      */
     public function hydrateSingleResultAs(string $fqcn)
     {
@@ -111,9 +109,6 @@ final class ResultCollection implements ResultCollectionInterface
         return $this->itemList;
     }
 
-    /**
-     * @return mixed
-     */
     private function getFirstElement()
     {
         return \reset($this->itemList);

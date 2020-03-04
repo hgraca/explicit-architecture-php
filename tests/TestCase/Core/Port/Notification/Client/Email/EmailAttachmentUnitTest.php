@@ -23,6 +23,8 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Ruud Van Der Weijde
  *
  * @small
+ *
+ * @internal
  */
 final class EmailAttachmentUnitTest extends AbstractUnitTest
 {
@@ -95,6 +97,6 @@ final class EmailAttachmentUnitTest extends AbstractUnitTest
         $expectedEmailAttachment = clone $emailAttachment;
         $emailAttachmentAfterSerialization = unserialize(serialize($emailAttachment));
 
-        $this->assertEquals($expectedEmailAttachment, $emailAttachmentAfterSerialization);
+        self::assertEquals($expectedEmailAttachment, $emailAttachmentAfterSerialization);
     }
 }

@@ -18,6 +18,8 @@ use Acme\App\Test\Framework\AbstractFunctionalTest;
 
 /**
  * @large
+ *
+ * @internal
  */
 final class BackslashRedirectControllerFunctionalTest extends AbstractFunctionalTest
 {

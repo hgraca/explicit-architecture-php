@@ -16,6 +16,8 @@ namespace Acme\PhpExtension\Test;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class ConstructableFromArrayTraitUnitTest extends AbstractUnitTest
 {
@@ -24,7 +26,7 @@ final class ConstructableFromArrayTraitUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function fromArray(): void
+    public function from_array(): void
     {
         $value = 123;
 
@@ -37,12 +39,13 @@ final class ConstructableFromArrayTraitUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Exception
      *
      * @throws \ReflectionException
      */
-    public function fromArray_ThrowsExceptionIfArgumentIsMissing(): void
+    public function from_array_Throws_exception_if_argument_is_missing(): void
     {
+        $this->expectException(\Exception::class);
+
         $value = 123;
 
         $dto = DummyConstructableFromArray::fromArray(['inexistent' => 'foo']);

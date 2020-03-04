@@ -22,6 +22,8 @@ use Doctrine\ORM\AbstractQuery;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class DQLQueryBuilderUnitTest extends AbstractUnitTest
 {
@@ -30,7 +32,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      */
     private $queryBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->queryBuilder = new DqlQueryBuilder();
     }
@@ -81,7 +83,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function setParameter(): void
+    public function set_parameter(): void
     {
         $this->queryBuilder->setParameter('key', 'value', 'type');
         self::assertFiltersEqual(
@@ -97,7 +99,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function setMaxResults(): void
+    public function set_max_results(): void
     {
         $this->queryBuilder->setMaxResults(5);
         self::assertFiltersEqual(
@@ -145,7 +147,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function addSelect(): void
+    public function add_select(): void
     {
         $this->queryBuilder->addSelect('select1', 'select2');
         self::assertFiltersEqual(
@@ -210,7 +212,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      * @throws \ReflectionException
      * @throws \Doctrine\ORM\Query\QueryException
      */
-    public function indexBy(): void
+    public function index_by(): void
     {
         $this->queryBuilder->indexBy('alias', 'indexBy');
         self::assertFiltersEqual(
@@ -245,7 +247,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function innerJoin(): void
+    public function inner_join(): void
     {
         $this->queryBuilder->innerJoin('join', 'alias', 'conditionType', 'condition', 'indexBy');
         self::assertFiltersEqual(
@@ -264,7 +266,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function leftJoin(): void
+    public function left_join(): void
     {
         $this->queryBuilder->leftJoin('join', 'alias', 'conditionType', 'condition', 'indexBy');
         self::assertFiltersEqual(
@@ -299,7 +301,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function andWhere(): void
+    public function and_where(): void
     {
         $this->queryBuilder->andWhere('predicates');
         self::assertFiltersEqual(
@@ -315,7 +317,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function orWhere(): void
+    public function or_where(): void
     {
         $this->queryBuilder->orWhere('predicates');
         self::assertFiltersEqual(
@@ -331,7 +333,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function groupBy(): void
+    public function group_by(): void
     {
         $this->queryBuilder->groupBy('groupBy');
         self::assertFiltersEqual(
@@ -347,7 +349,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function addGroupBy(): void
+    public function add_group_by(): void
     {
         $this->queryBuilder->addGroupBy('groupBy');
         self::assertFiltersEqual(
@@ -379,7 +381,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function andHaving(): void
+    public function and_having(): void
     {
         $this->queryBuilder->andHaving('having');
         self::assertFiltersEqual(
@@ -395,7 +397,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function orHaving(): void
+    public function or_having(): void
     {
         $this->queryBuilder->orHaving('having');
         self::assertFiltersEqual(
@@ -411,7 +413,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function orderBy(): void
+    public function order_by(): void
     {
         $this->queryBuilder->orderBy('sort', 'order');
         self::assertFiltersEqual(
@@ -427,7 +429,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function addOrderBy(): void
+    public function add_order_by(): void
     {
         $this->queryBuilder->addOrderBy('sort', 'order');
         self::assertFiltersEqual(
@@ -443,7 +445,7 @@ final class DQLQueryBuilderUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function useScalarHydration(): void
+    public function use_scalar_hydration(): void
     {
         self::assertSame(
             AbstractQuery::HYDRATE_OBJECT,

@@ -37,9 +37,6 @@ final class DummyConstructableFromArray implements ConstructableFromArrayInterfa
         $this->prop2 = $prop2;
     }
 
-    /**
-     * @return mixed
-     */
     public function getProp1()
     {
         return $this->prop1;

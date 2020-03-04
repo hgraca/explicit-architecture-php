@@ -33,6 +33,8 @@ use Twilio\Rest\Client as TwilioRestClient;
  * @author Nicolae Nichifor
  *
  * @small
+ *
+ * @internal
  */
 final class TwilioClientUnitTest extends AbstractUnitTest
 {
@@ -65,7 +67,7 @@ final class TwilioClientUnitTest extends AbstractUnitTest
      */
     private $twilioClientAdapter;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->messageList = Mockery::mock(MessageList::class);
         $this->account = Mockery::mock(AccountContext::class);
@@ -86,7 +88,7 @@ final class TwilioClientUnitTest extends AbstractUnitTest
      *
      * @throws PhoneNumberException
      */
-    public function sendNotification(): void
+    public function send_notification(): void
     {
         $this->response->status = 'queued';
         $this->messageList->shouldReceive('create')->once()->with(
@@ -105,12 +107,13 @@ final class TwilioClientUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Core\Port\Notification\Client\Sms\Exception\SmsNotifierException
      *
      * @throws PhoneNumberException
      */
-    public function sendNotification_transforms_twilio_exception(): void
+    public function send_notification_transforms_twilio_exception(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Notification\Client\Sms\Exception\SmsNotifierException::class);
+
         $this->twilioClient->shouldReceive('getAccount')->once()->andThrow(TwilioException::class);
 
         $this->twilioClientAdapter->sendNotification(new Sms(self::SMS_CONTENT, self::TO_PHONE_NUMBER));

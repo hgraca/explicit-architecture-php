@@ -42,6 +42,8 @@ use Symfony\Component\HttpFoundation\Request;
  *  method calls in every test.
  *
  * @small
+ *
+ * @internal
  */
 final class FormUnitTest extends AbstractUnitTest
 {
@@ -74,7 +76,7 @@ final class FormUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function createView(): void
+    public function create_view(): void
     {
         $this->symfonyForm->shouldReceive('createView')->once()->andReturn($formView = Mockery::mock(FormView::class));
 
@@ -84,7 +86,7 @@ final class FormUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function getData(): void
+    public function get_data(): void
     {
         $this->symfonyForm->shouldReceive('getData')->once()->andReturn($expectedReturn = new stdClass());
 
@@ -94,7 +96,7 @@ final class FormUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function handleRequest(): void
+    public function handle_request(): void
     {
         $psrRequestMock = Mockery::mock(ServerRequestInterface::class);
         $this->symfonyResponseFactory->shouldReceive('createRequest')
@@ -112,7 +114,7 @@ final class FormUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideFormIsSubmittedIsValid
      */
-    public function shouldBeProcessed(bool $isSubmitted, bool $isValid, bool $expectedResult): void
+    public function should_be_processed(bool $isSubmitted, bool $isValid, bool $expectedResult): void
     {
         $this->symfonyForm->shouldReceive('isSubmitted')->once()->andReturn($isSubmitted);
         if ($isSubmitted) {
@@ -136,7 +138,7 @@ final class FormUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider provideClickedButton
      */
-    public function clickedButton(bool $has, ?bool $wasClicked, bool $expectedResult): void
+    public function clicked_button(bool $has, ?bool $wasClicked, bool $expectedResult): void
     {
         $buttonName = 'something';
 
@@ -162,7 +164,7 @@ final class FormUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function getFormName(): void
+    public function get_form_name(): void
     {
         $formName = 'something';
         $this->symfonyForm->shouldReceive('getName')->once()->andReturn($formName);

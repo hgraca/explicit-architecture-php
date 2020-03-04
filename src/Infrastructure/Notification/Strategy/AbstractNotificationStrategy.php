@@ -57,9 +57,6 @@ abstract class AbstractNotificationStrategy implements NotificationStrategyInter
             && $this->isAllowedForNotification($notification);
     }
 
-    /**
-     * @return mixed
-     */
     protected function generateNotificationMessage(NotificationInterface $notification)
     {
         if (!$this->canHandleNotification($notification)) {

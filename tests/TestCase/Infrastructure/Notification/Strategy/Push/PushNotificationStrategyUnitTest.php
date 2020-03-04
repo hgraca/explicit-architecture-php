@@ -30,6 +30,8 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class PushNotificationStrategyUnitTest extends AbstractUnitTest
 {
@@ -55,7 +57,7 @@ final class PushNotificationStrategyUnitTest extends AbstractUnitTest
      */
     private $settingsServiceMock;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->pushNotifierMock = Mockery::mock(PushNotifierInterface::class);
         $this->settingsServiceMock = Mockery::mock(NotificationSettingsServiceInterface::class);
@@ -73,7 +75,7 @@ final class PushNotificationStrategyUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function notifySendsOutCorrectNotification(): void
+    public function notify_sends_out_correct_notification(): void
     {
         $generatedMessage = new PushNotification('short name', 'title', 'message', new UserId(), []);
 
@@ -101,7 +103,7 @@ final class PushNotificationStrategyUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider canHandleNotificationDataProvider
      */
-    public function canHandleNotificationReturnsTrueForUsersWithPushNotificationsEnabled(
+    public function can_handle_notification_returns_true_for_users_with_push_notifications_enabled(
         bool $hasPushNotificationsEnabled,
         bool $expected
     ): void {
@@ -111,7 +113,7 @@ final class PushNotificationStrategyUnitTest extends AbstractUnitTest
 
         $notification = new DummyNotification('hash', $this->createUser()->getId());
 
-        static::assertEquals($expected, $this->notificationStrategy->canHandleNotification($notification));
+        self::assertEquals($expected, $this->notificationStrategy->canHandleNotification($notification));
     }
 
     public function canHandleNotificationDataProvider(): array

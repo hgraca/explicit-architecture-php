@@ -26,6 +26,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class SyncEventDispatcherUnitTest extends AbstractUnitTest
 {
@@ -49,7 +51,7 @@ final class SyncEventDispatcherUnitTest extends AbstractUnitTest
      */
     private $dispatcher;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->transactionServiceSpy = Mockery::spy(TransactionServiceInterface::class);
         $this->loggerSpy = Mockery::spy(LoggerInterface::class);

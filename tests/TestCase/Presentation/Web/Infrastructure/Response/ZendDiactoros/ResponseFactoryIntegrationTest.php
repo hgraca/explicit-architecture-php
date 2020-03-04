@@ -22,6 +22,8 @@ use stdClass;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class ResponseFactoryIntegrationTest extends AbstractIntegrationTest
 {
@@ -68,7 +70,7 @@ final class ResponseFactoryIntegrationTest extends AbstractIntegrationTest
      * @test
      * @dataProvider provideJsonResponseData
      */
-    public function respondJson($content, int $status, array $headers): void
+    public function respond_json($content, int $status, array $headers): void
     {
         $response = $this->responseFactory->respondJson($content, $status, $headers);
 
@@ -105,7 +107,7 @@ final class ResponseFactoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function redirectToUrl(): void
+    public function redirect_to_url(): void
     {
         $url = 'some/url';
         $status = 301;
@@ -119,7 +121,7 @@ final class ResponseFactoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function redirectToRoute(): void
+    public function redirect_to_route(): void
     {
         $route = 'homepage';
         $status = 301;

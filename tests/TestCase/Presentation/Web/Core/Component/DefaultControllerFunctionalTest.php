@@ -31,6 +31,8 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ make test
  *
  * @large
+ *
+ * @internal
  */
 final class DefaultControllerFunctionalTest extends AbstractFunctionalTest
 {
@@ -88,7 +90,7 @@ final class DefaultControllerFunctionalTest extends AbstractFunctionalTest
         $this->getHttpClient()->request('GET', sprintf($url, (string) $postId));
 
         self::assertResponseStatusCode(Response::HTTP_FOUND, $this->getHttpClient());
-        $this->assertSame(
+        self::assertSame(
             'http://localhost/en/login',
             $this->getHttpClient()->getResponse()->getTargetUrl(),
             sprintf('The %s secure URL redirects to the login form.', $url)

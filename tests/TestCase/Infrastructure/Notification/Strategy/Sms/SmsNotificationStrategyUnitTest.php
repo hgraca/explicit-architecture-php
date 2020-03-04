@@ -27,6 +27,8 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class SmsNotificationStrategyUnitTest extends AbstractUnitTest
 {
@@ -59,7 +61,7 @@ final class SmsNotificationStrategyUnitTest extends AbstractUnitTest
      */
     private $userRepositoryMock;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->smsNotifierMock = Mockery::mock(SmsNotifierInterface::class);
         $this->settingsServiceMock = Mockery::mock(NotificationSettingsServiceInterface::class);
@@ -82,7 +84,7 @@ final class SmsNotificationStrategyUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function notifySendsOutCorrectNotification(): void
+    public function notify_sends_out_correct_notification(): void
     {
         $generatedMessage = new Sms(self::SMS_CONTENT, self::TO_PHONE_NUMBER);
 
@@ -104,7 +106,7 @@ final class SmsNotificationStrategyUnitTest extends AbstractUnitTest
      * @test
      * @dataProvider canHandleNotificationDataProvider
      */
-    public function usersWithPhoneNumberAndSmsNotificationsEnabledCanHandleSmsNotification(
+    public function users_with_phone_number_and_sms_notifications_enabled_can_handle_sms_notification(
         bool $smsNotificationsEnabled,
         string $phoneNumber,
         bool $expected
@@ -115,7 +117,7 @@ final class SmsNotificationStrategyUnitTest extends AbstractUnitTest
         $this->userRepositoryMock->shouldReceive('findOneById')->once()->with($user->getId())->andReturn($user);
         $notification = new DummyNotification('hash', $user->getId());
 
-        static::assertEquals($expected, $this->notificationStrategy->canHandleNotification($notification));
+        self::assertEquals($expected, $this->notificationStrategy->canHandleNotification($notification));
     }
 
     public function canHandleNotificationDataProvider(): array

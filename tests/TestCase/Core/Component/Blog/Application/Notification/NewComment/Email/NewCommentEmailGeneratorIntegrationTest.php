@@ -25,6 +25,11 @@ use Acme\App\Core\SharedKernel\Component\Blog\Domain\Post\Comment\CommentId;
 use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 use Acme\App\Test\Framework\AbstractIntegrationTest;
 
+/**
+ * @internal
+ *
+ * @small
+ */
 final class NewCommentEmailGeneratorIntegrationTest extends AbstractIntegrationTest
 {
     /**

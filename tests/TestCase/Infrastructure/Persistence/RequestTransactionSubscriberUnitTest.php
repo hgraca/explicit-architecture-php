@@ -23,6 +23,8 @@ use Mockery\MockInterface;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class RequestTransactionSubscriberUnitTest extends AbstractUnitTest
 {
@@ -51,7 +53,7 @@ final class RequestTransactionSubscriberUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function startTransaction(): void
+    public function start_transaction(): void
     {
         $this->transactionServiceMock->shouldReceive('startTransaction')->once();
         $this->subscriber->startTransaction();
@@ -60,7 +62,7 @@ final class RequestTransactionSubscriberUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function finishTransaction(): void
+    public function finish_transaction(): void
     {
         $this->transactionServiceMock->shouldReceive('finishTransaction')->once();
         $this->lockManagerMock->shouldReceive('releaseAll')->once();
@@ -70,7 +72,7 @@ final class RequestTransactionSubscriberUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function rollbackTransaction(): void
+    public function rollback_transaction(): void
     {
         $this->transactionServiceMock->shouldReceive('rollbackTransaction')->once();
         $this->lockManagerMock->shouldReceive('releaseAll')->once();

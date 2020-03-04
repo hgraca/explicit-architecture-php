@@ -18,6 +18,8 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class AbstractEnumUnitTest extends AbstractUnitTest
 {
@@ -117,12 +119,12 @@ final class AbstractEnumUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Value [anything] is not matching any valid value of class "TestEnum". Valid values are ['A', 'BEE', 1, 3, NULL, true].
      */
     public function exception_message(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value [anything] is not matching any valid value of class "TestEnum". Valid values are [\'A\', \'BEE\', 1, 3, NULL, true].');
+
         TestEnum::get('anything');
     }
 
@@ -130,12 +132,11 @@ final class AbstractEnumUnitTest extends AbstractUnitTest
      * @test
      *
      * @dataProvider getInvertedCaseOptions
-     * @expectedException \InvalidArgumentException
-     *
-     * @param mixed $option
      */
     public function get_with_inverted_case_is_incorrect($option): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         TestEnum::get($option);
     }
 
@@ -149,11 +150,11 @@ final class AbstractEnumUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function get_with_strict_equal_match_throws_exception(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         TestEnum::get('1');
     }
 
@@ -170,19 +171,19 @@ final class AbstractEnumUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage Acme\PhpExtension\Test\Enum\TestEnum::isDoesNotExist() does not exist
      */
     public function is_should_throw_an_exception_when_when_calling_an_invalid_method(): void
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Acme\\PhpExtension\\Test\\Enum\\TestEnum::isDoesNotExist() does not exist');
+
         TestEnum::isDoesNotExist();
     }
 
     /**
      * @test
      */
-    public function getValidOptions(): void
+    public function get_valid_options(): void
     {
         self::assertSame(
             [
@@ -200,7 +201,7 @@ final class AbstractEnumUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function getKey(): void
+    public function get_key(): void
     {
         $enum = TestEnum::b();
 

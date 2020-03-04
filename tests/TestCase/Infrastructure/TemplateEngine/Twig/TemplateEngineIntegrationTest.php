@@ -24,6 +24,8 @@ use Zend\Diactoros\Response;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class TemplateEngineIntegrationTest extends AbstractIntegrationTest
 {
@@ -89,7 +91,7 @@ final class TemplateEngineIntegrationTest extends AbstractIntegrationTest
      *
      * @throws ReflectionException
      */
-    public function renderResponse_with_a_base_response(): void
+    public function render_response_with_a_base_response(): void
     {
         $status = 599;
         $originalResponse = (new Response())
@@ -114,7 +116,7 @@ final class TemplateEngineIntegrationTest extends AbstractIntegrationTest
      *
      * @throws ReflectionException
      */
-    public function renderResponse_without_a_base_response(): void
+    public function render_response_without_a_base_response(): void
     {
         $resultHtml = $this->templateEngine->renderResponse(self::TEMPLATE_1, new Test1TemplateViewModel('a', 'b'))
             ->getBody()

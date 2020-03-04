@@ -22,24 +22,26 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Marijn Koesen
  *
  * @small
+ *
+ * @internal
  */
 final class MimeTypeUnitTest extends AbstractUnitTest
 {
     /**
      * @test
      */
-    public function mimeTypeText(): void
+    public function mime_type_text(): void
     {
         $txt = MimeType::MIME_TYPE_PLAIN;
-        $this->assertEquals($txt, 'text/plain');
+        self::assertEquals($txt, 'text/plain');
     }
 
     /**
      * @test
      */
-    public function mimeTypeHtml(): void
+    public function mime_type_html(): void
     {
         $txt = MimeType::MIME_TYPE_HTML;
-        $this->assertEquals($txt, 'text/html');
+        self::assertEquals($txt, 'text/html');
     }
 }

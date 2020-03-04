@@ -17,12 +17,17 @@ namespace Acme\App\Test\TestCase\Core\Component\Blog\Application\Notification\Ne
 use Acme\App\Core\Component\Blog\Application\Notification\NewComment\Sms\NewCommentSmsVoter;
 use Acme\App\Test\Framework\AbstractUnitTest;
 
+/**
+ * @internal
+ *
+ * @small
+ */
 final class NewCommentSmsVoterUnitTest extends AbstractUnitTest
 {
     /**
      * @test
      */
-    public function shouldDispatchSms(): void
+    public function should_dispatch_sms(): void
     {
         $voter = new NewCommentSmsVoter();
 

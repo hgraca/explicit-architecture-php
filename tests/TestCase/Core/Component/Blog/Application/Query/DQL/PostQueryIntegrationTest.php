@@ -29,6 +29,8 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class PostQueryIntegrationTest extends AbstractIntegrationTest
 {
@@ -42,7 +44,7 @@ final class PostQueryIntegrationTest extends AbstractIntegrationTest
      */
     private $queryService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->dqlQueryBuilder = self::getService(DqlQueryBuilderInterface::class);
         $this->queryService = self::getService(QueryServiceRouterInterface::class);

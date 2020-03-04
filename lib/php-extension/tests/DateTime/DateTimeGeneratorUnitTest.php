@@ -21,6 +21,8 @@ use DateTimeZone;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class DateTimeGeneratorUnitTest extends AbstractUnitTest
 {
@@ -62,7 +64,7 @@ final class DateTimeGeneratorUnitTest extends AbstractUnitTest
      *
      * @throws \Exception
      */
-    public function overrideDefaultGenerator(): void
+    public function override_default_generator(): void
     {
         $date = '2018-10-21';
         DateTimeGenerator::overrideDefaultGenerator(

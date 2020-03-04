@@ -19,6 +19,8 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class AcmeLogicExceptionUnitTest extends AbstractUnitTest
 {

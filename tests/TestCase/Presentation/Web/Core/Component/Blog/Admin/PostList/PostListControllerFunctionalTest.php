@@ -35,6 +35,8 @@ use Symfony\Component\HttpFoundation\Response;
  *     $ ./vendor/bin/phpunit
  *
  * @large
+ *
+ * @internal
  */
 final class PostListControllerFunctionalTest extends AbstractFunctionalTest
 {
@@ -74,7 +76,7 @@ final class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $crawler = $client->request('GET', '/en/admin/posts');
         self::assertResponseStatusCode(Response::HTTP_OK, $client);
 
-        $this->assertGreaterThanOrEqual(
+        self::assertGreaterThanOrEqual(
             1,
             $crawler->filter('body#admin_post_index #main tbody tr')->count(),
             'The backend homepage displays all the available posts.'
@@ -113,9 +115,9 @@ final class PostListControllerFunctionalTest extends AbstractFunctionalTest
         $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->findOneBy([
             'title' => $postTitle,
         ]);
-        $this->assertNotNull($post);
-        $this->assertSame($postSummary, $post->getSummary());
-        $this->assertSame($postContent, $post->getContent());
+        self::assertNotNull($post);
+        self::assertSame($postSummary, $post->getSummary());
+        self::assertSame($postContent, $post->getContent());
     }
 
     private function generateRandomString(int $length): string

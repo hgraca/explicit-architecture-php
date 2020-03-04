@@ -24,6 +24,8 @@ use Acme\App\Test\Framework\AbstractIntegrationTest;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
 {
@@ -47,7 +49,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
      */
     private $queryService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->repository = self::getService(PostRepository::class);
         $this->persistenceService = self::getService(DqlPersistenceService::class);
@@ -107,12 +109,13 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
     public function delete_removes_the_entity(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Persistence\Exception\EmptyQueryResultException::class);
+
         $post = $this->findAPost();
         $postId = $post->getId();
 
@@ -167,7 +170,7 @@ final class PostRepositoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function getTagListCountByPostId(PostId  $postId): int
+    private function getTagListCountByPostId(PostId $postId): int
     {
         $statement = $this->getEntityManager()
             ->getConnection()

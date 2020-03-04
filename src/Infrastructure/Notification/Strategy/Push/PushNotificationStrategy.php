@@ -56,9 +56,6 @@ final class PushNotificationStrategy extends AbstractNotificationStrategy
         return $this->type;
     }
 
-    /**
-     * @param NotificationInterface $notification
-     */
     public function notify(NotificationInterface $notification): void
     {
         $this->pushNotifier->sendNotification($this->generateNotificationMessage($notification));

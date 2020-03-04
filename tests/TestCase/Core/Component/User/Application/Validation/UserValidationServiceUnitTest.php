@@ -21,6 +21,8 @@ use libphonenumber\PhoneNumberUtil;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class UserValidationServiceUnitTest extends AbstractUnitTest
 {
@@ -39,17 +41,17 @@ final class UserValidationServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function validateUsername(): void
+    public function validate_username(): void
     {
         $test = 'username';
 
-        $this->assertSame($test, $this->object->validateUsername($test));
+        self::assertSame($test, $this->object->validateUsername($test));
     }
 
     /**
      * @test
      */
-    public function validateUsername_empty(): void
+    public function validate_username_empty(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The username can not be empty.');
@@ -59,7 +61,7 @@ final class UserValidationServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function validateUsername_invalid(): void
+    public function validate_username_invalid(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The username must contain only lowercase latin characters and underscores.');
@@ -69,17 +71,17 @@ final class UserValidationServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function validatePassword(): void
+    public function validate_password(): void
     {
         $test = 'password';
 
-        $this->assertSame($test, $this->object->validatePassword($test));
+        self::assertSame($test, $this->object->validatePassword($test));
     }
 
     /**
      * @test
      */
-    public function validatePassword_empty(): void
+    public function validate_password_empty(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The password can not be empty.');
@@ -89,7 +91,7 @@ final class UserValidationServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function validatePassword_invalid(): void
+    public function validate_password_invalid(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The password must be at least 6 characters long.');
@@ -99,17 +101,17 @@ final class UserValidationServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function validateEmail(): void
+    public function validate_email(): void
     {
         $test = '@';
 
-        $this->assertSame($test, $this->object->validateEmail($test));
+        self::assertSame($test, $this->object->validateEmail($test));
     }
 
     /**
      * @test
      */
-    public function validateEmail_empty(): void
+    public function validate_email_empty(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The email can not be empty.');
@@ -119,7 +121,7 @@ final class UserValidationServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function validateEmail_invalid(): void
+    public function validate_email_invalid(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The email should look like a real email.');
@@ -129,17 +131,17 @@ final class UserValidationServiceUnitTest extends AbstractUnitTest
     /**
      * @test
      */
-    public function validateFullName(): void
+    public function validate_full_name(): void
     {
         $test = 'Full Name';
 
-        $this->assertSame($test, $this->object->validateFullName($test));
+        self::assertSame($test, $this->object->validateFullName($test));
     }
 
     /**
      * @test
      */
-    public function validateFullName_empty(): void
+    public function validate_full_name_empty(): void
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('The full name can not be empty.');

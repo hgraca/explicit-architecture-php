@@ -94,8 +94,6 @@ trait AcceptanceTesterActions
      *
      * @param $subdomain
      *
-     * @return mixed
-     *
      * @see \Codeception\Module\PhpBrowser::amOnSubdomain()
      */
     public function amOnSubdomain($subdomain)
@@ -867,8 +865,6 @@ trait AcceptanceTesterActions
      * ```
      *
      * @param string $uri optional
-     *
-     * @return mixed
      *
      * @see \Codeception\Lib\InnerBrowser::grabFromCurrentUrl()
      */
@@ -1712,8 +1708,6 @@ trait AcceptanceTesterActions
      *
      * @param $cssOrXPathOrRegex
      *
-     * @return mixed
-     *
      * @see \Codeception\Lib\InnerBrowser::grabTextFrom()
      */
     public function grabTextFrom($cssOrXPathOrRegex)
@@ -1733,11 +1727,8 @@ trait AcceptanceTesterActions
      * ?>
      * ```
      *
-     *
      * @param $cssOrXpath
      * @param $attribute
-     *
-     * @return mixed
      *
      * @see \Codeception\Lib\InnerBrowser::grabAttributeFrom()
      */
@@ -1810,8 +1801,6 @@ trait AcceptanceTesterActions
      * @param $val
      * @param array $params
      *
-     * @return mixed
-     *
      * @see \Codeception\Lib\InnerBrowser::setCookie()
      */
     public function setCookie($name, $val, $params = null)
@@ -1827,8 +1816,6 @@ trait AcceptanceTesterActions
      *
      * @param $cookie
      * @param array $params
-     *
-     * @return mixed
      *
      * @see \Codeception\Lib\InnerBrowser::grabCookie()
      */
@@ -1893,8 +1880,6 @@ trait AcceptanceTesterActions
      * @param $cookie
      * @param array $params
      *
-     * @return mixed
-     *
      * @see \Codeception\Lib\InnerBrowser::seeCookie()
      */
     public function seeCookie($cookie, $params = null)
@@ -1930,8 +1915,6 @@ trait AcceptanceTesterActions
      * @param $cookie
      * @param array $params
      *
-     * @return mixed
-     *
      * @see \Codeception\Lib\InnerBrowser::dontSeeCookie()
      */
     public function dontSeeCookie($cookie, $params = null)
@@ -1945,10 +1928,7 @@ trait AcceptanceTesterActions
      * Unsets cookie with the given name.
      * You can set additional cookie params like `domain`, `path` in array passed as last argument.
      *
-     * @param $cookie
      * @param array $params
-     *
-     * @return mixed
      *
      * @see \Codeception\Lib\InnerBrowser::resetCookie()
      */
@@ -2152,8 +2132,6 @@ trait AcceptanceTesterActions
      * @param $selector
      * @param $optionText
      *
-     * @return mixed
-     *
      * @see \Codeception\Lib\InnerBrowser::seeOptionIsSelected()
      */
     public function seeOptionIsSelected($selector, $optionText)
@@ -2198,8 +2176,6 @@ trait AcceptanceTesterActions
      *
      * @param $selector
      * @param $optionText
-     *
-     * @return mixed
      *
      * @see \Codeception\Lib\InnerBrowser::dontSeeOptionIsSelected()
      */
@@ -2359,8 +2335,6 @@ trait AcceptanceTesterActions
      *
      * @param $title
      *
-     * @return mixed
-     *
      * @see \Codeception\Lib\InnerBrowser::seeInTitle()
      */
     public function seeInTitle($title)
@@ -2391,8 +2365,6 @@ trait AcceptanceTesterActions
      * Checks that the page title does not contain the given string.
      *
      * @param $title
-     *
-     * @return mixed
      *
      * @see \Codeception\Lib\InnerBrowser::dontSeeInTitle()
      */

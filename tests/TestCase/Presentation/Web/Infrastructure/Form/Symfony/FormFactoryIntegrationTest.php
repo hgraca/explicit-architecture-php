@@ -25,6 +25,8 @@ use Acme\PhpExtension\Helper\StringHelper;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class FormFactoryIntegrationTest extends AbstractIntegrationTest
 {
@@ -41,7 +43,7 @@ final class FormFactoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function createEditPostForm(): void
+    public function create_edit_post_form(): void
     {
         self::assertSame(
             StringHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(EditPostForm::class)),
@@ -52,7 +54,7 @@ final class FormFactoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function createCreatePostForm(): void
+    public function create_create_post_form(): void
     {
         self::assertSame(
             StringHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(CreatePostForm::class)),
@@ -63,7 +65,7 @@ final class FormFactoryIntegrationTest extends AbstractIntegrationTest
     /**
      * @test
      */
-    public function createCommentForm(): void
+    public function create_comment_form(): void
     {
         self::assertSame(
             StringHelper::toSnakeCase(ClassHelper::extractCanonicalClassName(CommentForm::class)),

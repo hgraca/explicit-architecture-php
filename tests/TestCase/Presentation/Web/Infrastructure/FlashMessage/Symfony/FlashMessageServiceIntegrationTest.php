@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @medium
+ *
+ * @internal
  */
 final class FlashMessageServiceIntegrationTest extends AbstractIntegrationTest
 {

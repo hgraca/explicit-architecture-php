@@ -20,6 +20,8 @@ use Acme\PhpExtension\Helper\ReflectionHelper;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class QueryServiceRouterUnitTest extends AbstractUnitTest
 {
@@ -60,10 +62,11 @@ final class QueryServiceRouterUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Core\Port\Persistence\Exception\QueryServiceIsNotCallableException
      */
     public function construct_throws_exception_if_service_not_callable(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Persistence\Exception\QueryServiceIsNotCallableException::class);
+
         new QueryServiceRouter(new DummyNonCallableQueryService());
     }
 
@@ -88,10 +91,11 @@ final class QueryServiceRouterUnitTest extends AbstractUnitTest
 
     /**
      * @test
-     * @expectedException \Acme\App\Core\Port\Persistence\Exception\UnableToHandleQueryException
      */
     public function query_throws_exception_if_can_not_handle_query(): void
     {
+        $this->expectException(\Acme\App\Core\Port\Persistence\Exception\UnableToHandleQueryException::class);
+
         $this->initialize();
         $queryServiceRouter = new QueryServiceRouter($this->queryServiceA, $this->queryServiceB);
         $queryServiceRouter->query(new DummyQueryC());

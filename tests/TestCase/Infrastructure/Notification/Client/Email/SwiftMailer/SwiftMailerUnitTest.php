@@ -30,6 +30,8 @@ use Swift_Mime_SimpleMessage;
  * @author Marijn Koesen
  *
  * @small
+ *
+ * @internal
  */
 final class SwiftMailerUnitTest extends AbstractUnitTest
 {

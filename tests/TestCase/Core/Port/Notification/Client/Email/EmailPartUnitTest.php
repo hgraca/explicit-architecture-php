@@ -22,6 +22,8 @@ use Acme\App\Test\Framework\AbstractUnitTest;
  * @author Marijn Koesen
  *
  * @small
+ *
+ * @internal
  */
 final class EmailPartUnitTest extends AbstractUnitTest
 {
@@ -32,9 +34,9 @@ final class EmailPartUnitTest extends AbstractUnitTest
     public function getters_work_as_expected(?string $content, string $type = null, string $charset = null): void
     {
         $messagePart = new EmailPart($content, $type, $charset);
-        $this->assertEquals($content, $messagePart->getContent());
-        $this->assertEquals($type, $messagePart->getContentType());
-        $this->assertEquals($charset, $messagePart->getCharset());
+        self::assertEquals($content, $messagePart->getContent());
+        self::assertEquals($type, $messagePart->getContentType());
+        self::assertEquals($charset, $messagePart->getCharset());
     }
 
     public function getMessageParts(): array

@@ -19,6 +19,8 @@ use Acme\PhpExtension\Test\AbstractUnitTest;
 
 /**
  * @small
+ *
+ * @internal
  */
 final class ReflectionHelperUnitTest extends AbstractUnitTest
 {
@@ -27,7 +29,7 @@ final class ReflectionHelperUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function getProtectedProperty_from_object_class(): void
+    public function get_protected_property_from_object_class(): void
     {
         $value = 7;
         $object = new DummyClass($value);
@@ -40,7 +42,7 @@ final class ReflectionHelperUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function getProtectedProperty_from_object_parent_class(): void
+    public function get_protected_property_from_object_parent_class(): void
     {
         $value = 7;
         $parentValue = 19;
@@ -52,12 +54,12 @@ final class ReflectionHelperUnitTest extends AbstractUnitTest
     /**
      * @test
      *
-     * @expectedException \ReflectionException
-     *
      * @throws \ReflectionException
      */
-    public function getProtectedProperty_throws_exception_if_not_found(): void
+    public function get_protected_property_throws_exception_if_not_found(): void
     {
+        $this->expectException(\ReflectionException::class);
+
         $object = new DummyClass();
 
         ReflectionHelper::getProtectedProperty($object, 'inexistentVar');
@@ -68,14 +70,14 @@ final class ReflectionHelperUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function setProtectedProperty(): void
+    public function set_protected_property(): void
     {
         $newValue = 'something new';
         $object = new DummyClass();
-        $this->assertNotSame($newValue, $object->getTestProperty());
+        self::assertNotSame($newValue, $object->getTestProperty());
 
         ReflectionHelper::setProtectedProperty($object, 'testProperty', $newValue);
-        $this->assertSame($newValue, $object->getTestProperty());
+        self::assertSame($newValue, $object->getTestProperty());
     }
 
     /**
@@ -83,23 +85,24 @@ final class ReflectionHelperUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function setProtectedProperty_defined_in_parent_class(): void
+    public function set_protected_property_defined_in_parent_class(): void
     {
         $newValue = 'something new';
         $object = new DummyClass();
-        $this->assertNotSame($newValue, $object->getParentTestProperty());
+        self::assertNotSame($newValue, $object->getParentTestProperty());
 
         ReflectionHelper::setProtectedProperty($object, 'parentTestProperty', $newValue);
-        $this->assertSame($newValue, $object->getParentTestProperty());
+        self::assertSame($newValue, $object->getParentTestProperty());
     }
 
     /**
      * @test
-     * @expectedException \ReflectionException
-     * @expectedExceptionMessage Property i_dont_exist does not exist
      */
-    public function setProtectedProperty_fails_when_cant_find_the_property(): void
+    public function set_protected_property_fails_when_cant_find_the_property(): void
     {
+        $this->expectException(\ReflectionException::class);
+        $this->expectExceptionMessage('Property i_dont_exist does not exist');
+
         $object = new DummyClass();
         ReflectionHelper::setProtectedProperty($object, 'i_dont_exist', 'non existent');
     }
@@ -109,10 +112,10 @@ final class ReflectionHelperUnitTest extends AbstractUnitTest
      *
      * @throws \ReflectionException
      */
-    public function instantiateWithoutConstructor_does_not_use_the_constructor(): void
+    public function instantiate_without_constructor_does_not_use_the_constructor(): void
     {
         $object = ReflectionHelper::instantiateWithoutConstructor(DummyClass::class);
-        $this->assertNull($object->getAnotherVar());
+        self::assertNull($object->getAnotherVar());
     }
 
     /**
