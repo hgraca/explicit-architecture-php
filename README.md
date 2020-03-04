@@ -105,7 +105,21 @@ Deptrac can also generate some nice graphs with the dependencies tree, which mak
 
 You need to have docker installed in your host OS. 
 
-Then execute this command to run the app in dev mode: 
+Execute the following commands to prepare the project locally:
+
+```bash
+$ composer install
+$ make box-build-prd
+$ make dep_analyzer-install
+```
+
+Execute this command to run the tests suite: 
+
+```bash
+$ make test
+```
+
+Execute this command to run the app in dev mode: 
 
 ```bash
 $ make up
