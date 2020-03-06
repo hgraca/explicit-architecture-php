@@ -11,16 +11,21 @@ $debug = false;
 
 $env = getenv('ENV') ?: 'dev';
 $rootDir = __DIR__ . '/..';
-$returnVal = 0;
+$downReturnVal = 0;
+$removeReturnVal = 0;
 
 $containerName = 'app.sfn.' . $env;
 $yamlFile = "$rootDir/build/container/$env/docker-compose.yml";
+$envFile = "$rootDir/build/container/$env/docker.env";
 
-$downCommand = "docker-compose -f $yamlFile down -t 0"; // we use the "-t 0" so that we don't have a timeout of 10s, needs version >= 1.22
+$downCommand = "docker-compose --env-file=$envFile -f $yamlFile down -t 0"; // we use the "-t 0" so that we don't have a timeout of 10s, needs version >= 1.22
+$removeCommand = "docker container rm $containerName -f";
 
 if (isContainerExists($containerName)) {
     if ($debug) echo "[DEBUG-STOP] $downCommand \n";
-    system($downCommand, $returnVal);
+    system($downCommand, $downReturnVal);
+    if ($debug) echo "[DEBUG-STOP] $downCommand \n";
+    system($removeCommand, $removeReturnVal);
 }
 
-exit($returnVal);
+exit($downReturnVal + $removeReturnVal);
