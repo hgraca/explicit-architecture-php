@@ -1,0 +1,77 @@
+# config taken from: ./bin/console config:dump-reference overblog_graphql
+overblog_graphql:
+#    batching_method: relay # One of "relay"; "apollo"
+
+    definitions:
+#        argument_class: 'Overblog\GraphQLBundle\Definition\Argument'
+        auto_compile: true # To generate types manually use "graphql:compile" command.
+#        builders:
+#            field:
+#                -   alias: ~ # Required
+#                    class: ~ # Required
+#            fields:
+#                -   alias: ~ # Required
+#                    class: ~ # Required
+#            args:
+#                -   alias: ~ # Required
+#                    class: ~ # Required
+        # Change generated classes cache dir. The default is 'var/cache/dev/overblog/graphql-bundle/__definitions__'
+        cache_dir: '%kernel.project_dir%/var/cache/graphql/generated'
+        cache_dir_permissions: 0777
+        class_namespace: 'Acme\App\Presentation\Api\GraphQl\Generated' # Generated classes namespace
+        config_validation: '%graphql.debug%'
+#        default_resolver:
+#            - Overblog\GraphQLBundle\Resolver\Resolver
+#            - defaultResolveFn
+        mappings:
+#            auto_discover:
+#                bundles:              false
+#                root_dir:             false
+            types:
+                # To include different types from the same dir [yaml, xml, graphql, null]
+                -   types: [yaml, graphql]
+                    # sub directories are also searched
+                    dir: "%kernel.project_dir%/config/services/prod/presentation/api/graphql"
+                    # use this to change the default file suffix, use ~ for no suffix
+                    suffix: Type
+        schema:
+            query: Query
+#            mutation: ~
+#            subscription: ~
+        show_debug_info: '%graphql.debug%' # Show some performance stats in extensions
+        use_classloader_listener: false # Disable the bundle out of box classLoader listener, to use composer autoloader
+#        use_experimental_executor: false
+
+    errors_handler:
+        # default: false; will add trace stack and debugMessage to error
+        debug: '%graphql.debug%'
+        # false will totally disable errors handling
+        enabled: true
+        exceptions:
+            warnings:
+                - 'Acme\App\Core\Port\Auth\AccessDeniedException'
+            errors:
+                - 'Acme\PhpExtension\Exception\AcmeExceptionInterface'
+        # custom generic error message
+        internal_error_message: 'Internal server Error'
+        # default: true; false will disabled the default logging behavior
+        log: false
+        # the service to use to log
+        logger_service: logger
+        # map an exception to a parent exception if the exact exception is not in the mapping
+        map_exceptions_to_parent: true
+#        rethrow_internal_exceptions: false
+    services:
+#        executor:             Overblog\GraphQLBundle\Executor\Executor
+        promise_adapter:      GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter
+#        expression_language:  Overblog\GraphQLBundle\ExpressionLanguage\ExpressionLanguage
+#        cache_expression_language_parser: ~
+
+#    security:
+#        query_max_depth:      0 # Disabled if equal to false.
+#        query_max_complexity: 0 # Disabled if equal to false.
+#        enable_introspection: true
+#        handle_cors:          false
+
+#    doctrine:
+#        types_mapping:        []

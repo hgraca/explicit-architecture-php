@@ -15,6 +15,7 @@
         "giggsey/libphonenumber-for-php": "^8.11.5",
         "messagebird/php-rest-api": "^v1.16.1",
         "nyholm/psr7": "^1.2.1",
+        "overblog/graphql-bundle": "^0.12.6",
         "ramsey/uuid": "^3.9.3",
         "ramsey/uuid-doctrine": "^1.6.0",
         "sensio/framework-extra-bundle": "^v5.5.3",
@@ -69,7 +70,8 @@
     "autoload": {
         "psr-4": {
             "Acme\\App\\": "src/",
-            "Acme\\PhpExtension\\": "lib/php-extension/src/"
+            "Acme\\PhpExtension\\": "lib/php-extension/src/",
+            "Acme\\App\\Presentation\\Api\\GraphQl\\Generated\\": "var/cache/graphql/generated/"
         }
     },
     "autoload-dev": {
