@@ -137,7 +137,7 @@ final class SmsNotificationStrategyUnitTest extends AbstractUnitTest
             'email@foo.com',
             self::TO_PHONE_NUMBER,
             'full name',
-            User::ROLE_USER
+            User::ROLE_EDITOR
         );
     }
 }

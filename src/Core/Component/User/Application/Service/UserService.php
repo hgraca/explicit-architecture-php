@@ -70,7 +70,7 @@ final class UserService
             $email,
             $mobile,
             $fullName,
-            $isAdmin ? User::ROLE_ADMIN : User::ROLE_USER
+            $isAdmin ? User::ROLE_ADMIN : User::ROLE_EDITOR
         );
         $user->setPassword($this->encoder->encode($plainPassword, $user));
         $this->userRepository->add($user);

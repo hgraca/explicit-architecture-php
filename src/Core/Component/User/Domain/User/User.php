@@ -30,7 +30,7 @@ use Acme\App\Core\SharedKernel\Component\User\Domain\User\UserId;
 class User implements \Serializable
 {
     public const ROLE_ADMIN = 'ROLE_ADMIN';
-    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_EDITOR = 'ROLE_EDITOR';
 
     /**
      * @var UserId
@@ -158,7 +158,7 @@ class User implements \Serializable
 
         // guarantees that a user always has at least one role for security
         if (empty($roles)) {
-            $roles[] = self::ROLE_USER;
+            $roles[] = self::ROLE_EDITOR;
         }
 
         return array_unique($roles);

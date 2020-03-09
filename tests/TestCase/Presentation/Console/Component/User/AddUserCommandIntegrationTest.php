@@ -121,7 +121,7 @@ final class AddUserCommandIntegrationTest extends AbstractIntegrationTest
         self::assertSame($this->userData['mobile'], $user->getMobile());
         self::assertTrue($container->get('security.password_encoder')
             ->isPasswordValid(SecurityUser::fromUser($user), $this->userData['password']));
-        self::assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER'], $user->getRoles());
+        self::assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_EDITOR'], $user->getRoles());
     }
 
     /**

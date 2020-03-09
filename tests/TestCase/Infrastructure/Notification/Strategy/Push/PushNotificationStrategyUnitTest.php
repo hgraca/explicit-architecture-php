@@ -131,7 +131,7 @@ final class PushNotificationStrategyUnitTest extends AbstractUnitTest
             'email@foo.com',
             '+31631769214',
             'full name',
-            User::ROLE_USER
+            User::ROLE_EDITOR
         );
     }
 }

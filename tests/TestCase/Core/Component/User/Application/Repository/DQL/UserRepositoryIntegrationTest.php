@@ -91,7 +91,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
             $email = 'username@email.com',
             '+31631769214',
             $fullName = 'User Name',
-            User::ROLE_USER
+            User::ROLE_EDITOR
         );
         $user->setPassword('plainpassword');
 
@@ -106,7 +106,7 @@ final class UserRepositoryIntegrationTest extends AbstractIntegrationTest
         self::assertSame($username, $user->getUsername());
         self::assertSame($email, $user->getEmail());
         self::assertSame($fullName, $user->getFullName());
-        self::assertSame([User::ROLE_USER], $user->getRoles());
+        self::assertSame([User::ROLE_EDITOR], $user->getRoles());
     }
 
     /**

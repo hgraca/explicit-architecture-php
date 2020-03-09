@@ -76,7 +76,7 @@ class UserFixtures extends Fixture
             self::JOHN_EMAIL,
             self::JOHN_MOBILE,
             'John Doe',
-            User::ROLE_USER
+            User::ROLE_EDITOR
         );
         $encodedPassword = $this->passwordEncoder->encodePassword(SecurityUser::fromUser($johnUser), 'kitten');
         $johnUser->setPassword($encodedPassword);
