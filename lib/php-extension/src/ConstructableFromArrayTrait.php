@@ -45,8 +45,10 @@ trait ConstructableFromArrayTrait
                 );
             }
 
-            $argument = $data[$parameterName] ?? $reflectionParameter->getDefaultValue();
-            if ($reflectionParameter->isVariadic() && \is_array($argument)) {
+            $class = $reflectionParameter->getClass();
+            if ($class && ($className = $class->getName()) && class_exists($className)) {
+                $argumentList[] = new $className($argument);
+            } elseif ($reflectionParameter->isVariadic() && \is_array($argument)) {
                 $argumentList = \array_merge($argumentList, $argument);
             } else {
                 $argumentList[] = $argument;
