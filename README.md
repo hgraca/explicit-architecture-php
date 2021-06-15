@@ -16,7 +16,7 @@ to develop Symfony applications following the recommended best practices.
 
 This repository is a demo of [Explicit Architecture][1], using the [Symfony Demo Application][2].
 
-There is code in this project that not used and therefore it would be removed in a real project, nevertheless 
+There is code in this project that is not used and therefore it would be removed in a real project, nevertheless 
 it was included here as examples.
 
 ### Explicit Architecture
@@ -37,7 +37,7 @@ I explained [Explicit Architecture][1] in one of my blog posts, as a result of m
 
 #### Folder structure
 
-- **bin** (_application binaries, however the dependencies binaries should go in vendor/bin_)
+- **bin** (_application binaries, however, the dependencies binaries should go in vendor/bin_)
 - **build** (_artifacts needed for building the application prior to running it_)
 - **config** (_all the config needed to run the application_)
 - **docs** (_application documentation_)
@@ -52,7 +52,7 @@ I explained [Explicit Architecture][1] in one of my blog posts, as a result of m
         - **[Port][8]** (_the ports, to be implemented by the infrastructure adapters_)
         - **[SharedKernel][6]** (_application and domain code shared among all components/bounded contexts_)
     - **[Infrastructure][9]** (_the port adapters for the infrastructure tools_)
-    - **[Presentation][7]** (_the presentation layer with the several user facing applications, controllers, views and related code units_)
+    - **[Presentation][7]** (_the presentation layer with the several user-facing applications, controllers, views, and related code units_)
         - **Console** (_the CLI UI_)
         - **Web** (_the web UI_)
             - **Core** (_the web UI core_)
@@ -72,7 +72,7 @@ I explained [Explicit Architecture][1] in one of my blog posts, as a result of m
 Since the code organization, its structure, is quite explicit we can _easily_ have an architectural integrity test 
 suite to make sure we are not breaking the architecture.
 
-This project architectural integrity test suite consists of three tests, which are executed using [deptrac]. 
+This project's architectural integrity test suite consists of three tests, which are executed using [deptrac]. 
 Deptrac can also generate some nice graphs with the dependencies tree, which makes it great as a documentation artifact.
 
 1. **_Layer_ dependencies integrity**
@@ -90,13 +90,13 @@ Deptrac can also generate some nice graphs with the dependencies tree, which mak
 
 3. **_Class type_ dependencies integrity**
 
-    This test goes to a class level dependency integrity check, specially useful for classes in the same layer and component.
+    This test goes to a class-level dependency integrity check, especially useful for classes in the same layer and component.
     For example, the application services, query objects and repositories all belong to the Application Layer, 
     and they all exist within each component. However, there are rules that must be followed:
     1. A service can depend on query objects and repositories;
     2. A query object should not depend on a service nor a repository, 
     3. A repository should not depend on a service nor a query object. 
-    4. And, of course, none of them should depend on a controller, although that can be tested using the layers dependency 
+    4. And, of course, none of them should depend on a controller, although that can be tested using the layers dependency
     test, because the controllers belong in the UI layer.
     
     ![Class type dependencies](docs/images/dependencies/deptrac_class.png)
@@ -164,7 +164,7 @@ $ make test_cov
 
 ### Integration with PHPStorm
 
-Integration with PHPStorm is straight forward.
+Integration with PHPStorm is straightforward.
 
 Configure the servers so we can debug a request made from the browser:
 ![PHPStorm servers config](docs/IDE/PHPStorm/IDE_PHPSTORM_servers.png)
